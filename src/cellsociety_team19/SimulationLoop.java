@@ -1,5 +1,7 @@
 package cellsociety_team19;
 
+import java.awt.Desktop;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -16,6 +18,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -114,6 +117,30 @@ private Scene askUserForInput(Stage stage) {
 	        root.getChildren().add(grid);
 	        //grid.setGridLinesVisible(true);
 	        grid.add(submit, 1, 30);
+	        
+	        FileChooser fileChooser = new FileChooser();
+			fileChooser.setTitle("Open XML File");
+			
+			final Button openXMLButton = new Button("Open XML File");
+			grid.add(openXMLButton, 0, 30);
+			
+			openXMLButton.setOnAction(
+		            new EventHandler<ActionEvent>() {
+		                @Override
+		                public void handle(final ActionEvent e) {
+		                    File file = fileChooser.showOpenDialog(stage);
+		                    if (file != null) {
+		                    	
+		                        System.out.println(file + " has been opened");
+		                    }
+		                }
+		            });
+			
+	        
+	        
+	        
+	        
+	        
 	        submit.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
 				@Override
@@ -147,6 +174,11 @@ private Scene askUserForInput(Stage stage) {
 										
 					/* exit the scene */
 					stage.close();
+					
+					
+					
+					
+					
 
 				}
 				
