@@ -13,6 +13,10 @@ public abstract class Cell {
 		myState = state;
 	}
 	
+	public Cell(){
+		
+	}
+	
 	public abstract void doAction();
 	
 	public abstract Cell[] getNeighbors();
@@ -20,5 +24,7 @@ public abstract class Cell {
 	public int getState(){
 		return myState;
 	}
+	
+	public abstract Cell makeNew(int X, int Y, int theState);
 	
 }

@@ -5,7 +5,11 @@ public class TreeCell extends Cell{
 		super(x, y, state);
 		// TODO Auto-generated constructor stub
 	}
-
+	
+	public TreeCell(){
+		super();
+	}
+	
 	public String toString(){
 		return "Fire Burning Game";
 	}
@@ -20,5 +24,10 @@ public class TreeCell extends Cell{
 	public Cell[] getNeighbors() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@Override
+	public TreeCell makeNew(int X, int Y, int State){
+		return new TreeCell(X, Y, State);
 	}
 }

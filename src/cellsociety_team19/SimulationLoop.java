@@ -25,11 +25,14 @@ public class SimulationLoop {
 	private final String FIRE_TREE_GAME = "Fire/Tree Game";
 	private final String PRED_PREY_GAME = "Pred/Prey Game";
 	private final String SEGREGATION_GAME = "Segregation Game";
+	
+	/*2d arraylist of cell(gametype) to keep track of grid*/
+	
 	private int framesPerSecond = 5;
 	private int numRows;
 	private int numCols;
 	
-	private final ArrayList<Cell> simulationType = new ArrayList<Cell>();
+	private Cell[][] gridArrayOfCells;
 	
 	/**
 	 * Create the game's frame
@@ -70,11 +73,11 @@ public class SimulationLoop {
 	
 private Scene askUserForInput(Stage stage) {
 		
-		Scene scene = new Scene(new Group(), 300,300);
+		Scene scene = new Scene(new Group(), 400,400);
 		
 			Cell[] sims = new Cell[] {
-				new TreeCell(1,1,1),
-				new PredPreyCell(1,1,1)
+				new TreeCell(),
+				new PredPreyCell()
 				//add here	
 			};
 			
@@ -91,6 +94,7 @@ private Scene askUserForInput(Stage stage) {
 			
 			final Label labelForGridSizeRow = new Label("How many Rows?");
 			final Label labelForGridSizeCol = new Label("How many Cols");
+			
 			
 			TextField textForRow = new TextField();
 			TextField textForCol = new TextField();
@@ -119,9 +123,27 @@ private Scene askUserForInput(Stage stage) {
 					numCols = Integer.parseInt(textForCol.getText());
 					System.out.println("rows: " + numRows + ", col: " + numCols);
 					
+					
+					
 					Cell choice = (Cell) simulationBox.getValue();
 					int choiceIndex = map.get(choice);
 					System.out.println(sims[choiceIndex]);
+					
+					/*instantiate 2d array of game type to keep track of grid*/
+					gridArrayOfCells = new Cell[numRows][numCols];
+					for(int i = 0;i<numRows;i++){
+						for(int j=0;j<numCols;j++){
+							gridArrayOfCells[i][j] = (sims[choiceIndex].makeNew(i, j, 0));
+						}
+							
+					}
+					
+					for(int i = 0; i < gridArrayOfCells.length; i++){
+						for(int j = 0; j < gridArrayOfCells[i].length; j++){
+							System.out.println(gridArrayOfCells[i][j].toString());
+						}
+					}
+					
 										
 					/* exit the scene */
 					stage.close();

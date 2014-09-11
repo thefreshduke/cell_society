@@ -5,6 +5,10 @@ public class PredPreyCell extends Cell{
 		super(x, y, state);
 		// TODO Auto-generated constructor stub
 	}
+	
+	public PredPreyCell(){
+		super();
+	}
 
 	public String toString(){
 		return "Predator/Prey Simulation";
@@ -20,5 +24,10 @@ public class PredPreyCell extends Cell{
 	public Cell[] getNeighbors() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@Override
+	public PredPreyCell makeNew(int X, int Y, int State){
+		return new PredPreyCell(X, Y, State);
 	}
 }
