@@ -1,4 +1,4 @@
 cellsociety
 ===========
 
-Empty repository for CellSociety project
+Our Design Document for Cell Society has been added as a PDF to the src folder.
