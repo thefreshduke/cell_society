@@ -4,7 +4,6 @@ package cellsociety_team19;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.Random;
 
 import javafx.animation.KeyFrame;
 import javafx.event.ActionEvent;
@@ -59,26 +58,19 @@ public class SimulationLoop {
 		}
 	};
 	
-	
-	
 	public void updateCells(){
 		
 		//are there living things still?
 		
 		for(int i = 0; i < gridArrayOfCells.length; i++){
 			for(int j = 0; j < gridArrayOfCells[i].length; j++){
-				
-				
 				gridArrayOfCells[i][j].setGrid(gridArrayOfCells);
-				
-				
 			}
 		}
 		
 		for(int i = 0; i < gridArrayOfCells.length; i++){
 			for(int j = 0; j < gridArrayOfCells[i].length; j++){
 				gridArrayOfCells[i][j].doAction();
-				
 			}
 		}
 		
@@ -93,10 +85,8 @@ public class SimulationLoop {
 				Rectangle rec = new Rectangle(0, 0, GRID_CELL_SIZE, GRID_CELL_SIZE); 
 				rec.setFill(curCell.getStateColor());
 				
-				
 				grid.add(rec, j, i); //GridPane uses reversed coordinates
 				curCell.updateCell();
-				
 			}
 		}
 	}
@@ -189,11 +179,6 @@ public class SimulationLoop {
 					}
 				});
 
-
-
-
-
-
 		submit.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
 			@Override
@@ -202,8 +187,7 @@ public class SimulationLoop {
 				numRows = Integer.parseInt(textForRow.getText()); // surround in try/catch for errors
 				numCols = Integer.parseInt(textForCol.getText());
 				//System.out.println("row: " + numRows + ", col: " + numCols);
-
-
+				
 				Cell choice = (Cell) simulationBox.getValue();
 				int choiceIndex = map.get(choice);
 
@@ -231,14 +215,9 @@ public class SimulationLoop {
 
 				createGrid(stage);
 				shouldRun = true;
-
 			}
-
 		});
-
-
 		return scene;
-
 	}
 
 
@@ -252,9 +231,6 @@ public class SimulationLoop {
 		for(int i=0;i<numRows;i++) {
 			grid.getRowConstraints().add(new RowConstraints(GRID_CELL_SIZE));
 		}
-
-
-
 		for(int i = 0; i < numCols; i++){
 			for(int j = 0; j < numRows; j++){
 
@@ -264,15 +240,9 @@ public class SimulationLoop {
 			}
 		}
 		
-		
 		//grid.setGridLinesVisible(true);
 
 		Scene s = new Scene(grid);
 		stage.setScene(s);
-
-
-
 	}
-
-
 }

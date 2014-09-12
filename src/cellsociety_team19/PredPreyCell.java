@@ -2,46 +2,43 @@ package cellsociety_team19;
 
 import javafx.scene.paint.Color;
 
-public class PredPreyCell extends Cell{
+public class PredPreyCell extends Cell {
 	public PredPreyCell(int x, int y, int state) {
 		super(x, y, state);
-		// TODO Auto-generated constructor stub
 	}
 	
-	public PredPreyCell(){
+	public PredPreyCell() {
 		super();
 	}
 	
 	@Override
-	public String toString(){
+	public String toString() {
 		return "Predator/Prey Simulation";
 	}
 
 	@Override
 	public void doAction() {
-		// TODO Auto-generated method stub
 		
 	}
 	
 	@Override
-	public PredPreyCell makeNew(int X, int Y, int State){
+	public PredPreyCell makeNew(int X, int Y, int State) {
 		return new PredPreyCell(X, Y, State);
 	}
 
 	@Override
 	public Cell[] calculateNeighbors() {
-		// TODO Auto-generated method stub
 		int[] rDelta = {-1, 1, 0, 0};
 		int[] cDelta = { 0, 0, 1,-1};
 		
 		Cell[] returnListOfNeighbors = new PredPreyCell [4];
 		
 		
-		for(int i =0;i<returnListOfNeighbors.length;i++){
-			try{
-				returnListOfNeighbors[i] = listOfCellsInGrid[myX + rDelta[i]][ myY + cDelta[i]];
+		for(int i = 0; i < returnListOfNeighbors.length; i++){
+			try {
+				returnListOfNeighbors[i] = listOfCellsInGrid[myX + rDelta[i]][myY + cDelta[i]];
 			}
-			catch(Exception e ){
+			catch(Exception e) {
 				returnListOfNeighbors[i] = null;
 			}
 		}
@@ -51,31 +48,26 @@ public class PredPreyCell extends Cell{
 
 	@Override
 	public void setGrid(Cell[][] listOfCells) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public int getState() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public void updateCell() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public String getDesc() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Color getStateColor() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }
