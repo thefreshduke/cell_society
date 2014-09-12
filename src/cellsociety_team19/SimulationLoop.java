@@ -1,5 +1,10 @@
 package cellsociety_team19;
 
+
+
+import java.io.File;
+
+
 import java.util.HashMap;
 import javafx.animation.KeyFrame;
 import javafx.event.ActionEvent;
@@ -12,20 +17,25 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+
+import javafx.scene.layout.RowConstraints;
+
+import javafx.stage.FileChooser;
+
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class SimulationLoop {
 	
-	/* instance constant variables for simulation types*/
-
 	
 	/*2d arraylist of cell(gametype) to keep track of grid*/
 	
 	private int framesPerSecond = 5;
 	private int numRows;
 	private int numCols;
+	private final static int GRID_CELL_SIZE = 20;
 	
 	private Cell[][] gridArrayOfCells;
 	
@@ -48,7 +58,7 @@ public class SimulationLoop {
 		/* instantiate arraylist of simulation game types */
 		
 		
-		
+		//stage = s;
 	
 		
 		/*run method to obtain user input, initalize gridsize/xml file */
@@ -110,6 +120,32 @@ private Scene askUserForInput(final Stage stage) {
 	        root.getChildren().add(grid);
 	        //grid.setGridLinesVisible(true);
 	        grid.add(submit, 1, 30);
+	        
+	        FileChooser fileChooser = new FileChooser();
+			fileChooser.setTitle("Open XML File");
+			fileChooser.getExtensionFilters().addAll(
+	                new FileChooser.ExtensionFilter("XML File", "*.xml*"));
+			
+			final Button openXMLButton = new Button("Open XML File");
+			grid.add(openXMLButton, 0, 30);
+			
+			openXMLButton.setOnAction(
+		            new EventHandler<ActionEvent>() {
+		                @Override
+		                public void handle(final ActionEvent e) {
+		                    File file = fileChooser.showOpenDialog(stage);
+		                    if (file != null) {
+		                    	
+		                        System.out.println(file + " has been opened");
+		                    }
+		                }
+		            });
+			
+	        
+	        
+	        
+	        
+	        
 	        submit.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
 				@Override
@@ -140,7 +176,12 @@ private Scene askUserForInput(final Stage stage) {
 					
 										
 					/* exit the scene */
-					stage.close();
+					//stage.close();
+					
+					
+					createGrid(stage);
+					
+					
 
 				}
 				
@@ -152,4 +193,20 @@ private Scene askUserForInput(final Stage stage) {
 	}
 	
 	
+
+	private void createGrid(Stage stage) {
+		GridPane g = new GridPane();
+		
+		for(int i =0;i<numCols;i++)
+			g.getColumnConstraints().add(new ColumnConstraints(GRID_CELL_SIZE));
+		for(int i=0;i<numRows;i++)
+			g.getRowConstraints().add(new RowConstraints(GRID_CELL_SIZE));
+		g.setGridLinesVisible(true);
+		
+		Scene s = new Scene(g);
+		stage.setScene(s);
+		
+		
+		
+	}
 }
