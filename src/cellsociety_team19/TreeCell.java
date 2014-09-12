@@ -22,7 +22,7 @@ public class TreeCell extends Cell{
 	}
 
 	@Override
-	public Cell[] getNeighbors() {
+	public Cell[] calculateNeighbors() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -30,5 +30,10 @@ public class TreeCell extends Cell{
 	@Override
 	public TreeCell makeNew(int X, int Y, int State){
 		return new TreeCell(X, Y, State);
+	}
+	
+	@Override
+	public Cell[][] getGrid(Cell[][] grid) {
+		return grid;
 	}
 }

@@ -3,14 +3,15 @@ package cellsociety_team19;
 
 
 import java.io.File;
-
-
 import java.util.HashMap;
+import java.util.Random;
+
 import javafx.animation.KeyFrame;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -19,11 +20,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-
 import javafx.scene.layout.RowConstraints;
-
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
-
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -35,7 +35,7 @@ public class SimulationLoop {
 	private int framesPerSecond = 5;
 	private int numRows;
 	private int numCols;
-	private final static int GRID_CELL_SIZE = 20;
+	private final static int GRID_CELL_SIZE = 30;
 	
 	private Cell[][] gridArrayOfCells;
 	
@@ -201,6 +201,21 @@ private Scene askUserForInput(final Stage stage) {
 			g.getColumnConstraints().add(new ColumnConstraints(GRID_CELL_SIZE));
 		for(int i=0;i<numRows;i++)
 			g.getRowConstraints().add(new RowConstraints(GRID_CELL_SIZE));
+		
+		
+		
+		for(int i = 0; i < numCols; i++){
+			for(int j = 0; j < numRows; j++){
+				
+				Color[] colors = new Color[] {Color.BLUE, Color.RED, Color.BEIGE, Color.AZURE};
+				
+				Rectangle r = new Rectangle(0, 0, GRID_CELL_SIZE, GRID_CELL_SIZE);
+				Random rand = new Random();
+				r.setFill(colors[rand.nextInt(colors.length)]);
+				g.add(r, i, j);
+			}
+		}
+		
 		g.setGridLinesVisible(true);
 		
 		Scene s = new Scene(g);

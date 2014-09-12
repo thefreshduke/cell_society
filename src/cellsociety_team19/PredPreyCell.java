@@ -22,7 +22,7 @@ public class PredPreyCell extends Cell{
 	}
 
 	@Override
-	public Cell[] getNeighbors() {
+	public Cell[] calculateNeighbors() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -30,5 +30,10 @@ public class PredPreyCell extends Cell{
 	@Override
 	public PredPreyCell makeNew(int X, int Y, int State){
 		return new PredPreyCell(X, Y, State);
+	}
+
+	@Override
+	public Cell[][] getGrid(Cell[][] grid) {
+		return grid;
 	}
 }
