@@ -28,18 +28,17 @@ public abstract class Cell {
 	
 	public abstract void doAction();
 	
-	public abstract String toString();
-	
 	public abstract Cell[] calculateNeighbors();
 	
+	public abstract Cell makeNew(int X, int Y, int theState);
 	
+	public abstract String toString();
 	
+	public abstract Cell[][] getGrid(Cell[][] grid);
 	
 	public int getState(){
 		return myState;
 	}
-	
-	public abstract Cell makeNew(int X, int Y, int theState);
 	
 	public abstract void setGrid(Cell[][] listOfCells);
 	

@@ -48,12 +48,15 @@ public class TreeCell extends Cell{
 	public TreeCell makeNew(int X, int Y, int State){
 		return new TreeCell(X, Y, State);
 	}
+	
+	@Override
+	public Cell[][] getGrid(Cell[][] grid) {
+		return grid;
+	}
 
 	@Override
 	public void setGrid(Cell[][] listOfCells) {
 		listOfCellsInGrid = listOfCells;
 		
 	}
-	
-	
 }

@@ -52,4 +52,9 @@ public class PredPreyCell extends Cell{
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public Cell[][] getGrid(Cell[][] grid) {
+		return grid;
+	}
 }

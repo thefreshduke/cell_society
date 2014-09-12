@@ -53,4 +53,9 @@ public class SegCell extends Cell{
 		
 	}
 	
+	@Override
+	public Cell[][] getGrid(Cell[][] grid) {
+		return grid;
+	}
+	
 }
