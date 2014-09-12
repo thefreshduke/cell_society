@@ -1,5 +1,7 @@
 package cellsociety_team19;
 
+import javafx.scene.paint.Color;
+
 public class PredPreyCell extends Cell{
 	public PredPreyCell(int x, int y, int state) {
 		super(x, y, state);
@@ -32,7 +34,7 @@ public class PredPreyCell extends Cell{
 		int[] rDelta = {-1, 1, 0, 0};
 		int[] cDelta = { 0, 0, 1,-1};
 		
-		Cell[] returnListOfNeighbors = new Cell [4];
+		Cell[] returnListOfNeighbors = new PredPreyCell [4];
 		
 		
 		for(int i =0;i<returnListOfNeighbors.length;i++){
@@ -54,7 +56,26 @@ public class PredPreyCell extends Cell{
 	}
 
 	@Override
-	public Cell[][] getGrid(Cell[][] grid) {
-		return grid;
+	public int getState() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void updateCell() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getDesc() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Color getStateColor() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

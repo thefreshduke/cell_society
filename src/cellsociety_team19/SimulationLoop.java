@@ -31,12 +31,15 @@ public class SimulationLoop {
 
 	/*2d arraylist of cell(gametype) to keep track of grid*/
 
-	private int framesPerSecond = 5;
+	private int framesPerSecond = 1;
 	private int numRows;
 	private int numCols;
-	private final static int GRID_CELL_SIZE = 30;
+	private final static int GRID_CELL_SIZE = 20;
+	private GridPane grid;
 
 	private Cell[][] gridArrayOfCells;
+	
+	private boolean shouldRun = false;
 
 	/**
 	 * Create the game's frame
@@ -49,10 +52,55 @@ public class SimulationLoop {
 	private EventHandler<ActionEvent> oneFrame = new EventHandler<ActionEvent>() {
 		@Override
 		public void handle(ActionEvent evt) {
-			//System.out.println("test");
-
+			if(shouldRun){
+				updateCells();
+				grid.setGridLinesVisible(true); //doesn't work
+			}
 		}
 	};
+	
+	
+	
+	public void updateCells(){
+		
+		//are there living things still?
+		
+		for(int i = 0; i < gridArrayOfCells.length; i++){
+			for(int j = 0; j < gridArrayOfCells[i].length; j++){
+				
+				
+				gridArrayOfCells[i][j].setGrid(gridArrayOfCells);
+				
+				
+			}
+		}
+		
+		for(int i = 0; i < gridArrayOfCells.length; i++){
+			for(int j = 0; j < gridArrayOfCells[i].length; j++){
+				gridArrayOfCells[i][j].doAction();
+				
+			}
+		}
+		
+		grid.getChildren().removeAll();
+		for(int i = 0; i < gridArrayOfCells.length; i++){
+			for(int j = 0; j < gridArrayOfCells[i].length; j++){
+				
+				//System.out.println(gridArrayOfCells[i][j].getDesc());
+				
+				Cell curCell = gridArrayOfCells[i][j];
+				
+				Rectangle rec = new Rectangle(0, 0, GRID_CELL_SIZE, GRID_CELL_SIZE); 
+				rec.setFill(curCell.getStateColor());
+				
+				
+				grid.add(rec, j, i); //GridPane uses reversed coordinates
+				curCell.updateCell();
+				
+			}
+		}
+	}
+	
 
 	public Scene init (Stage s, int width, int height) {
 		/* instantiate arraylist of simulation game types */
@@ -153,7 +201,7 @@ public class SimulationLoop {
 				//set the grid instance variable to what the user typed in
 				numRows = Integer.parseInt(textForRow.getText()); // surround in try/catch for errors
 				numCols = Integer.parseInt(textForCol.getText());
-				System.out.println("row: " + numRows + ", col: " + numCols);
+				//System.out.println("row: " + numRows + ", col: " + numCols);
 
 
 				Cell choice = (Cell) simulationBox.getValue();
@@ -163,16 +211,18 @@ public class SimulationLoop {
 				gridArrayOfCells = new Cell[numRows][numCols];
 				for(int i = 0;i<numRows;i++){
 					for(int j=0;j<numCols;j++){
-						gridArrayOfCells[i][j] = (sims[choiceIndex].makeNew(i, j, 0));
+						gridArrayOfCells[i][j] = (sims[choiceIndex].makeNew(i, j, 1));
 					}
-
 				}
+				
+				gridArrayOfCells[numRows/2][numCols/2] = new TreeCell(numRows/2,numCols/2,2);
+				
 
-				for(int i = 0; i < gridArrayOfCells.length; i++){
+				/*for(int i = 0; i < gridArrayOfCells.length; i++){
 					for(int j = 0; j < gridArrayOfCells[i].length; j++){
 						System.out.println(gridArrayOfCells[i][j].toString());
 					}
-				}
+				}*/
 
 
 				/* exit the scene */
@@ -180,8 +230,7 @@ public class SimulationLoop {
 
 
 				createGrid(stage);
-
-
+				shouldRun = true;
 
 			}
 
@@ -195,13 +244,13 @@ public class SimulationLoop {
 
 
 	private void createGrid(Stage stage) {
-		GridPane g = new GridPane();
+		grid = new GridPane();
 
 		for(int i =0;i<numCols;i++) {
-			g.getColumnConstraints().add(new ColumnConstraints(GRID_CELL_SIZE));
+			grid.getColumnConstraints().add(new ColumnConstraints(GRID_CELL_SIZE));
 		}
 		for(int i=0;i<numRows;i++) {
-			g.getRowConstraints().add(new RowConstraints(GRID_CELL_SIZE));
+			grid.getRowConstraints().add(new RowConstraints(GRID_CELL_SIZE));
 		}
 
 
@@ -209,17 +258,16 @@ public class SimulationLoop {
 		for(int i = 0; i < numCols; i++){
 			for(int j = 0; j < numRows; j++){
 
-				Color[] colors = new Color[] {Color.BLUE, Color.RED, Color.BEIGE, Color.AZURE};
-
 				Rectangle r = new Rectangle(0, 0, GRID_CELL_SIZE, GRID_CELL_SIZE);
-				Random rand = new Random();
-				r.setFill(colors[rand.nextInt(colors.length)]);
-				g.add(r, i, j);
+				r.setFill(Color.WHITE);
+				grid.add(r, j, i);
 			}
 		}
-		g.setGridLinesVisible(true);
+		
+		
+		//grid.setGridLinesVisible(true);
 
-		Scene s = new Scene(g);
+		Scene s = new Scene(grid);
 		stage.setScene(s);
 
 

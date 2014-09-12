@@ -1,10 +1,21 @@
 package cellsociety_team19;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javafx.scene.paint.Color;
+
 public class TreeCell extends Cell{
-	stateAssociation = new HashMap<Color,Integer>();
+	
+	protected final static double PROBABILITY_OF_CATCHING_FIRE = 0.6;
+	protected int nextState = 0;
+	
+	protected Map<Integer, Color> colorMap = new HashMap<Integer, Color>();
 	public TreeCell(int x, int y, int state) {
 		super(x, y, state);
-		// TODO Auto-generated constructor stub
+		colorMap.put(0, Color.LIGHTGRAY);
+		colorMap.put(1, Color.GREEN);
+		colorMap.put(2, Color.RED);
 	}
 	
 	public TreeCell(){
@@ -15,23 +26,62 @@ public class TreeCell extends Cell{
 	public String toString(){
 		return "Forest Fire Simulation";
 	}
-
+	
 	@Override
-	public void doAction() {
-		// TODO Auto-generated method stub
-		
+	public Color getStateColor(){
+		return colorMap.get(myState);
 	}
 
 	@Override
+	public void doAction() {
+		
+		//0 - dead tree or no tree
+		//1 - tree
+		//2 - burning tree
+		
+		
+		if (myState == 0) {
+			nextState = 0;
+			return;
+		}
+		
+		if(myState == 2){
+			nextState = 0;
+			return;
+		}
+		
+		
+		Cell[] neighbors = calculateNeighbors();
+		for (int i = 0; i < neighbors.length; i++) {
+			if (neighbors[i] != null && neighbors[i].myState == 2) {
+				if(Math.random() < PROBABILITY_OF_CATCHING_FIRE){
+					nextState = 2;
+					break;
+				}
+				else{
+					nextState = 1;
+				}
+			}
+			else{
+				nextState = myState;
+			}
+		}
+	}
+	
+	@Override
+	public void updateCell(){
+		myState = nextState;
+	}
+	
+	@Override
 	public Cell[] calculateNeighbors() {
-		// TODO Auto-generated method stub
 		int[] rDelta = {-1, 1, 0, 0};
 		int[] cDelta = { 0, 0, 1,-1};
 		
-		Cell[] returnListOfNeighbors = new Cell [4];
+		Cell[] returnListOfNeighbors = new TreeCell [4];
 		
-		/* this for loop is repated in all subclasses (subcells) - think about refactoring this */
-		for(int i =0;i<returnListOfNeighbors.length;i++){
+		/* this for loop is repeated in all subclasses (subcells) - think about refactoring this */
+		for(int i = 0;i<returnListOfNeighbors.length;i++){
 			try{
 				returnListOfNeighbors[i] = listOfCellsInGrid[myX + rDelta[i]][ myY + cDelta[i]];
 			}
@@ -50,13 +100,19 @@ public class TreeCell extends Cell{
 	}
 	
 	@Override
-	public Cell[][] getGrid(Cell[][] grid) {
-		return grid;
-	}
-
-	@Override
 	public void setGrid(Cell[][] listOfCells) {
 		listOfCellsInGrid = listOfCells;
 		
 	}
+
+	@Override
+	public int getState() {
+		return myState;
+	}
+	
+	@Override
+	public String getDesc(){
+		return "" + myX + " " + myY + " " + myState;
+	}
+	
 }

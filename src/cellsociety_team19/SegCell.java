@@ -1,5 +1,7 @@
 package cellsociety_team19;
 
+import javafx.scene.paint.Color;
+
 public class SegCell extends Cell{
 
 	public SegCell(int x, int y, int state){
@@ -22,7 +24,7 @@ public class SegCell extends Cell{
 		int[] rDelta = {-1, 1, 0, 0,-1, 1,-1,-1};
 		int[] cDelta = { 0, 0, 1,-1, 1, 1,-1, 1};
 		
-		Cell[] returnListOfNeighbors = new Cell [8];
+		Cell[] returnListOfNeighbors = new SegCell [8];
 		
 		
 		for(int i =0;i<returnListOfNeighbors.length;i++){
@@ -54,8 +56,27 @@ public class SegCell extends Cell{
 	}
 	
 	@Override
-	public Cell[][] getGrid(Cell[][] grid) {
-		return grid;
+	public int getState() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void updateCell() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getDesc() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Color getStateColor() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }
