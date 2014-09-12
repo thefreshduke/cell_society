@@ -3,9 +3,14 @@ package cellsociety_team19;
 import javafx.scene.paint.Color;
 
 public class SegCell extends Cell{
-
+	Cell[][] listOfCellsInGrid;
+	
+	private final double PROB_HAPPY = .50;
+	
 	public SegCell(int x, int y, int state){
 		super(x, y, state);
+		
+		
 	}
 	
 	public SegCell(){
@@ -16,6 +21,25 @@ public class SegCell extends Cell{
 	public void doAction() {
 		// TODO Auto-generated method stub
 		
+		/* calculate neighbors */
+		Cell[] myNeighbors = calculateNeighbors();
+		
+		/*determine if neighbor is satified*/
+		if(isSatisfied(myNeighbors)){
+			//do something here
+		}
+	}
+	
+	private boolean isSatisfied(Cell[] neighbors){
+		/* loop through neighbors and determine is current cell is satified */
+		double numNeighborsWithSameState = 0;
+		for(int i = 0; i <neighbors.length;i++){
+			if(neighbors[i] != null && neighbors[i].getState() == myState){
+				numNeighborsWithSameState ++;
+			}
+		}
+		
+		return numNeighborsWithSameState > (PROB_HAPPY*neighbors.length);
 	}
 
 	@Override
@@ -52,7 +76,7 @@ public class SegCell extends Cell{
 	@Override
 	public void setGrid(Cell[][] listOfCells) {
 		// TODO Auto-generated method stub
-		
+		listOfCellsInGrid = listOfCells;
 	}
 	
 	@Override
