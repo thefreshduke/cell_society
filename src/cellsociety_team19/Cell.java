@@ -1,11 +1,13 @@
 package cellsociety_team19;
 
 public abstract class Cell {
-	private int myX;
-	private int myY;
+	protected int myX;
+	protected int myY;
 	
-	private int myState;
-	private int myNextState;
+	protected int myState;
+	protected int myNextState;
+	
+	protected Cell[][] listOfCellsInGrid;
 	
 	public Cell(int x, int y, int state){
 		myX = x;
@@ -32,5 +34,6 @@ public abstract class Cell {
 		return myState;
 	}
 	
+	public abstract void setGrid(Cell[][] listOfCells);
 	
 }
