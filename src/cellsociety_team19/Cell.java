@@ -5,6 +5,7 @@ public abstract class Cell {
 	private int myY;
 	
 	private int myState;
+	private int myNextState;
 	
 	public Cell(int x, int y, int state){
 		myX = x;
@@ -26,5 +27,7 @@ public abstract class Cell {
 	}
 	
 	public abstract Cell makeNew(int X, int Y, int theState);
+	
+	public abstract String toString();
 	
 }

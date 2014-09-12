@@ -10,8 +10,9 @@ public class TreeCell extends Cell{
 		super();
 	}
 	
+	@Override
 	public String toString(){
-		return "Fire Burning Game";
+		return "Forest Fire Simulation";
 	}
 
 	@Override
