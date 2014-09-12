@@ -1,8 +1,6 @@
 package cellsociety_team19;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-
 import javafx.animation.KeyFrame;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -15,16 +13,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class SimulationLoop {
 	
 	/* instance constant variables for simulation types*/
-	private final String FIRE_TREE_GAME = "Fire/Tree Game";
-	private final String PRED_PREY_GAME = "Pred/Prey Game";
-	private final String SEGREGATION_GAME = "Segregation Game";
+
 	
 	/*2d arraylist of cell(gametype) to keep track of grid*/
 	
@@ -71,23 +66,24 @@ public class SimulationLoop {
 	
 	
 	
-private Scene askUserForInput(Stage stage) {
+private Scene askUserForInput(final Stage stage) {
 		
 		Scene scene = new Scene(new Group(), 400,400);
 		
-			Cell[] sims = new Cell[] {
+			final Cell[] sims = new Cell[] {
 				new TreeCell(),
-				new PredPreyCell()
+				new PredPreyCell(),
+				new SegCell()
 				//add here	
 			};
 			
-			HashMap<Cell, Integer> map = new HashMap<Cell, Integer>();
+			final HashMap<Cell, Integer> map = new HashMap<Cell, Integer>();
 			for(int i =0; i < sims.length; i++){
 				map.put(sims[i], i);
 			}
 			
 			
-			final ComboBox simulationBox = new ComboBox();
+			final ComboBox<Cell> simulationBox = new ComboBox<Cell>();
 			simulationBox.getItems().addAll(sims);
 			
 			
@@ -96,8 +92,8 @@ private Scene askUserForInput(Stage stage) {
 			final Label labelForGridSizeCol = new Label("How many Cols");
 			
 			
-			TextField textForRow = new TextField();
-			TextField textForCol = new TextField();
+			final TextField textForRow = new TextField();
+			final TextField textForCol = new TextField();
 		    Button submit = new Button("Submit");
 		    
 			GridPane grid = new GridPane();
@@ -119,15 +115,13 @@ private Scene askUserForInput(Stage stage) {
 				@Override
 				public void handle(MouseEvent event) {
 					//set the grid instance variable to what the user typed in
-					numRows = Integer.parseInt(textForRow.getText()); // surrong in try/catch for errors
+					numRows = Integer.parseInt(textForRow.getText()); // surround in try/catch for errors
 					numCols = Integer.parseInt(textForCol.getText());
 					System.out.println("rows: " + numRows + ", col: " + numCols);
 					
 					
-					
 					Cell choice = (Cell) simulationBox.getValue();
 					int choiceIndex = map.get(choice);
-					System.out.println(sims[choiceIndex]);
 					
 					/*instantiate 2d array of game type to keep track of grid*/
 					gridArrayOfCells = new Cell[numRows][numCols];

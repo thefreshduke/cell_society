@@ -9,7 +9,8 @@ public class PredPreyCell extends Cell{
 	public PredPreyCell(){
 		super();
 	}
-
+	
+	@Override
 	public String toString(){
 		return "Predator/Prey Simulation";
 	}
