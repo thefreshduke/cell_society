@@ -1,5 +1,7 @@
 package cellsociety_team19;
 
+import java.util.ArrayList;
+
 import javafx.scene.paint.Color;
 
 public class SegCell extends Cell{
@@ -27,6 +29,20 @@ public class SegCell extends Cell{
 		}
 	}
 	
+	/*method used to determine what cells are currently empty*/
+	private ArrayList<Cell> emptyCellsAvailable(){
+		//assuming 0 is nobody there
+		ArrayList<Cell> returnListOfAvailableCells = new ArrayList<Cell>();
+		
+		for(int i = 0; i <listOfCellsInGrid.length;i++){
+			for(int j=0;j<listOfCellsInGrid[i].length;j++){
+				if(listOfCellsInGrid[i][j].getState() == 0)
+				returnListOfAvailableCells.add(listOfCellsInGrid[i][j]);
+			}
+		}
+		
+		return returnListOfAvailableCells;
+	}
 	private boolean isSatisfied(Cell[] neighbors){
 		/* loop through neighbors and determine is current cell is satified */
 		double numNeighborsWithSameState = 0;
