@@ -1,6 +1,9 @@
 package cellsociety_team19;
 
 public class TreeCell extends Cell{
+	
+	private Cell[][] listOfCellsInGrid;
+	
 	public TreeCell(int x, int y, int state) {
 		super(x, y, state);
 		// TODO Auto-generated constructor stub
@@ -22,8 +25,9 @@ public class TreeCell extends Cell{
 	}
 
 	@Override
-	public Cell[] getNeighbors() {
+	public Cell[] calculateNeighbors() {
 		// TODO Auto-generated method stub
+		
 		return null;
 	}
 	
@@ -31,4 +35,12 @@ public class TreeCell extends Cell{
 	public TreeCell makeNew(int X, int Y, int State){
 		return new TreeCell(X, Y, State);
 	}
+
+	@Override
+	public void setGrid(Cell[][] listOfCells) {
+		listOfCellsInGrid = listOfCells;
+		
+	}
+	
+	
 }

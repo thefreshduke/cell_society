@@ -51,6 +51,7 @@ public class SimulationLoop {
 		@Override
 		public void handle(ActionEvent evt) {
 			//System.out.println("test");
+			
 		}
 	};
 	
@@ -153,7 +154,7 @@ private Scene askUserForInput(final Stage stage) {
 					//set the grid instance variable to what the user typed in
 					numRows = Integer.parseInt(textForRow.getText()); // surround in try/catch for errors
 					numCols = Integer.parseInt(textForCol.getText());
-					System.out.println("rows: " + numRows + ", col: " + numCols);
+					System.out.println("row: " + numRows + ", col: " + numCols);
 					
 					
 					Cell choice = (Cell) simulationBox.getValue();
@@ -197,10 +198,12 @@ private Scene askUserForInput(final Stage stage) {
 	private void createGrid(Stage stage) {
 		GridPane g = new GridPane();
 		
-		for(int i =0;i<numCols;i++)
+		for(int i =0;i<numCols;i++) {
 			g.getColumnConstraints().add(new ColumnConstraints(GRID_CELL_SIZE));
-		for(int i=0;i<numRows;i++)
+		}
+		for(int i=0;i<numRows;i++) {
 			g.getRowConstraints().add(new RowConstraints(GRID_CELL_SIZE));
+		}
 		g.setGridLinesVisible(true);
 		
 		Scene s = new Scene(g);
@@ -209,4 +212,6 @@ private Scene askUserForInput(final Stage stage) {
 		
 		
 	}
+	
+	
 }
