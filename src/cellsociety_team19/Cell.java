@@ -4,13 +4,8 @@ public abstract class Cell {
 	protected int myX;
 	protected int myY;
 	
-<<<<<<< HEAD
-	private int myState;
-	private int myNextState;
-=======
 	protected int myState;
 	protected int myNextState;
->>>>>>> Marcus
 	
 	public Cell(int x, int y, int state){
 		myX = x;
@@ -38,10 +33,6 @@ public abstract class Cell {
 	
 	public abstract Cell makeNew(int X, int Y, int theState);
 	
-<<<<<<< HEAD
-	public abstract String toString();
-=======
 	public abstract void setGrid(Cell[][] listOfCells);
->>>>>>> Marcus
 	
 }

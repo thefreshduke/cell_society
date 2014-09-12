@@ -17,7 +17,7 @@ public class SegCell extends Cell{
 	}
 
 	@Override
-	public Cell[] getNeighbors() {
+	public Cell[] calculateNeighbors() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -30,6 +30,12 @@ public class SegCell extends Cell{
 	@Override
 	public String toString(){
 		return "Segregation Simulation";
+	}
+
+	@Override
+	public void setGrid(Cell[][] listOfCells) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
