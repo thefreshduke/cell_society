@@ -1,11 +1,17 @@
 package cellsociety_team19;
 
+import java.util.HashMap;
+
+import javafx.scene.paint.Color;
+
 public abstract class Cell {
 	protected int myX;
 	protected int myY;
 	
 	protected int myState;
 	protected int myNextState;
+	
+	protected HashMap<Color,Integer> stateAssociation = new HashMap<Color,Integer>();
 	
 	protected Cell[][] listOfCellsInGrid;
 	

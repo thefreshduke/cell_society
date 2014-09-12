@@ -1,7 +1,7 @@
 package cellsociety_team19;
 
 public class TreeCell extends Cell{
-	
+	stateAssociation = new HashMap<Color,Integer>();
 	public TreeCell(int x, int y, int state) {
 		super(x, y, state);
 		// TODO Auto-generated constructor stub
