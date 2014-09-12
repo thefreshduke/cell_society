@@ -6,9 +6,9 @@ import java.util.Map;
 import javafx.scene.paint.Color;
 
 public abstract class Cell {
+	
 	protected int myX;
 	protected int myY;
-	
 	protected int myState;
 	protected int myNextState;
 	
@@ -16,14 +16,14 @@ public abstract class Cell {
 	
 	protected Cell[][] listOfCellsInGrid;
 	
-	public Cell(int x, int y, int state){
+	public Cell(int x, int y, int state) {
 		myX = x;
 		myY = y;
 		
 		myState = state;
 	}
 	
-	public Cell(){
+	public Cell() {
 		
 	}
 

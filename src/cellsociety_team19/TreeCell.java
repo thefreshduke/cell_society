@@ -89,9 +89,7 @@ public class TreeCell extends Cell{
 				returnListOfNeighbors[i] = null;
 			}
 		}
-		
 		return returnListOfNeighbors;
-		
 	}
 	
 	@Override
@@ -114,5 +112,4 @@ public class TreeCell extends Cell{
 	public String getDesc(){
 		return "" + myX + " " + myY + " " + myState;
 	}
-	
 }

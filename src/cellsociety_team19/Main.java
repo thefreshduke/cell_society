@@ -3,19 +3,7 @@ package cellsociety_team19;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
@@ -30,15 +18,12 @@ public class Main extends Application
 {
 	private SimulationLoop mySimulation;
 	private int guiSize = 300;
-	
-	
 
 	/**
 	 * Set things up at the beginning.
 	 */
 	@Override
-	public void start (Stage s)
-	{
+	public void start (Stage s) {
 		
 		s.setTitle("Cell Society");
 		
@@ -49,7 +34,6 @@ public class Main extends Application
 		s.setScene(scene);
 		s.show();
 		
-		
 		// sets up the loop
 		KeyFrame frame = mySimulation.start();
 		Timeline animation = new Timeline();
@@ -58,13 +42,10 @@ public class Main extends Application
 		animation.play();
 	}
 
-	
-
 	/**
 	 * The method that begins the Game. Called from Main.java in its main method.
 	 */
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 		launch(args);
 	}
 }
