@@ -16,7 +16,9 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -28,12 +30,13 @@ public class SimulationLoop {
 	private final String FIRE_TREE_GAME = "Fire/Tree Game";
 	private final String PRED_PREY_GAME = "Pred/Prey Game";
 	private final String SEGREGATION_GAME = "Segregation Game";
-	
+	//private Stage stage;
 	/*2d arraylist of cell(gametype) to keep track of grid*/
 	
 	private int framesPerSecond = 5;
 	private int numRows;
 	private int numCols;
+	private final static int GRID_CELL_SIZE = 20;
 	
 	private Cell[][] gridArrayOfCells;
 	
@@ -56,7 +59,7 @@ public class SimulationLoop {
 		/* instantiate arraylist of simulation game types */
 		
 		
-		
+		//stage = s;
 	
 		
 		/*run method to obtain user input, initalize gridsize/xml file */
@@ -120,6 +123,8 @@ private Scene askUserForInput(Stage stage) {
 	        
 	        FileChooser fileChooser = new FileChooser();
 			fileChooser.setTitle("Open XML File");
+			fileChooser.getExtensionFilters().addAll(
+	                new FileChooser.ExtensionFilter("XML File", "*.xml*"));
 			
 			final Button openXMLButton = new Button("Open XML File");
 			grid.add(openXMLButton, 0, 30);
@@ -173,10 +178,10 @@ private Scene askUserForInput(Stage stage) {
 					
 										
 					/* exit the scene */
-					stage.close();
+					//stage.close();
 					
 					
-					
+					createGrid(stage);
 					
 					
 
@@ -190,4 +195,20 @@ private Scene askUserForInput(Stage stage) {
 	}
 	
 	
+
+	private void createGrid(Stage stage) {
+		GridPane g = new GridPane();
+		
+		for(int i =0;i<numCols;i++)
+			g.getColumnConstraints().add(new ColumnConstraints(GRID_CELL_SIZE));
+		for(int i=0;i<numRows;i++)
+			g.getRowConstraints().add(new RowConstraints(GRID_CELL_SIZE));
+		g.setGridLinesVisible(true);
+		
+		Scene s = new Scene(g);
+		stage.setScene(s);
+		
+		
+		
+	}
 }
