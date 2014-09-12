@@ -121,7 +121,7 @@ private Scene askUserForInput(final Stage stage) {
 	        //grid.setGridLinesVisible(true);
 	        grid.add(submit, 1, 30);
 	        
-	        FileChooser fileChooser = new FileChooser();
+	        final FileChooser fileChooser = new FileChooser();
 			fileChooser.setTitle("Open XML File");
 			fileChooser.getExtensionFilters().addAll(
 	                new FileChooser.ExtensionFilter("XML File", "*.xml*"));
