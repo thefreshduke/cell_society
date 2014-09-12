@@ -7,6 +7,8 @@ public abstract class Cell {
 	protected int myState;
 	protected int myNextState;
 	
+	protected Cell[][] listOfCellsInGrid;
+	
 	public Cell(int x, int y, int state){
 		myX = x;
 		myY = y;
