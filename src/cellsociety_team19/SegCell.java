@@ -96,6 +96,7 @@ public class SegCell extends Cell{
 	}
 	
 	private boolean isSatisfied(Cell[] neighbors){
+
 		
 		int counter = 0;
 		for(int i = 0; i < neighbors.length; i++){
@@ -103,7 +104,7 @@ public class SegCell extends Cell{
 				counter++;
 			}
 		}
-		
+	
 		/* loop through neighbors and determine is current cell is satisfied */
 		double numNeighborsWithSameState = 0;
 		for(int i = 0; i <neighbors.length;i++){
