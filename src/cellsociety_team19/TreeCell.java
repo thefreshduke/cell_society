@@ -85,7 +85,7 @@ public class TreeCell extends Cell{
 			try{
 				returnListOfNeighbors[i] = listOfCellsInGrid[myX + rDelta[i]][ myY + cDelta[i]];
 			}
-			catch(Exception e ){
+			catch(Exception e){
 				returnListOfNeighbors[i] = null;
 			}
 		}

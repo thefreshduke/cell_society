@@ -44,7 +44,7 @@ public class SegCell extends Cell{
 		return returnListOfAvailableCells;
 	}
 	private boolean isSatisfied(Cell[] neighbors){
-		/* loop through neighbors and determine is current cell is satified */
+		/* loop through neighbors and determine is current cell is satisfied */
 		double numNeighborsWithSameState = 0;
 		for(int i = 0; i <neighbors.length;i++){
 			if(neighbors[i] != null && neighbors[i].getState() == myState){
