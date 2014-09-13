@@ -47,5 +47,6 @@ public abstract class Cell {
 	public abstract void updateCell();
 	
 	public abstract Cell[][] updateGrid();
+
 	
 }

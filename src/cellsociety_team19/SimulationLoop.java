@@ -61,17 +61,31 @@ public class SimulationLoop {
 	
 	public void updateCells(){
 		
+		int blues = 0;
+		int reds = 0;
+		int blanks = 0;
 		
 		for(int i = 0; i < gridArrayOfCells.length; i++){
 			for(int j = 0; j < gridArrayOfCells[i].length; j++){
 				gridArrayOfCells[i][j].setGrid(gridArrayOfCells);
+				
+				if(gridArrayOfCells[i][j].getState() == 0) blanks++;
+				if(gridArrayOfCells[i][j].getState() == 1) reds++;
+				if(gridArrayOfCells[i][j].getState() == 2) blues++;
+				
+				System.out.println("reds: " + reds);
+				System.out.println("blues: " + blues);
+				System.out.println("blanks: " + blanks);
+				System.out.println("============");
 			}
 		}
 		
 		for(int i = 0; i < gridArrayOfCells.length; i++){
 			for(int j = 0; j < gridArrayOfCells[i].length; j++){
+				gridArrayOfCells[i][j].setGrid(gridArrayOfCells);
 				Cell curCell = gridArrayOfCells[i][j];
 				curCell.doAction();
+				
 			}
 		}
 		
