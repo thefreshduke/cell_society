@@ -26,6 +26,7 @@ public abstract class Cell {
 	public Cell() {
 		
 	}
+	
 
 	public abstract String getDesc();
 	
@@ -44,5 +45,7 @@ public abstract class Cell {
 	public abstract void setGrid(Cell[][] listOfCells);
 
 	public abstract void updateCell();
+	
+	public abstract Cell[][] updateGrid();
 	
 }

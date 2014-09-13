@@ -4,6 +4,7 @@ package cellsociety_team19;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Random;
 
 import javafx.animation.KeyFrame;
 import javafx.event.ActionEvent;
@@ -53,14 +54,13 @@ public class SimulationLoop {
 		public void handle(ActionEvent evt) {
 			if(shouldRun){
 				updateCells();
-				grid.setGridLinesVisible(true); //doesn't work
 			}
 		}
 	};
 	
+	
 	public void updateCells(){
 		
-		//are there living things still?
 		
 		for(int i = 0; i < gridArrayOfCells.length; i++){
 			for(int j = 0; j < gridArrayOfCells[i].length; j++){
@@ -70,11 +70,13 @@ public class SimulationLoop {
 		
 		for(int i = 0; i < gridArrayOfCells.length; i++){
 			for(int j = 0; j < gridArrayOfCells[i].length; j++){
-				gridArrayOfCells[i][j].doAction();
+				Cell curCell = gridArrayOfCells[i][j];
+				curCell.doAction();
 			}
 		}
 		
-		grid.getChildren().removeAll();
+		//grid.getChildren().removeAll();
+		
 		for(int i = 0; i < gridArrayOfCells.length; i++){
 			for(int j = 0; j < gridArrayOfCells[i].length; j++){
 				
@@ -86,6 +88,11 @@ public class SimulationLoop {
 				rec.setFill(curCell.getStateColor());
 				
 				grid.add(rec, j, i); //GridPane uses reversed coordinates
+				
+				
+				
+				
+				
 				curCell.updateCell();
 			}
 		}
@@ -199,7 +206,19 @@ public class SimulationLoop {
 					}
 				}
 				
-				gridArrayOfCells[numRows/2][numCols/2] = new TreeCell(numRows/2,numCols/2,2);
+				
+				int c = 0;
+				for(int i = 0;i<numRows;i++){
+					for(int j=0;j<numCols;j++){
+						gridArrayOfCells[i][j] = new SegCell(i, j, c%3);
+						c++;
+					}
+				}
+				
+				
+				
+				
+				//gridArrayOfCells[numRows/2][numCols/2] = new TreeCell(numRows/2,numCols/2,2);
 				
 
 				/*for(int i = 0; i < gridArrayOfCells.length; i++){
@@ -237,10 +256,14 @@ public class SimulationLoop {
 				Rectangle r = new Rectangle(0, 0, GRID_CELL_SIZE, GRID_CELL_SIZE);
 				r.setFill(Color.WHITE);
 				grid.add(r, j, i);
+				
 			}
 		}
 		
-		//grid.setGridLinesVisible(true);
+		grid.setHgap(1);
+		grid.setVgap(1);
+		grid.setStyle("-fx-background-color: black");
+		
 
 		Scene s = new Scene(grid);
 		stage.setScene(s);
