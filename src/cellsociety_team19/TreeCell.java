@@ -112,4 +112,9 @@ public class TreeCell extends Cell{
 	public String getDesc(){
 		return "" + myX + " " + myY + " " + myState;
 	}
+	
+	@Override 
+	public Cell[][] updateGrid(){
+		return listOfCellsInGrid;
+	}
 }

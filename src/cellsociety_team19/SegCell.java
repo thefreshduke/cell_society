@@ -1,16 +1,29 @@
 package cellsociety_team19;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
 
 import javafx.scene.paint.Color;
 
 public class SegCell extends Cell{
 	Cell[][] listOfCellsInGrid;
 	
-	private final double PROB_HAPPY = .50;
+	private final static double THRESHOLD_OF_HAPPINESS = .4;
+	
+	private HashMap<Integer, Color> colorMap = new HashMap<Integer, Color>();
+
 	
 	public SegCell(int x, int y, int state){
 		super(x, y, state);
+		colorMap.put(0,  Color.WHITE);
+		colorMap.put(1, Color.RED);
+		colorMap.put(2, Color.BLUE);
+		colorMap.put(3, Color.GREEN);
+		colorMap.put(4, Color.YELLOW);
+		colorMap.put(5, Color.PURPLE);
+		colorMap.put(6, Color.ORANGE);
 	}
 	
 	public SegCell() {
@@ -20,12 +33,40 @@ public class SegCell extends Cell{
 	@Override
 	public void doAction() {
 		
+		//state 0 is no one there
+		//states 1-limit is type of agent
+		
+		
+		
 		/* calculate neighbors */
 		Cell[] myNeighbors = calculateNeighbors();
 		
-		/*determine if neighbor is satified*/
+		/*determine if neighbor is satisfied*/
 		if(isSatisfied(myNeighbors)){
 			//do something here
+			myNextState = myState;
+
+		}
+		else{
+			List<Cell> openCells = emptyCellsAvailable();
+			
+			
+			if(openCells.size() == 0) {
+				return;
+			}
+			
+			for(Cell c: openCells){
+				System.out.println(c.getDesc());
+			}
+			Random rand = new Random();
+			int randChoice = rand.nextInt(openCells.size());
+			Cell newCell = openCells.get(randChoice);
+			if(myState != 0){
+				listOfCellsInGrid[newCell.myX][newCell.myY].myNextState = myState;
+							
+				myNextState = 0;
+			}
+			
 		}
 	}
 	
@@ -36,14 +77,18 @@ public class SegCell extends Cell{
 		
 		for(int i = 0; i <listOfCellsInGrid.length;i++){
 			for(int j=0;j<listOfCellsInGrid[i].length;j++){
-				if(listOfCellsInGrid[i][j].getState() == 0)
-				returnListOfAvailableCells.add(listOfCellsInGrid[i][j]);
+				if(listOfCellsInGrid[i][j].getState() == 0 && listOfCellsInGrid[i][j].myNextState == 0){
+					returnListOfAvailableCells.add(listOfCellsInGrid[i][j]);
+				}
 			}
 		}
-		
 		return returnListOfAvailableCells;
 	}
+	
 	private boolean isSatisfied(Cell[] neighbors){
+		if(myState == 0){
+			return true;
+		}
 		/* loop through neighbors and determine is current cell is satisfied */
 		double numNeighborsWithSameState = 0;
 		for(int i = 0; i <neighbors.length;i++){
@@ -52,7 +97,7 @@ public class SegCell extends Cell{
 			}
 		}
 		
-		return numNeighborsWithSameState > (PROB_HAPPY*neighbors.length);
+		return numNeighborsWithSameState >= (THRESHOLD_OF_HAPPINESS*neighbors.length);
 	}
 
 	@Override
@@ -92,21 +137,26 @@ public class SegCell extends Cell{
 	
 	@Override
 	public int getState() {
-		return 0;
+		return myState;
 	}
 
 	@Override
 	public void updateCell() {
-		
+		myState = myNextState;
 	}
 
 	@Override
 	public String getDesc() {
-		return null;
+		return "" + myX + " " + myY + " " + myState;
 	}
 
 	@Override
 	public Color getStateColor() {
-		return null;
+		return colorMap.get(myState);
+	}
+	
+	@Override 
+	public Cell[][] updateGrid(){
+		return listOfCellsInGrid;
 	}
 }

@@ -70,4 +70,9 @@ public class PredPreyCell extends Cell {
 	public Color getStateColor() {
 		return null;
 	}
+	
+	@Override 
+	public Cell[][] updateGrid(){
+		return listOfCellsInGrid;
+	}
 }
