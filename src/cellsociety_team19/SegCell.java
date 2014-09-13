@@ -12,7 +12,7 @@ public class SegCell extends Cell{
 	
 	
 	
-	private final static double THRESHOLD_OF_HAPPINESS = .35;
+	private final static double THRESHOLD_OF_HAPPINESS = .5;
 	
 	private HashMap<Integer, Color> colorMap = new HashMap<Integer, Color>();
 
@@ -63,7 +63,7 @@ public class SegCell extends Cell{
 			
 			if(openCells.size() > 0){
 			
-				Random rand = new Random(1234);
+				Random rand = new Random();
 				int randChoice = rand.nextInt(openCells.size());
 				Cell newCell = openCells.get(randChoice);
 				if(myState != 0){
@@ -74,6 +74,10 @@ public class SegCell extends Cell{
 								
 					myNextState = 0;
 				}
+			}
+			else{
+				
+				myNextState = myState;
 			}
 			
 		}

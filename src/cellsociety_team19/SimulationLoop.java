@@ -73,10 +73,10 @@ public class SimulationLoop {
 				if(gridArrayOfCells[i][j].getState() == 1) reds++;
 				if(gridArrayOfCells[i][j].getState() == 2) blues++;
 				
-				System.out.println("reds: " + reds);
+				/*System.out.println("reds: " + reds);
 				System.out.println("blues: " + blues);
 				System.out.println("blanks: " + blanks);
-				System.out.println("============");
+				System.out.println("============");*/
 			}
 		}
 		
