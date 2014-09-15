@@ -11,13 +11,16 @@ public class TreeCell extends Cell {
 	protected int nextState = 0;
 	
 	protected Map<Integer, Color> colorMap = new HashMap<Integer, Color>();
+	
 	public TreeCell(int x, int y, int state) {
 		super(x, y, state);
+		
 		colorMap.put(0, Color.LIGHTGRAY);
 		colorMap.put(1, Color.GREEN);
 		colorMap.put(2, Color.RED);
 	}
 	
+	//Q1: does this do anything...?
 	public TreeCell() {
 		super();
 	}
@@ -39,12 +42,7 @@ public class TreeCell extends Cell {
 		//1 - tree
 		//2 - burning tree
 		
-		if (myState == 0) {
-			nextState = 0;
-			return;
-		}
-		
-		if (myState == 2) {
+		if (myState != 1) {
 			nextState = 0;
 			return;
 		}
@@ -99,10 +97,10 @@ public class TreeCell extends Cell {
 		listOfCellsInGrid = listOfCells;
 	}
 
-	@Override
-	public int getState() {
-		return myState;
-	}
+//	@Override
+//	public int getState() {
+//		return myState;
+//	}
 	
 	@Override
 	public String getDesc() {

@@ -41,7 +41,7 @@ public class SimulationLoop {
 	/**
 	 * Create the game's frame
 	 */
-	public KeyFrame start () {
+	public KeyFrame start() {
 		return new KeyFrame(Duration.millis(1000/framesPerSecond), oneFrame);
 	}
 
@@ -55,23 +55,29 @@ public class SimulationLoop {
 	};
 	
 	public void updateCells() {
-		
-		int blues = 0;
-		int reds = 0;
+
 		int blanks = 0;
+		int reds = 0;
+		int blues = 0;
 		
 		for (int i = 0; i < gridArrayOfCells.length; i++) {
 			for (int j = 0; j < gridArrayOfCells[i].length; j++) {
 				gridArrayOfCells[i][j].setGrid(gridArrayOfCells);
 				
-				if(gridArrayOfCells[i][j].getState() == 0) blanks++;
-				if(gridArrayOfCells[i][j].getState() == 1) reds++;
-				if(gridArrayOfCells[i][j].getState() == 2) blues++;
+				if (gridArrayOfCells[i][j].myState == 0) {
+					blanks++;
+				}
+				if (gridArrayOfCells[i][j].myState == 1) {
+					reds++;
+				}
+				if (gridArrayOfCells[i][j].myState == 2) {
+					blues++;
+				}
 				
-				/*System.out.println("reds: " + reds);
+				System.out.println("reds: " + reds);
 				System.out.println("blues: " + blues);
 				System.out.println("blanks: " + blanks);
-				System.out.println("============");*/
+				System.out.println("============");
 			}
 		}
 		

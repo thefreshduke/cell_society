@@ -50,10 +50,10 @@ public class PredPreyCell extends Cell {
 		
 	}
 
-	@Override
-	public int getState() {
-		return 0;
-	}
+//	@Override
+//	public int getState() {
+//		return 0;
+//	}
 
 	@Override
 	public void updateCell() {

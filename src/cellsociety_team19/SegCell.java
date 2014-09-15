@@ -82,7 +82,7 @@ public class SegCell extends Cell {
 		
 		for (int i = 0; i < listOfCellsInGrid.length; i++) {
 			for (int j = 0; j < listOfCellsInGrid[i].length; j++) {
-				if (listOfCellsInGrid[i][j].getState() == 0 && listOfCellsInGrid[i][j].myNextState == 0) {
+				if (listOfCellsInGrid[i][j].myState == 0 && listOfCellsInGrid[i][j].myNextState == 0) {
 					returnListOfAvailableCells.add(listOfCellsInGrid[i][j]);
 				}
 			}
@@ -102,7 +102,7 @@ public class SegCell extends Cell {
 		/* loop through neighbors and determine is current cell is satisfied */
 		double numNeighborsWithSameState = 0;
 		for (int i = 0; i < neighbors.length; i++) {
-			if (neighbors[i] != null && neighbors[i].getState() == myState) {
+			if (neighbors[i] != null && neighbors[i].myState == myState) {
 				numNeighborsWithSameState ++;
 			}
 		}
@@ -142,10 +142,10 @@ public class SegCell extends Cell {
 		listOfCellsInGrid = listOfCells;
 	}
 	
-	@Override
-	public int getState() {
-		return myState;
-	}
+//	@Override
+//	public int getState() {
+//		return myState;
+//	}
 
 	@Override
 	public void updateCell() {

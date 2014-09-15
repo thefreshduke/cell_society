@@ -16,6 +16,8 @@ public abstract class Cell {
 	
 	protected Cell[][] listOfCellsInGrid;
 	
+	//superclass constructor
+	
 	public Cell(int x, int y, int state) {
 		myX = x;
 		myY = y;
@@ -23,11 +25,12 @@ public abstract class Cell {
 		myState = state;
 	}
 	
+	//Q1: does this do anything...?
 	public Cell() {
 		
 	}
 	
-	public abstract String getDesc();
+	//superclass abstract methods
 	
 	public abstract Cell[] calculateNeighbors();
 	
@@ -36,14 +39,18 @@ public abstract class Cell {
 	public abstract Cell makeNewCell(int cellX, int cellY, int cellState);
 	
 	public abstract String toString();
-	
-	public abstract int getState();
-	
-	public abstract Color getStateColor();
-	
-	public abstract void setGrid(Cell[][] listOfCells);
 
 	public abstract void updateCell();
 	
 	public abstract Cell[][] updateGrid();
+	
+	//getters and setters
+	
+	public abstract String getDesc();
+	
+//	public abstract int getState();
+	
+	public abstract Color getStateColor();
+	
+	public abstract void setGrid(Cell[][] listOfCells);
 }
