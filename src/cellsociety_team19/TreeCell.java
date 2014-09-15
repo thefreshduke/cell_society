@@ -54,9 +54,10 @@ public class TreeCell extends Cell {
 			if (neighbors[i] != null && neighbors[i].myState == 2) {
 				if (Math.random() < PROBABILITY_OF_CATCHING_FIRE) {
 					nextState = 2;
-					break;
 				}
-				nextState = 1;
+				else {
+					nextState = 1;
+				}
 			}
 			else {
 				nextState = myState;
