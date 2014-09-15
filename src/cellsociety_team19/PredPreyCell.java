@@ -22,8 +22,8 @@ public class PredPreyCell extends Cell {
 	}
 	
 	@Override
-	public PredPreyCell makeNew(int X, int Y, int State) {
-		return new PredPreyCell(X, Y, State);
+	public PredPreyCell makeNewCell(int cellX, int cellY, int cellState) {
+		return new PredPreyCell(cellX, cellY, cellState);
 	}
 
 	@Override
@@ -34,15 +34,14 @@ public class PredPreyCell extends Cell {
 		Cell[] returnListOfNeighbors = new PredPreyCell [4];
 		
 		
-		for(int i = 0; i < returnListOfNeighbors.length; i++){
+		for (int i = 0; i < returnListOfNeighbors.length; i++) {
 			try {
-				returnListOfNeighbors[i] = listOfCellsInGrid[myX + rDelta[i]][myY + cDelta[i]];
+				returnListOfNeighbors[i] = listOfCellsInGrid[myX + rDelta[i]] [myY + cDelta[i]];
 			}
-			catch(Exception e) {
+			catch (Exception e) {
 				returnListOfNeighbors[i] = null;
 			}
 		}
-		
 		return returnListOfNeighbors;
 	}
 
@@ -72,7 +71,7 @@ public class PredPreyCell extends Cell {
 	}
 	
 	@Override 
-	public Cell[][] updateGrid(){
+	public Cell[][] updateGrid() {
 		return listOfCellsInGrid;
 	}
 }

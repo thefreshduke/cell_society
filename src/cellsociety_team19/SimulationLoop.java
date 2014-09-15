@@ -1,7 +1,5 @@
 package cellsociety_team19;
 
-
-
 import java.io.File;
 import java.util.HashMap;
 import java.util.Random;
@@ -27,8 +25,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class SimulationLoop {
-
-
+	
 	/*2d arraylist of cell(gametype) to keep track of grid*/
 
 	private int framesPerSecond = 1;
@@ -48,25 +45,23 @@ public class SimulationLoop {
 		return new KeyFrame(Duration.millis(1000/framesPerSecond), oneFrame);
 	}
 
-
 	private EventHandler<ActionEvent> oneFrame = new EventHandler<ActionEvent>() {
 		@Override
 		public void handle(ActionEvent evt) {
-			if(shouldRun){
+			if (shouldRun) {
 				updateCells();
 			}
 		}
 	};
 	
-	
-	public void updateCells(){
+	public void updateCells() {
 		
 		int blues = 0;
 		int reds = 0;
 		int blanks = 0;
 		
-		for(int i = 0; i < gridArrayOfCells.length; i++){
-			for(int j = 0; j < gridArrayOfCells[i].length; j++){
+		for (int i = 0; i < gridArrayOfCells.length; i++) {
+			for (int j = 0; j < gridArrayOfCells[i].length; j++) {
 				gridArrayOfCells[i][j].setGrid(gridArrayOfCells);
 				
 				if(gridArrayOfCells[i][j].getState() == 0) blanks++;
@@ -80,19 +75,18 @@ public class SimulationLoop {
 			}
 		}
 		
-		for(int i = 0; i < gridArrayOfCells.length; i++){
-			for(int j = 0; j < gridArrayOfCells[i].length; j++){
+		for (int i = 0; i < gridArrayOfCells.length; i++) {
+			for (int j = 0; j < gridArrayOfCells[i].length; j++) {
 				gridArrayOfCells[i][j].setGrid(gridArrayOfCells);
 				Cell curCell = gridArrayOfCells[i][j];
 				curCell.doAction();
-				
 			}
 		}
 		
 		//grid.getChildren().removeAll();
 		
-		for(int i = 0; i < gridArrayOfCells.length; i++){
-			for(int j = 0; j < gridArrayOfCells[i].length; j++){
+		for (int i = 0; i < gridArrayOfCells.length; i++) {
+			for (int j = 0; j < gridArrayOfCells[i].length; j++) {
 				
 				//System.out.println(gridArrayOfCells[i][j].getDesc());
 				
@@ -102,16 +96,10 @@ public class SimulationLoop {
 				rec.setFill(curCell.getStateColor());
 				
 				grid.add(rec, j, i); //GridPane uses reversed coordinates
-				
-				
-				
-				
-				
 				curCell.updateCell();
 			}
 		}
 	}
-	
 
 	public Scene init (Stage s, int width, int height) {
 		/* instantiate arraylist of simulation game types */
@@ -133,13 +121,11 @@ public class SimulationLoop {
 		return askUserForInput(s);
 	}
 
-
-
 	private Scene askUserForInput(final Stage stage) {
 
 		Scene scene = new Scene(new Group(), 400,400);
 
-		final Cell[] sims = new Cell[] {
+		final Cell[] simulations = new Cell[] {
 				new TreeCell(),
 				new PredPreyCell(),
 				new SegCell()
@@ -147,19 +133,15 @@ public class SimulationLoop {
 		};
 
 		final HashMap<Cell, Integer> map = new HashMap<Cell, Integer>();
-		for(int i =0; i < sims.length; i++){
-			map.put(sims[i], i);
+		for (int i = 0; i < simulations.length; i++){
+			map.put(simulations[i], i);
 		}
 
-
 		final ComboBox<Cell> simulationBox = new ComboBox<Cell>();
-		simulationBox.getItems().addAll(sims);
-
-
+		simulationBox.getItems().addAll(simulations);
 
 		final Label labelForGridSizeRow = new Label("How many Rows?");
 		final Label labelForGridSizeCol = new Label("How many Cols");
-
 
 		final TextField textForRow = new TextField();
 		final TextField textForCol = new TextField();
@@ -169,12 +151,12 @@ public class SimulationLoop {
 		grid.setVgap(4);
 		grid.setHgap(10);
 		grid.setPadding(new Insets(5, 5, 5, 5));
-		grid.add(new Label("What Kind of Simulation: "), 0, 0);
-		grid.add(simulationBox,1,0);
-		grid.add(labelForGridSizeRow, 0,3);
-		grid.add(labelForGridSizeCol, 0,4);
-		grid.add(textForRow,1,3);
-		grid.add(textForCol,1,4);
+		grid.add(new Label("Choose a simulation: "), 0, 0);
+		grid.add(simulationBox, 1, 0);
+		grid.add(labelForGridSizeRow, 0, 3);
+		grid.add(labelForGridSizeCol, 0, 4);
+		grid.add(textForRow, 1, 3);
+		grid.add(textForCol, 1, 4);
 		Group root = (Group)scene.getRoot();
 		root.getChildren().add(grid);
 		//grid.setGridLinesVisible(true);
@@ -194,7 +176,6 @@ public class SimulationLoop {
 					public void handle(final ActionEvent e) {
 						File file = fileChooser.showOpenDialog(stage);
 						if (file != null) {
-
 							System.out.println(file + " has been opened");
 						}
 					}
@@ -213,27 +194,24 @@ public class SimulationLoop {
 				int choiceIndex = map.get(choice);
 
 				/*instantiate 2d array of game type to keep track of grid*/
-				gridArrayOfCells = new Cell[numRows][numCols];
-				for(int i = 0;i<numRows;i++){
-					for(int j=0;j<numCols;j++){
-						gridArrayOfCells[i][j] = (sims[choiceIndex].makeNew(i, j, 1));
+				gridArrayOfCells = new Cell[numRows] [numCols];
+				
+				for (int i = 0; i < numRows; i++) {
+					for (int j = 0; j < numCols; j++) {
+						gridArrayOfCells[i][j] = (simulations[choiceIndex].makeNewCell(i, j, 1));
 					}
 				}
 				
 				
 				int c = 0;
-				for(int i = 0;i<numRows;i++){
-					for(int j=0;j<numCols;j++){
-						gridArrayOfCells[i][j] = new SegCell(i, j, c%3);
+				for (int i = 0; i < numRows; i++) {
+					for (int j = 0; j < numCols; j++) {
+						gridArrayOfCells[i][j] = new SegCell(i, j, (c % 3));
 						c++;
 					}
 				}
 				
-				
-				
-				
 				//gridArrayOfCells[numRows/2][numCols/2] = new TreeCell(numRows/2,numCols/2,2);
-				
 
 				/*for(int i = 0; i < gridArrayOfCells.length; i++){
 					for(int j = 0; j < gridArrayOfCells[i].length; j++){
@@ -241,10 +219,8 @@ public class SimulationLoop {
 					}
 				}*/
 
-
 				/* exit the scene */
 				//stage.close();
-
 
 				createGrid(stage);
 				shouldRun = true;
@@ -253,24 +229,20 @@ public class SimulationLoop {
 		return scene;
 	}
 
-
-
 	private void createGrid(Stage stage) {
 		grid = new GridPane();
 
-		for(int i =0;i<numCols;i++) {
+		for (int i = 0; i < numCols; i++) {
 			grid.getColumnConstraints().add(new ColumnConstraints(GRID_CELL_SIZE));
 		}
-		for(int i=0;i<numRows;i++) {
+		for (int i = 0; i < numRows; i++) {
 			grid.getRowConstraints().add(new RowConstraints(GRID_CELL_SIZE));
 		}
-		for(int i = 0; i < numCols; i++){
-			for(int j = 0; j < numRows; j++){
-
+		for (int i = 0; i < numCols; i++) {
+			for (int j = 0; j < numRows; j++) {
 				Rectangle r = new Rectangle(0, 0, GRID_CELL_SIZE, GRID_CELL_SIZE);
 				r.setFill(Color.WHITE);
 				grid.add(r, j, i);
-				
 			}
 		}
 		
@@ -278,7 +250,6 @@ public class SimulationLoop {
 		grid.setVgap(1);
 		grid.setStyle("-fx-background-color: black");
 		
-
 		Scene s = new Scene(grid);
 		stage.setScene(s);
 	}

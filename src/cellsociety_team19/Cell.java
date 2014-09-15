@@ -27,14 +27,13 @@ public abstract class Cell {
 		
 	}
 	
-
 	public abstract String getDesc();
 	
 	public abstract Cell[] calculateNeighbors();
 	
 	public abstract void doAction();
 	
-	public abstract Cell makeNew(int X, int Y, int theState);
+	public abstract Cell makeNewCell(int cellX, int cellY, int cellState);
 	
 	public abstract String toString();
 	
@@ -47,6 +46,4 @@ public abstract class Cell {
 	public abstract void updateCell();
 	
 	public abstract Cell[][] updateGrid();
-
-	
 }
