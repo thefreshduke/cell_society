@@ -3,6 +3,7 @@ package cellsociety_team19;
 
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -22,6 +23,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -31,7 +33,7 @@ public class SimulationLoop {
 
 	/*2d arraylist of cell(gametype) to keep track of grid*/
 
-	private int framesPerSecond = 1;
+	private int framesPerSecond = 3;
 	private int numRows;
 	private int numCols;
 	private final static int GRID_CELL_SIZE = 20;
@@ -40,6 +42,9 @@ public class SimulationLoop {
 	private Cell[][] gridArrayOfCells;
 	
 	private boolean shouldRun = false;
+	
+	private int genNum = 0;
+	private Text generationNumber;
 
 	/**
 	 * Create the game's frame
@@ -54,6 +59,13 @@ public class SimulationLoop {
 		public void handle(ActionEvent evt) {
 			if(shouldRun){
 				updateCells();
+				genNum++;
+				
+				
+				grid.getChildren().remove(generationNumber);
+				generationNumber = new Text("Generation number: " + genNum);
+				generationNumber.setFill(Color.WHITE);
+				grid.add(generationNumber, 1, numCols + 3);
 			}
 		}
 	};
@@ -61,22 +73,10 @@ public class SimulationLoop {
 	
 	public void updateCells(){
 		
-		int blues = 0;
-		int reds = 0;
-		int blanks = 0;
 		
 		for(int i = 0; i < gridArrayOfCells.length; i++){
 			for(int j = 0; j < gridArrayOfCells[i].length; j++){
 				gridArrayOfCells[i][j].setGrid(gridArrayOfCells);
-				
-				if(gridArrayOfCells[i][j].getState() == 0) blanks++;
-				if(gridArrayOfCells[i][j].getState() == 1) reds++;
-				if(gridArrayOfCells[i][j].getState() == 2) blues++;
-				
-				/*System.out.println("reds: " + reds);
-				System.out.println("blues: " + blues);
-				System.out.println("blanks: " + blanks);
-				System.out.println("============");*/
 			}
 		}
 		
@@ -88,9 +88,7 @@ public class SimulationLoop {
 				
 			}
 		}
-		
-		//grid.getChildren().removeAll();
-		
+
 		for(int i = 0; i < gridArrayOfCells.length; i++){
 			for(int j = 0; j < gridArrayOfCells[i].length; j++){
 				
@@ -102,14 +100,12 @@ public class SimulationLoop {
 				rec.setFill(curCell.getStateColor());
 				
 				grid.add(rec, j, i); //GridPane uses reversed coordinates
-				
-				
-				
-				
+
 				
 				curCell.updateCell();
 			}
 		}
+
 	}
 	
 
@@ -221,39 +217,44 @@ public class SimulationLoop {
 				}
 				
 				
-				int c = 0;
-				for(int i = 0;i<numRows;i++){
-					for(int j=0;j<numCols;j++){
-						gridArrayOfCells[i][j] = new SegCell(i, j, c%3);
-						c++;
-					}
-				}
+				startSegSimDebugVersion();
 				
-				
-				
-				
-				//gridArrayOfCells[numRows/2][numCols/2] = new TreeCell(numRows/2,numCols/2,2);
-				
+		
+				//startTreeSimDebugVersion();
 
-				/*for(int i = 0; i < gridArrayOfCells.length; i++){
-					for(int j = 0; j < gridArrayOfCells[i].length; j++){
-						System.out.println(gridArrayOfCells[i][j].toString());
-					}
-				}*/
-
-
-				/* exit the scene */
-				//stage.close();
 
 
 				createGrid(stage);
 				shouldRun = true;
 			}
+
+			
 		});
 		return scene;
 	}
-
-
+	
+	private void startTreeSimDebugVersion() {
+		gridArrayOfCells[numRows/2][numCols/2] = new TreeCell(numRows/2,numCols/2,2);
+	}
+	
+	private void startSegSimDebugVersion() {
+		for(int i = 0;i<numRows;i++){
+			for(int j=0;j<numCols;j++){
+				int state = 0;
+				
+				double r = Math.random();
+				if( r < 0.2) state = 0;
+				else if(r < 0.4) state = 1;
+				else if(r < 0.6) state = 2;
+				else if(r < .8) state = 3;
+				else{
+					state = 4;
+				}
+				
+				gridArrayOfCells[i][j] = new SegCell(i, j, state);
+			}
+		}
+	}
 
 	private void createGrid(Stage stage) {
 		grid = new GridPane();
@@ -278,7 +279,69 @@ public class SimulationLoop {
 		grid.setVgap(1);
 		grid.setStyle("-fx-background-color: black");
 		
+		
+		generationNumber = new Text("Generation number: " + genNum);
+		generationNumber.setFill(Color.WHITE);
+		grid.add(generationNumber, 1, numCols + 3);
 
+		Button pause = new Button("Pause");
+		pause.setMinWidth(70);
+		grid.add(pause, 4, numCols + 5);
+		
+		pause.setOnMouseClicked(new EventHandler<MouseEvent>(){
+
+			@Override
+			public void handle(MouseEvent event) {
+				shouldRun = false;
+				
+			}
+			
+		});
+		
+		Button resume = new Button("Resume");
+		resume.setMinWidth(70);
+		grid.add(resume, 4, numCols + 7);
+		
+		resume.setOnMouseClicked(new EventHandler<MouseEvent>(){
+
+			@Override
+			public void handle(MouseEvent event) {
+				shouldRun = true;
+				
+			}
+			
+		});
+		
+		Button reset = new Button("Reset");
+		reset.setMinWidth(70);
+		grid.add(reset, 4, numCols + 9);
+		
+		reset.setOnMouseClicked(new EventHandler<MouseEvent>(){
+
+			@Override
+			public void handle(MouseEvent event) {
+				startSegSimDebugVersion();
+				//startTreeSimDebugVersion();
+				genNum = 0;
+				
+			}
+			
+		});
+		
+		Button quit = new Button("Quit");
+		quit.setMinWidth(70);
+		grid.add(quit, 4, numCols + 11);
+		
+		quit.setOnMouseClicked(new EventHandler<MouseEvent>(){
+
+			@Override
+			public void handle(MouseEvent event) {
+				System.exit(0);
+				
+			}
+			
+		});
+		
 		Scene s = new Scene(grid);
 		stage.setScene(s);
 	}

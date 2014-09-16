@@ -12,11 +12,13 @@ public abstract class Cell {
 	protected int myState;
 	protected int myNextState;
 	
+	//protected int myPatch; ?
+	
 	protected Map<Integer, Color> colorMap = new HashMap<Integer, Color>();
 	
 	protected Cell[][] listOfCellsInGrid;
 	
-	public Cell(int x, int y, int state) {
+	public Cell(int x, int y, int state /*int patch*/) {
 		myX = x;
 		myY = y;
 		

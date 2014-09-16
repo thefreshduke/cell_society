@@ -12,7 +12,7 @@ public class SegCell extends Cell{
 	
 	
 	
-	private final static double THRESHOLD_OF_HAPPINESS = .5;
+	private final static double THRESHOLD_OF_HAPPINESS = .4;
 	
 	private HashMap<Integer, Color> colorMap = new HashMap<Integer, Color>();
 
