@@ -7,6 +7,7 @@ public class PredPreyCell extends Cell {
 		super(x, y, state);
 	}
 	
+	//Q1: does this do anything...?
 	public PredPreyCell() {
 		super();
 	}
