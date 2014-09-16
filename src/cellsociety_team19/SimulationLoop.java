@@ -256,6 +256,7 @@ public class SimulationLoop {
 		}
 	}
 	
+	
 	private void startPredPreySimDebugVersion() {
 		for(int i = 0; i < gridArrayOfCells.length; i++){
 			for(int j = 0; j < gridArrayOfCells[i].length; j++){

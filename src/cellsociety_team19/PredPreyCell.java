@@ -17,7 +17,7 @@ public class PredPreyCell extends Cell {
 	private final static int SHARK_INITIAL_ENERGY = 10;
 	private final static int FISH_ENERGY = 1;
 	private int sharkEnergy;
-	private int chronons;
+	private static int chronons = 0;
 	
 	public PredPreyCell(int x, int y, int state) {
 		super(x, y, state);
@@ -25,6 +25,7 @@ public class PredPreyCell extends Cell {
 		colorMap.put(0, Color.BLUE);
 		colorMap.put(1, Color.SALMON);
 		colorMap.put(2, Color.GRAY);
+		
 		
 //		chronons = 0; //instance variable or unique to each cell? shark births out of sync with fish births
 		//but if instance variable, also able to say %3 => fish give birth and %10 => sharks give birth 
@@ -41,9 +42,29 @@ public class PredPreyCell extends Cell {
 		return "Predator/Prey Simulation";
 	}
 
+	public String getFirstAnimalCoords(){
+		for(int i = 0; i < listOfCellsInGrid.length; i++){
+			for(int j = 0; j < listOfCellsInGrid[0].length; j++){
+				if(listOfCellsInGrid[i][j].myState != 0){
+					String s = i + " " + j;
+					return s;
+				}				
+			}
+		}
+		return "";
+	}
+	
+	
+	
 	@Override
 	public void doAction() {
-		chronons++;
+		
+		String firstAnimalCoords = getFirstAnimalCoords();
+		
+		if((myX + " " + myY).equals(firstAnimalCoords)){
+			chronons++;
+		}
+		
 		if (myState == 1) {
 			doFishAction();
 		}
@@ -53,22 +74,21 @@ public class PredPreyCell extends Cell {
 	}
 
 	private void doFishAction() {
-//		ArrayList<Cell> myNeighbors = removeNullValuesFromListOfNeighbors();
-		Cell[] myNeighbors = calculateNeighbors();
+		
+		ArrayList<Cell> myNeighbors = removeNullValuesFromListOfNeighbors();
+		//Cell[] myNeighbors = calculateNeighbors();
 		
 		if (hasSpace()) {
 			Random rand = new Random();
-			int randChoice = rand.nextInt(myNeighbors.length);
-			Cell newCell = myNeighbors[randChoice];
+			int randChoice = rand.nextInt(myNeighbors.size());
+			Cell newCell = myNeighbors.get(randChoice);
 			
 			PredPreyCell destinationCell = (PredPreyCell) listOfCellsInGrid[newCell.myX][newCell.myY];
 			destinationCell.myNextState = myState;
-			destinationCell.chronons = this.chronons;
-		
-			
-			if (chronons == 3) {
+
+			//System.out.println(chronons);
+			if (chronons % 3 == 0) {
 				myNextState = myState;
-				chronons = 0;
 			}
 			else {
 				myNextState = 0;
@@ -85,14 +105,14 @@ public class PredPreyCell extends Cell {
 	}
 
 	private boolean hasSpace() {
-		Cell[] adjacentNeighbors = calculateNeighbors();
-		int neighbors = 0;
-		for(int i = 0; i < adjacentNeighbors.length; i++){
-			if(adjacentNeighbors[i].myState != 0){
-				neighbors++;
+		ArrayList<Cell> adjacentNeighbors = removeNullValuesFromListOfNeighbors();
+		int space = 0;
+		for(int i = 0; i < adjacentNeighbors.size(); i++){
+			if(adjacentNeighbors.get(i).myState == 0){
+				space++;
 			}
 		}
-		return neighbors < 4;
+		return space > 0;
 	}
 	
 	@Override
@@ -110,21 +130,27 @@ public class PredPreyCell extends Cell {
 		for (int i = 0; i < returnListOfNeighbors.length; i++) {
 			int newX = (myX + xDelta[i] + listOfCellsInGrid[0].length) % listOfCellsInGrid[0].length;
 			int newY = (myY + yDelta[i] + listOfCellsInGrid.length) % listOfCellsInGrid.length;
-			returnListOfNeighbors[i] = listOfCellsInGrid[newX] [newY];
+			
+			if(listOfCellsInGrid[newX][newY].myNextState == 0){
+				returnListOfNeighbors[i] = listOfCellsInGrid[newX] [newY];
+			}
+			else{
+				returnListOfNeighbors[i] = null;
+			}
 		}
 		return returnListOfNeighbors;
 	}
 	
-//	public ArrayList<Cell> removeNullValuesFromListOfNeighbors() {
-//		Cell[] neighbors = calculateNeighbors();
-//		ArrayList<Cell> goodNeighbors = new ArrayList<Cell>();
-//		for (int i = 0; i < neighbors.length; i++){
-//			if(neighbors[i] != null){
-//				goodNeighbors.add(neighbors[i]);
-//			}
-//		}
-//		return goodNeighbors; //like State Farm
-//	}
+	public ArrayList<Cell> removeNullValuesFromListOfNeighbors() {
+		Cell[] neighbors = calculateNeighbors();
+		ArrayList<Cell> goodNeighbors = new ArrayList<Cell>();
+		for (int i = 0; i < neighbors.length; i++){
+			if(neighbors[i] != null){
+				goodNeighbors.add(neighbors[i]);
+			}
+		}
+		return goodNeighbors; //like State Farm
+	}
 
 	@Override
 	public void setGrid(Cell[][] listOfCells) {
