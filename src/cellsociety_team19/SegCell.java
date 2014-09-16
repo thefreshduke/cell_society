@@ -10,19 +10,13 @@ import javafx.scene.paint.Color;
 public class SegCell extends Cell {
 	Cell[][] listOfCellsInGrid;
 	
-<<<<<<< HEAD
-	
-	
-	private final static double THRESHOLD_OF_HAPPINESS = .4;
-=======
 	private final static double THRESHOLD_OF_HAPPINESS = 0.5;
->>>>>>> bdd28b3a0acc2846a4d68c0ff79b9fa338a7e236
 	
 	private HashMap<Integer, Color> colorMap = new HashMap<Integer, Color>();
 	
 	public SegCell(int x, int y, int state) {
 		super(x, y, state);
-		colorMap.put(0,  Color.WHITE);
+		colorMap.put(0, Color.WHITE);
 		colorMap.put(1, Color.RED);
 		colorMap.put(2, Color.BLUE);
 		colorMap.put(3, Color.GREEN);
@@ -58,10 +52,10 @@ public class SegCell extends Cell {
 		
 		/*determine if neighbor is satisfied*/
 		if (isSatisfied(myNeighbors)) {
-			//System.out.println("This cell was satisified " + this.getDesc());
+			//System.out.println("This cell was satisfied " + this.getDesc());
 			myNextState = myState;
 		}
-		else{
+		else {
 			List<Cell> openCells = emptyCellsAvailable();
 			
 			if (openCells.size() > 0) {
@@ -118,14 +112,14 @@ public class SegCell extends Cell {
 
 	@Override
 	public Cell[] calculateNeighbors() {
-		int[] rDelta = {-1, 1, 0, 0,-1, 1,-1,-1};
-		int[] cDelta = { 0, 0, 1,-1, 1, 1,-1, 1};
+		int[] xDelta = {-1, 1, 0, 0,-1, 1,-1,-1};
+		int[] yDelta = { 0, 0, 1,-1, 1, 1,-1, 1};
 		
 		Cell[] returnListOfNeighbors = new SegCell [8];
 		
 		for (int i = 0; i < returnListOfNeighbors.length; i++) {
 			try {
-				returnListOfNeighbors[i] = listOfCellsInGrid[myX + rDelta[i]] [myY + cDelta[i]];
+				returnListOfNeighbors[i] = listOfCellsInGrid[myX + xDelta[i]] [myY + yDelta[i]];
 			}
 			catch (Exception e) {
 				returnListOfNeighbors[i] = null;

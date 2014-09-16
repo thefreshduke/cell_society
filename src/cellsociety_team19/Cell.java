@@ -18,12 +18,9 @@ public abstract class Cell {
 	
 	protected Cell[][] listOfCellsInGrid;
 	
-
-
 	//superclass constructor
 	
 	public Cell(int x, int y, int state) {
-
 		myX = x;
 		myY = y;
 		

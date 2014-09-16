@@ -71,15 +71,15 @@ public class TreeCell extends Cell {
 	
 	@Override
 	public Cell[] calculateNeighbors() {
-		int[] rDelta = {-1, 1, 0, 0};
-		int[] cDelta = { 0, 0, 1,-1};
+		int[] xDelta = {-1, 1, 0, 0};
+		int[] yDelta = { 0, 0, 1,-1};
 		
 		Cell[] returnListOfNeighbors = new TreeCell [4];
 		
 		/* this for loop is repeated in all subclasses (subcells) - think about refactoring this */
 		for (int i = 0; i < returnListOfNeighbors.length; i++) {
 			try {
-				returnListOfNeighbors[i] = listOfCellsInGrid[myX + rDelta[i]] [myY + cDelta[i]];
+				returnListOfNeighbors[i] = listOfCellsInGrid[myX + xDelta[i]] [myY + yDelta[i]];
 			}
 			catch (Exception e) {
 				returnListOfNeighbors[i] = null;
