@@ -61,6 +61,7 @@ public class TreeCell extends Cell {
 				nextState = myState;
 			}
 		}
+
 	}
 	
 	@Override

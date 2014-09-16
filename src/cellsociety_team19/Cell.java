@@ -12,13 +12,18 @@ public abstract class Cell {
 	protected int myState;
 	protected int myNextState;
 	
+	//protected int myPatch; ?
+	
 	protected Map<Integer, Color> colorMap = new HashMap<Integer, Color>();
 	
 	protected Cell[][] listOfCellsInGrid;
 	
+
+
 	//superclass constructor
 	
 	public Cell(int x, int y, int state) {
+
 		myX = x;
 		myY = y;
 		
