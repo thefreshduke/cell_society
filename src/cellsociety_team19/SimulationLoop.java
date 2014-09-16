@@ -30,10 +30,14 @@ public class SimulationLoop {
 	
 	/*2d arraylist of cell(gametype) to keep track of grid*/
 
-	private int framesPerSecond = 1;
+	private int framesPerSecond = 3;
 	private int numRows;
 	private int numCols;
-	private final static int GRID_CELL_SIZE = 20;
+	private int GRID_CELL_SIZE;
+	
+	private static final int GUI_HEIGHT = 500;
+	private static final int GUI_WIDTH = 500;
+	
 	private GridPane grid;
 
 	private Cell[][] gridArrayOfCells;
@@ -60,7 +64,7 @@ public class SimulationLoop {
 				grid.getChildren().remove(generationNumber);
 				generationNumber = new Text("Generation number: " + genNum);
 				generationNumber.setFill(Color.WHITE);
-				grid.add(generationNumber, 1, numCols + 3);
+				grid.add(generationNumber, (int) ( numCols * .4), numCols + 3);
 			}
 		}
 	};
@@ -196,7 +200,7 @@ public class SimulationLoop {
 					}
 				}
 				
-//				startSegSimDebugVersion();
+				//startSegSimDebugVersion();
 				//startTreeSimDebugVersion();
 				startPredPreySimDebugVersion();
 
@@ -228,6 +232,7 @@ public class SimulationLoop {
 	
 	private void startTreeSimDebugVersion() {
 		gridArrayOfCells[numRows/2] [numCols/2] = new TreeCell(numRows/2, numCols/2, 2);
+
 	}
 	
 	private void startSegSimDebugVersion() {
@@ -264,10 +269,31 @@ public class SimulationLoop {
 			}
 		}
 		gridArrayOfCells[numRows/2] [numCols/2] = new PredPreyCell(numRows/2, numCols/2, 1);
+		gridArrayOfCells[3] [2] = new PredPreyCell(3, 2, 1);
+		gridArrayOfCells[0] [0] = new PredPreyCell(0, 0, 1);
+		
+		gridArrayOfCells[1] [2] = new PredPreyCell(1, 2, 2);
+		gridArrayOfCells[0] [2] = new PredPreyCell(1, 2, 2);
+		gridArrayOfCells[2] [2] = new PredPreyCell(1, 2, 2);
+
 	}
 	
 	private void createGrid(Stage stage) {
 		grid = new GridPane();
+		
+		grid.setMinSize(GUI_WIDTH, GUI_HEIGHT);
+		GRID_CELL_SIZE = GUI_WIDTH / numCols;
+		
+		//
+		//
+		//^^^^^
+		/**
+		 * ASSUMES N X N GRID!!!!!!!!
+		 */
+		//
+		//
+		//
+		//
 		
 		for (int i = 0; i < numCols; i++) {
 			grid.getColumnConstraints().add(new ColumnConstraints(GRID_CELL_SIZE));
@@ -289,11 +315,11 @@ public class SimulationLoop {
 		
 		generationNumber = new Text("Generation number: " + genNum);
 		generationNumber.setFill(Color.WHITE);
-		grid.add(generationNumber, 1, numCols + 3);
+		grid.add(generationNumber, (int) ( numCols * .4), numCols + 3);
 		
 		Button pause = new Button("Pause");
 		pause.setMinWidth(70);
-		grid.add(pause, 4, numCols + 5);
+		grid.add(pause, (int) (numCols * 0), numCols + 5);
 		pause.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -303,7 +329,7 @@ public class SimulationLoop {
 		
 		Button resume = new Button("Resume");
 		resume.setMinWidth(70);
-		grid.add(resume, 4, numCols + 7);
+		grid.add(resume, (int) (numCols * .25), numCols + 5);
 		resume.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -313,7 +339,8 @@ public class SimulationLoop {
 		
 		Button reset = new Button("Reset");
 		reset.setMinWidth(70);
-		grid.add(reset, 4, numCols + 9);
+		
+		grid.add(reset, (int) (numCols * .5), numCols + 5);
 		reset.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -325,7 +352,7 @@ public class SimulationLoop {
 		
 		Button quit = new Button("Quit");
 		quit.setMinWidth(70);
-		grid.add(quit, 4, numCols + 11);
+		grid.add(quit, (int) (numCols * .75), numCols + 5);
 		quit.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
