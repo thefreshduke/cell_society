@@ -1,9 +1,7 @@
 package cellsociety_team19;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Random;
 
 import javafx.animation.KeyFrame;
 import javafx.event.ActionEvent;
@@ -27,23 +25,23 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class SimulationLoop {
-	
+
 	/*2d arraylist of cell(gametype) to keep track of grid*/
 
-	private int framesPerSecond = 3;
+	private int framesPerSecond = 1;
 	private int numRows;
 	private int numCols;
 	private int GRID_CELL_SIZE;
-	
+
 	private static final int GUI_HEIGHT = 500;
 	private static final int GUI_WIDTH = 500;
-	
+
 	private GridPane grid;
 
 	private Cell[][] gridArrayOfCells;
-	
+
 	private boolean shouldRun = false;
-	
+
 	private int genNum = 0;
 	private Text generationNumber;
 
@@ -51,7 +49,7 @@ public class SimulationLoop {
 	 * Create the game's frame
 	 */
 	public KeyFrame start() {
-		return new KeyFrame(Duration.millis(1000/framesPerSecond), oneFrame);
+		return new KeyFrame(Duration.millis(1000 / framesPerSecond), oneFrame);
 	}
 
 	private EventHandler<ActionEvent> oneFrame = new EventHandler<ActionEvent>() {
@@ -60,23 +58,23 @@ public class SimulationLoop {
 			if (shouldRun) {
 				updateCells();
 				genNum++;
-				
+
 				grid.getChildren().remove(generationNumber);
 				generationNumber = new Text("Generation number: " + genNum);
 				generationNumber.setFill(Color.WHITE);
-				grid.add(generationNumber, (int) ( numCols * .4), numCols + 3);
+				grid.add(generationNumber, (int) (numCols * 0.4), numCols + 3);
 			}
 		}
 	};
-	
+
 	public void updateCells() {
-		
+
 		for (int i = 0; i < gridArrayOfCells.length; i++) {
 			for (int j = 0; j < gridArrayOfCells[i].length; j++) {
 				gridArrayOfCells[i][j].setGrid(gridArrayOfCells);
 			}
 		}
-		
+
 		for (int i = 0; i < gridArrayOfCells.length; i++) {
 			for (int j = 0; j < gridArrayOfCells[i].length; j++) {
 				gridArrayOfCells[i][j].setGrid(gridArrayOfCells);
@@ -86,17 +84,17 @@ public class SimulationLoop {
 		}
 
 		//grid.getChildren().removeAll();
-		
+
 		for (int i = 0; i < gridArrayOfCells.length; i++) {
 			for (int j = 0; j < gridArrayOfCells[i].length; j++) {
-				
+
 				//System.out.println(gridArrayOfCells[i][j].getDesc());
-				
+
 				Cell curCell = gridArrayOfCells[i][j];
-				
+
 				Rectangle rec = new Rectangle(0, 0, GRID_CELL_SIZE, GRID_CELL_SIZE); 
-				rec.setFill(curCell.getStateColor());
-				
+				rec.setFill(curCell.retrieveCorrespondingColorFromMap());
+
 				grid.add(rec, j, i); //GridPane uses reversed coordinates
 				curCell.updateCell();
 			}
@@ -121,12 +119,13 @@ public class SimulationLoop {
 
 	private Scene askUserForInput(final Stage stage) {
 
-		Scene scene = new Scene(new Group(), 400,400);
+		Scene scene = new Scene(new Group(), 400, 400);
 
 		final Cell[] simulations = new Cell[] {
 				new TreeCell(),
 				new PredPreyCell(),
-				new SegCell()
+				new SegCell(),
+				new LifeCell()
 				//add here	
 		};
 
@@ -155,7 +154,7 @@ public class SimulationLoop {
 		grid.add(labelForGridSizeCol, 0, 4);
 		grid.add(textForRow, 1, 3);
 		grid.add(textForCol, 1, 4);
-		Group root = (Group)scene.getRoot();
+		Group root = (Group) scene.getRoot();
 		root.getChildren().add(grid);
 		//grid.setGridLinesVisible(true);
 		grid.add(submit, 1, 30);
@@ -180,42 +179,42 @@ public class SimulationLoop {
 				});
 
 		submit.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
 			@Override
 			public void handle(MouseEvent event) {
 				//set the grid instance variable to what the user typed in
-				numRows = Integer.parseInt(textForRow.getText()); // surround in try/catch for errors
+				numRows = Integer.parseInt(textForRow.getText()); // surround in try/catch for errors?
 				numCols = Integer.parseInt(textForCol.getText());
 				//System.out.println("row: " + numRows + ", col: " + numCols);
-				
+
 				Cell choice = (Cell) simulationBox.getValue();
 				int choiceIndex = map.get(choice);
 
 				/*instantiate 2d array of game type to keep track of grid*/
 				gridArrayOfCells = new Cell[numRows] [numCols];
-				
+
 				for (int i = 0; i < numRows; i++) {
 					for (int j = 0; j < numCols; j++) {
 						gridArrayOfCells[i][j] = (simulations[choiceIndex].makeNewCell(i, j, 1));
 					}
 				}
-				
+
 				//startSegSimDebugVersion();
 				//startTreeSimDebugVersion();
-				startPredPreySimDebugVersion();
+				//startPredPreySimDebugVersion();
+				startGameOfLifeSimDebugVersion();
 
-//				int c = 0;
-//				for (int i = 0; i < numRows; i++) {
-//					for (int j = 0; j < numCols; j++) {
-//						gridArrayOfCells[i][j] = new SegCell(i, j, (c % 3));
-//						c++;
-//					}
-//				}
-				
-				//gridArrayOfCells[numRows/2][numCols/2] = new TreeCell(numRows/2,numCols/2,2);
+				//				int c = 0;
+				//				for (int i = 0; i < numRows; i++) {
+				//					for (int j = 0; j < numCols; j++) {
+				//						gridArrayOfCells[i][j] = new SegCell(i, j, (c % 3));
+				//						c++;
+				//					}
+				//				}
 
-				/*for(int i = 0; i < gridArrayOfCells.length; i++){
-					for(int j = 0; j < gridArrayOfCells[i].length; j++){
+				//gridArrayOfCells[numRows / 2][numCols / 2] = new TreeCell(numRows / 2, numCols / 2, 2);
+
+				/*for (int i = 0; i < gridArrayOfCells.length; i++) {
+					for (int j = 0; j < gridArrayOfCells[i].length; j++) {
 						System.out.println(gridArrayOfCells[i][j].toString());
 					}
 				}*/
@@ -229,17 +228,16 @@ public class SimulationLoop {
 		});
 		return scene;
 	}
-	
-	private void startTreeSimDebugVersion() {
-		gridArrayOfCells[numRows/2] [numCols/2] = new TreeCell(numRows/2, numCols/2, 2);
 
+	private void startTreeSimDebugVersion() {
+		gridArrayOfCells[numRows / 2] [numCols / 2] = new TreeCell(numRows / 2, numCols / 2, 2);
 	}
-	
+
 	private void startSegSimDebugVersion() {
 		for (int i = 0; i < numRows; i++) {
 			for (int j = 0; j < numCols; j++) {
 				int state = 0;
-				
+
 				double r = Math.random();
 				if (r < 0.2) {
 					state = 0;
@@ -260,30 +258,52 @@ public class SimulationLoop {
 			}
 		}
 	}
-	
-	
+
 	private void startPredPreySimDebugVersion() {
-		for(int i = 0; i < gridArrayOfCells.length; i++){
-			for(int j = 0; j < gridArrayOfCells[i].length; j++){
+		for (int i = 0; i < gridArrayOfCells.length; i++) {
+			for (int j = 0; j < gridArrayOfCells[i].length; j++) {
 				gridArrayOfCells[i][j] = new PredPreyCell(i, j, 0);
 			}
 		}
-		gridArrayOfCells[numRows/2] [numCols/2] = new PredPreyCell(numRows/2, numCols/2, 1);
+		gridArrayOfCells[numRows / 2] [numCols / 2] = new PredPreyCell(numRows / 2, numCols / 2, 1);
 		gridArrayOfCells[3] [2] = new PredPreyCell(3, 2, 1);
 		gridArrayOfCells[0] [0] = new PredPreyCell(0, 0, 1);
-		
+
 		gridArrayOfCells[1] [2] = new PredPreyCell(1, 2, 2);
 		gridArrayOfCells[0] [2] = new PredPreyCell(1, 2, 2);
 		gridArrayOfCells[2] [2] = new PredPreyCell(1, 2, 2);
-
 	}
-	
+
+	private void startGameOfLifeSimDebugVersion() {
+		
+		//are x and y values flipped for all other debugVersions?
+		
+		for (int y = 0; y < gridArrayOfCells.length; y++) {
+			for (int x = 0; x < gridArrayOfCells[y].length; x++) {
+				gridArrayOfCells[x][y] = new LifeCell(x, y, 0);
+			}
+		}
+		gridArrayOfCells[0] [0] = new LifeCell(0, 0, 1);
+		gridArrayOfCells[1] [0] = new LifeCell(1, 0, 1);
+		gridArrayOfCells[0] [1] = new LifeCell(0, 1, 1);
+		gridArrayOfCells[1] [1] = new LifeCell(1, 1, 1);
+		gridArrayOfCells[2] [0] = new LifeCell(2, 0, 1);
+		gridArrayOfCells[0] [2] = new LifeCell(0, 2, 1);
+		gridArrayOfCells[numRows / 2] [numCols / 2] = new LifeCell(numRows / 2, numCols / 2, 1);
+		gridArrayOfCells[numRows / 2 + 1] [numCols / 2] = new LifeCell(numRows / 2 + 1, numCols / 2, 1);
+		gridArrayOfCells[numRows / 2 - 1] [numCols / 2] = new LifeCell(numRows / 2 - 1, numCols / 2, 1);
+		gridArrayOfCells[numRows - 1] [numCols - 1] = new LifeCell(numRows - 1, numCols - 1, 1);
+		gridArrayOfCells[3] [3] = new LifeCell(3, 3, 1);
+		gridArrayOfCells[4] [4] = new LifeCell(4, 4, 1);
+		gridArrayOfCells[3] [4] = new LifeCell(3, 4, 1);
+	}
+
 	private void createGrid(Stage stage) {
 		grid = new GridPane();
-		
+
 		grid.setMinSize(GUI_WIDTH, GUI_HEIGHT);
 		GRID_CELL_SIZE = GUI_WIDTH / numCols;
-		
+
 		//
 		//
 		//^^^^^
@@ -294,7 +314,7 @@ public class SimulationLoop {
 		//
 		//
 		//
-		
+
 		for (int i = 0; i < numCols; i++) {
 			grid.getColumnConstraints().add(new ColumnConstraints(GRID_CELL_SIZE));
 		}
@@ -308,15 +328,15 @@ public class SimulationLoop {
 				grid.add(r, j, i);
 			}
 		}
-		
+
 		grid.setHgap(1);
 		grid.setVgap(1);
 		grid.setStyle("-fx-background-color: black");
-		
+
 		generationNumber = new Text("Generation number: " + genNum);
 		generationNumber.setFill(Color.WHITE);
 		grid.add(generationNumber, (int) ( numCols * .4), numCols + 3);
-		
+
 		Button pause = new Button("Pause");
 		pause.setMinWidth(70);
 		grid.add(pause, (int) (numCols * 0), numCols + 5);
@@ -326,40 +346,41 @@ public class SimulationLoop {
 				shouldRun = false;
 			}
 		});
-		
+
 		Button resume = new Button("Resume");
 		resume.setMinWidth(70);
-		grid.add(resume, (int) (numCols * .25), numCols + 5);
+		grid.add(resume, (int) (numCols * 0.25), numCols + 5);
 		resume.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				shouldRun = true;
 			}
 		});
-		
+
 		Button reset = new Button("Reset");
 		reset.setMinWidth(70);
-		
-		grid.add(reset, (int) (numCols * .5), numCols + 5);
+		grid.add(reset, (int) (numCols * 0.5), numCols + 5);
 		reset.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				startSegSimDebugVersion();
 				//startTreeSimDebugVersion();
+				startSegSimDebugVersion();
+				//startPredPreySimDebugVersion();
+				//startGameOfLifeSimDebugVersion();
 				genNum = 0;
 			}
 		});
-		
+
 		Button quit = new Button("Quit");
 		quit.setMinWidth(70);
-		grid.add(quit, (int) (numCols * .75), numCols + 5);
+		grid.add(quit, (int) (numCols * 0.75), numCols + 5);
 		quit.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				System.exit(0);
 			}
 		});
-		
+
 		Scene s = new Scene(grid);
 		stage.setScene(s);
 	}

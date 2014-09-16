@@ -9,13 +9,11 @@ import javafx.scene.paint.Color;
 
 public class SegCell extends Cell {
 	Cell[][] listOfCellsInGrid;
-	
 
-	private final static double THRESHOLD_OF_HAPPINESS = 0.5;
+	protected final static double THRESHOLD_OF_HAPPINESS = 0.5;
 
-	
-	private HashMap<Integer, Color> colorMap = new HashMap<Integer, Color>();
-	
+	protected HashMap<Integer, Color> colorMap = new HashMap<Integer, Color>();
+
 	public SegCell(int x, int y, int state) {
 		super(x, y, state);
 		colorMap.put(0, Color.WHITE);
@@ -26,32 +24,32 @@ public class SegCell extends Cell {
 		colorMap.put(5, Color.PURPLE);
 		colorMap.put(6, Color.ORANGE);
 	}
-	
+
 	//Q1: does this do anything...?
 	public SegCell() {
-		
+
 	}
-	
+
 	@Override
 	public void doAction() {
-		
+
 		if (myState == 0) {
 			return;
 		}
 		//state 0 is no one there
 		//states 1-limit is type of agent
-		
+
 		/*for(int i = 0; i < listOfCellsInGrid.length; i++){
 			for(int j = 0; j < listOfCellsInGrid[i].length; j++){
 				System.out.println(listOfCellsInGrid[i][j].getDesc());
 			}
 		}
 		System.out.println("==========");
-		*/
-		
+		 */
+
 		/* calculate neighbors */
 		Cell[] myNeighbors = calculateNeighbors();
-		
+
 		/*determine if neighbor is satisfied*/
 		if (isSatisfied(myNeighbors)) {
 			//System.out.println("This cell was satisfied " + this.getDesc());
@@ -59,7 +57,7 @@ public class SegCell extends Cell {
 		}
 		else {
 			List<Cell> openCells = emptyCellsAvailable();
-			
+
 			if (openCells.size() > 0) {
 				Random rand = new Random();
 				int randChoice = rand.nextInt(openCells.size());
@@ -67,7 +65,7 @@ public class SegCell extends Cell {
 				if (myState != 0) {
 					SegCell moveCell = new SegCell(newCell.myX, newCell.myY, 0);
 					moveCell.myNextState = myState;
-					
+
 					listOfCellsInGrid[newCell.myX] [newCell.myY] = moveCell;
 					myNextState = 0;
 				}
@@ -77,48 +75,49 @@ public class SegCell extends Cell {
 			}
 		}
 	}
-	
+
 	/*method used to determine what cells are currently empty*/
 	private ArrayList<Cell> emptyCellsAvailable() {
 		//assuming 0 is nobody there
 		ArrayList<Cell> returnListOfAvailableCells = new ArrayList<Cell>();
-		
+
 		for (int i = 0; i < listOfCellsInGrid.length; i++) {
 			for (int j = 0; j < listOfCellsInGrid[i].length; j++) {
-				if (listOfCellsInGrid[i][j].myState == 0 && listOfCellsInGrid[i][j].myNextState == 0) {
-					returnListOfAvailableCells.add(listOfCellsInGrid[i][j]);
+				Cell cellToCheck = listOfCellsInGrid[i][j];
+				if (cellToCheck.myState == 0 && cellToCheck.myNextState == 0) {
+					returnListOfAvailableCells.add(cellToCheck);
 				}
 			}
 		}
 		return returnListOfAvailableCells;
 	}
-	
+
 	private boolean isSatisfied(Cell[] neighbors) {
-		
 		int counter = 0;
 		for (int i = 0; i < neighbors.length; i++) {
 			if (neighbors[i] != null && neighbors[i].myState != 0) {
 				counter++;
 			}
 		}
-	
+
 		/* loop through neighbors and determine is current cell is satisfied */
 		double numNeighborsWithSameState = 0;
 		for (int i = 0; i < neighbors.length; i++) {
 			if (neighbors[i] != null && neighbors[i].myState == myState) {
-				numNeighborsWithSameState ++;
+				numNeighborsWithSameState++;
 			}
 		}
-		return numNeighborsWithSameState >= (THRESHOLD_OF_HAPPINESS * counter);
+		return (numNeighborsWithSameState >= (THRESHOLD_OF_HAPPINESS * counter));
 	}
 
 	@Override
 	public Cell[] calculateNeighbors() {
-		int[] xDelta = {-1, 1, 0, 0,-1, 1,-1,-1};
-		int[] yDelta = { 0, 0, 1,-1, 1, 1,-1, 1};
-		
-		Cell[] returnListOfNeighbors = new SegCell [8];
-		
+		int[] xDelta = {1,-1, 0, 0,-1,-1, 1, 1};
+		int[] yDelta = {0, 0,-1, 1, 1,-1,-1, 1};
+		//fixed xDelta and yDelta issue... there was a duplicate
+
+		Cell[] returnListOfNeighbors = new SegCell[8];
+
 		for (int i = 0; i < returnListOfNeighbors.length; i++) {
 			try {
 				returnListOfNeighbors[i] = listOfCellsInGrid[myX + xDelta[i]] [myY + yDelta[i]];
@@ -134,7 +133,7 @@ public class SegCell extends Cell {
 	public SegCell makeNewCell(int cellX, int cellY, int cellState) {
 		return new SegCell(cellX, cellY, cellState);
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Segregation Simulation";
@@ -144,11 +143,6 @@ public class SegCell extends Cell {
 	public void setGrid(Cell[][] listOfCells) {
 		listOfCellsInGrid = listOfCells;
 	}
-	
-//	@Override
-//	public int getState() {
-//		return myState;
-//	}
 
 	@Override
 	public void updateCell() {
@@ -161,12 +155,12 @@ public class SegCell extends Cell {
 	}
 
 	@Override
-	public Color getStateColor() {
+	public Color retrieveCorrespondingColorFromMap() {
 		return colorMap.get(myState);
 	}
-	
+
 	@Override 
-	public Cell[][] updateGrid(){
+	public Cell[][] updateGrid() {
 		return null;
 	}
 }
