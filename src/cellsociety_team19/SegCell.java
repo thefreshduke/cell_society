@@ -10,7 +10,9 @@ import javafx.scene.paint.Color;
 public class SegCell extends Cell {
 	Cell[][] listOfCellsInGrid;
 	
+
 	private final static double THRESHOLD_OF_HAPPINESS = 0.5;
+
 	
 	private HashMap<Integer, Color> colorMap = new HashMap<Integer, Color>();
 	
