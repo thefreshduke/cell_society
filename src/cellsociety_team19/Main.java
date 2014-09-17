@@ -24,20 +24,20 @@ public class Main extends Application
 	 */
 	@Override
 	public void start (Stage s) {
-		
+
 		s.setTitle("Cell Society");
-		
+
 		//create new SimulationLoop that runs most everything
 		mySimulation = new SimulationLoop();
-		
+
 		Scene scene = mySimulation.init(s, guiSize, guiSize);
 		s.setScene(scene);
 		s.show();
-		
+
 		// sets up the loop
-		
-		
-		
+
+
+
 		KeyFrame frame = mySimulation.start();
 		Timeline animation = new Timeline();
 		animation.setCycleCount(Timeline.INDEFINITE);

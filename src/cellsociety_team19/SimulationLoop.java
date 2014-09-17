@@ -51,7 +51,6 @@ public class SimulationLoop {
 	KeyFrame frame;
 	Timeline animation;
 	
-	
 	/**
 	 * Create the game's frame
 	 */
@@ -62,8 +61,6 @@ public class SimulationLoop {
 	private EventHandler<ActionEvent> oneFrame = new EventHandler<ActionEvent>() {
 		@Override
 		public void handle(ActionEvent evt) {
-			
-			
 			if (shouldRun) {
 				updateCells();
 				framesPerSecond = (int) Math.round(fpsSlider.getValue());
@@ -71,17 +68,10 @@ public class SimulationLoop {
 		}
 	};
 	
-	
-	
-
 	public void updateCells() {
-
 		updateGenerationNumber();
-		
 		setUpGridForCells();
-		
 		doCellsAction();
-		
 		updateGraphicalInterface();
 	}
 
@@ -145,9 +135,7 @@ public class SimulationLoop {
 	}
 
 	private Scene askUserForInput(final Stage stage) {
-
 		Scene scene = new Scene(new Group(), 400, 400);
-
 		final Cell[] simulations = new Cell[] {
 				new TreeCell(),
 				new PredPreyCell(),
@@ -164,8 +152,8 @@ public class SimulationLoop {
 		final ComboBox<Cell> simulationBox = new ComboBox<Cell>();
 		simulationBox.getItems().addAll(simulations);
 
-		final Label labelForGridSizeRow = new Label("How many Rows?");
-		final Label labelForGridSizeCol = new Label("How many Cols");
+		final Label labelForGridSizeRow = new Label("How many rows?");
+		final Label labelForGridSizeCol = new Label("How many columns?");
 
 		final TextField textForRow = new TextField();
 		final TextField textForCol = new TextField();
@@ -227,8 +215,8 @@ public class SimulationLoop {
 
 				//startTreeSimDebugVersion();
 				//startSegSimDebugVersion();
-				startPredPreySimDebugVersion();
-				//startGameOfLifeSimDebugVersion();
+				//startPredPreySimDebugVersion();
+				startGameOfLifeSimDebugVersion();
 
 				//				int c = 0;
 				//				for (int i = 0; i < numRows; i++) {
@@ -296,16 +284,18 @@ public class SimulationLoop {
 	private void startPredPreySimDebugVersion() {
 		for (int x = 0; x < gridArrayOfCells.length; x++) {
 			for (int y = 0; y < gridArrayOfCells[x].length; y++) {
-				gridArrayOfCells[x][y] = new PredPreyCell(x, y, 0);
+				gridArrayOfCells[x][y] = new PredPreyCell(x, y, 1);
 			}
 		}
-		gridArrayOfCells[numRows / 2] [numCols / 2] = new PredPreyCell(numRows / 2, numCols / 2, 1);
-		gridArrayOfCells[3] [2] = new PredPreyCell(3, 2, 1);
-		gridArrayOfCells[0] [0] = new PredPreyCell(0, 0, 1);
+//		gridArrayOfCells[numRows / 2] [numCols / 2] = new PredPreyCell(numRows / 2, numCols / 2, 1);
+//		gridArrayOfCells[3] [2] = new PredPreyCell(3, 2, 1);
+//		gridArrayOfCells[0] [0] = new PredPreyCell(0, 0, 1);
 
+		gridArrayOfCells[2] [1] = new PredPreyCell(2, 1, 2);
 		gridArrayOfCells[1] [2] = new PredPreyCell(1, 2, 2);
-		gridArrayOfCells[0] [2] = new PredPreyCell(1, 2, 2);
-		gridArrayOfCells[2] [2] = new PredPreyCell(1, 2, 2);
+		gridArrayOfCells[2] [2] = new PredPreyCell(2, 2, 2);
+		gridArrayOfCells[2] [3] = new PredPreyCell(2, 3, 2);
+		gridArrayOfCells[3] [2] = new PredPreyCell(3, 2, 2);
 	}
 
 	private void startGameOfLifeSimDebugVersion() {
@@ -359,7 +349,6 @@ public class SimulationLoop {
 
 		generationNumber = new Text("Generation number: " + genNum);
 		generationNumber.setFill(Color.WHITE);
-		grid.add(generationNumber, (int) (numCols * 0.4), numCols + 3);
 
 		Button pause = new Button("Pause");
 		pause.setMinWidth(70);

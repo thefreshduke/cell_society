@@ -13,7 +13,7 @@ public class PredPreyCell extends Cell {
 	private Map<Integer, Color> colorMap = new HashMap<Integer, Color>();
 
 	private final static int SHARK_BREED_TIME = 8;
-	private final static int FISH_BREED_TIME = 3;
+	private final static int FISH_BREED_TIME = 6;
 	private final static int SHARK_INITIAL_ENERGY = 5;
 	private final static int FISH_ENERGY = 2;
 	private int sharkEnergy;
@@ -80,6 +80,7 @@ public class PredPreyCell extends Cell {
 	private void doFishAction() {
 
 		if (imminentSharkAttack) {
+			imminentSharkAttack = false;
 			return;
 		}
 
@@ -125,6 +126,9 @@ public class PredPreyCell extends Cell {
 			int choice = r.nextInt(neighbors.size());
 			Cell newCell = neighbors.get(choice);
 			PredPreyCell destinationCell = (PredPreyCell) listOfCellsInGrid[newCell.myX] [newCell.myY];
+			if (newCell.myState == 2 || newCell.myNextState == 2) {
+				return;
+			}
 			if (newCell.myState == 1) { //fish are food, not friends
 				sharkEnergy += FISH_ENERGY;			
 				destinationCell.imminentSharkAttack = true;
@@ -158,7 +162,7 @@ public class PredPreyCell extends Cell {
 			int newX = (myX + xDelta[i] + xLength) % xLength;
 			int newY = (myY + yDelta[i] + yLength) % yLength;
 
-			if (listOfCellsInGrid[newX] [newY].myNextState != 2) {
+			if (listOfCellsInGrid[newX] [newY].myNextState != 2 && listOfCellsInGrid[newX] [newY].myState != 2) {
 				neighbors[i] = listOfCellsInGrid[newX] [newY];
 			}
 		}
