@@ -2,7 +2,6 @@ package cellsociety_team19;
 
 import java.io.File;
 import java.util.HashMap;
-
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -226,10 +225,10 @@ public class SimulationLoop {
 					}
 				}
 
-				//startSegSimDebugVersion();
 				//startTreeSimDebugVersion();
-				startPredPreySimDebugVersion();
-				//startGameOfLifeSimDebugVersion();
+				//startSegSimDebugVersion();
+				//startPredPreySimDebugVersion();
+				startGameOfLifeSimDebugVersion();
 
 				//				int c = 0;
 				//				for (int i = 0; i < numRows; i++) {
@@ -349,17 +348,7 @@ public class SimulationLoop {
 		for (int i = 0; i < numRows; i++) {
 			grid.getRowConstraints().add(new RowConstraints(GRID_CELL_SIZE));
 		}
-		for (int i = 0; i < numCols; i++) {
-			for (int j = 0; j < numRows; j++) {
-				Rectangle r = new Rectangle(0, 0, GRID_CELL_SIZE, GRID_CELL_SIZE);
-				r.setFill(Color.WHITE);
-				grid.add(r, j, i);
-			}
-		}
-
-
-		
-		
+	
 		grid.setHgap(1);
 		grid.setVgap(1);
 		grid.setStyle("-fx-background-color: black");
