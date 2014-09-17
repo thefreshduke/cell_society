@@ -225,9 +225,9 @@ public class SimulationLoop {
 					}
 				}
 
-				//startTreeSimDebugVersion();
+				startTreeSimDebugVersion();
 				//startSegSimDebugVersion();
-				startPredPreySimDebugVersion();
+				//startPredPreySimDebugVersion();
 				//startGameOfLifeSimDebugVersion();
 
 				//				int c = 0;
@@ -359,7 +359,6 @@ public class SimulationLoop {
 
 		generationNumber = new Text("Generation number: " + genNum);
 		generationNumber.setFill(Color.WHITE);
-		grid.add(generationNumber, (int) (numCols * 0.4), numCols + 3);
 
 		Button pause = new Button("Pause");
 		pause.setMinWidth(70);
@@ -384,9 +383,9 @@ public class SimulationLoop {
 		reset.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				//startTreeSimDebugVersion();
+				startTreeSimDebugVersion();
 				//startSegSimDebugVersion();
-				startPredPreySimDebugVersion();
+				//startPredPreySimDebugVersion();
 				//startGameOfLifeSimDebugVersion();
 				genNum = 0;
 			}
