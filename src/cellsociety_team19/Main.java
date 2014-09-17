@@ -35,6 +35,9 @@ public class Main extends Application
 		s.show();
 		
 		// sets up the loop
+		
+		
+		
 		KeyFrame frame = mySimulation.start();
 		Timeline animation = new Timeline();
 		animation.setCycleCount(Timeline.INDEFINITE);
