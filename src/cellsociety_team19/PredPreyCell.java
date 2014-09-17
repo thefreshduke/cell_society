@@ -35,9 +35,8 @@ public class PredPreyCell extends Cell {
 		sharkEnergy = SHARK_INITIAL_ENERGY;
 	}
 
-	// Q1: does this do anything...?
 	public PredPreyCell() {
-		super();
+
 	}
 
 	@Override
@@ -166,6 +165,7 @@ public class PredPreyCell extends Cell {
 
 		//System.out.println(Arrays.toString(neighbors));
 
+		//create generic neighbors method that creates an arraylist of neighbors, modify it for otherneighbors (specific cases)
 		ArrayList<Cell> fishNeighbors = new ArrayList<Cell>();
 		for (Cell c : neighbors) {
 			if (c != null && c.myState == 1) {

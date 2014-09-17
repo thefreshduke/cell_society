@@ -27,7 +27,7 @@ public abstract class Cell {
 		myState = state;
 	}
 
-	//Q1: does this do anything...?
+	//Creates a null Cell
 	public Cell() {
 
 	}

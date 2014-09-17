@@ -219,16 +219,16 @@ public class SimulationLoop {
 				/*instantiate 2d array of game type to keep track of grid*/
 				gridArrayOfCells = new Cell[numRows] [numCols];
 
-				for (int i = 0; i < numRows; i++) {
-					for (int j = 0; j < numCols; j++) {
-						gridArrayOfCells[i][j] = (simulations[choiceIndex].makeNewCell(i, j, 1));
+				for (int x = 0; x < numRows; x++) {
+					for (int y = 0; y < numCols; y++) {
+						gridArrayOfCells[x][y] = (simulations[choiceIndex].makeNewCell(x, y, 1));
 					}
 				}
 
 				//startTreeSimDebugVersion();
 				//startSegSimDebugVersion();
-				//startPredPreySimDebugVersion();
-				startGameOfLifeSimDebugVersion();
+				startPredPreySimDebugVersion();
+				//startGameOfLifeSimDebugVersion();
 
 				//				int c = 0;
 				//				for (int i = 0; i < numRows; i++) {
@@ -257,12 +257,19 @@ public class SimulationLoop {
 	}
 
 	private void startTreeSimDebugVersion() {
+		for (int x = 0; x < gridArrayOfCells.length; x++) {
+			for (int y = 0; y < gridArrayOfCells[x].length; y++) {
+				gridArrayOfCells[x] [y] = new TreeCell(x, y, 1);
+			}
+		}
 		gridArrayOfCells[numRows / 2] [numCols / 2] = new TreeCell(numRows / 2, numCols / 2, 2);
+		gridArrayOfCells[numRows / 2] [numCols / 2 + 1] = new TreeCell(numRows / 2, numCols / 2 + 1, 2);
+		gridArrayOfCells[numRows / 2 + 1] [numCols / 2] = new TreeCell(numRows / 2 + 1, numCols / 2, 2);
 	}
 
 	private void startSegSimDebugVersion() {
-		for (int i = 0; i < numRows; i++) {
-			for (int j = 0; j < numCols; j++) {
+		for (int x = 0; x < numCols; x++) {
+			for (int y = 0; y < numRows; y++) {
 				int state = 0;
 
 				double r = Math.random();
@@ -281,15 +288,15 @@ public class SimulationLoop {
 				else {
 					state = 4;
 				}
-				gridArrayOfCells[i][j] = new SegCell(i, j, state);
+				gridArrayOfCells[x][y] = new SegCell(x, y, state);
 			}
 		}
 	}
 
 	private void startPredPreySimDebugVersion() {
-		for (int i = 0; i < gridArrayOfCells.length; i++) {
-			for (int j = 0; j < gridArrayOfCells[i].length; j++) {
-				gridArrayOfCells[i][j] = new PredPreyCell(i, j, 0);
+		for (int x = 0; x < gridArrayOfCells.length; x++) {
+			for (int y = 0; y < gridArrayOfCells[x].length; y++) {
+				gridArrayOfCells[x][y] = new PredPreyCell(x, y, 0);
 			}
 		}
 		gridArrayOfCells[numRows / 2] [numCols / 2] = new PredPreyCell(numRows / 2, numCols / 2, 1);
@@ -302,11 +309,8 @@ public class SimulationLoop {
 	}
 
 	private void startGameOfLifeSimDebugVersion() {
-		
-		//are x and y values flipped for all other debugVersions?
-		
-		for (int y = 0; y < gridArrayOfCells.length; y++) {
-			for (int x = 0; x < gridArrayOfCells[y].length; x++) {
+		for (int x = 0; x < gridArrayOfCells.length; x++) {
+			for (int y = 0; y < gridArrayOfCells[x].length; y++) {
 				gridArrayOfCells[x][y] = new LifeCell(x, y, 0);
 			}
 		}
@@ -348,18 +352,17 @@ public class SimulationLoop {
 		for (int i = 0; i < numRows; i++) {
 			grid.getRowConstraints().add(new RowConstraints(GRID_CELL_SIZE));
 		}
-	
+		
 		grid.setHgap(1);
 		grid.setVgap(1);
 		grid.setStyle("-fx-background-color: black");
 
 		generationNumber = new Text("Generation number: " + genNum);
 		generationNumber.setFill(Color.WHITE);
-		
+		grid.add(generationNumber, (int) (numCols * 0.4), numCols + 3);
 
 		Button pause = new Button("Pause");
 		pause.setMinWidth(70);
-		
 		pause.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -369,7 +372,6 @@ public class SimulationLoop {
 
 		Button resume = new Button("Resume");
 		resume.setMinWidth(70);
-		
 		resume.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -379,7 +381,6 @@ public class SimulationLoop {
 
 		Button reset = new Button("Reset");
 		reset.setMinWidth(70);
-		
 		reset.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -393,7 +394,6 @@ public class SimulationLoop {
 
 		Button quit = new Button("Quit");
 		quit.setMinWidth(70);
-		
 		quit.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -403,37 +403,28 @@ public class SimulationLoop {
 		
 		Button step = new Button("Step");
 		step.setMinWidth(70);
-		
 		step.setOnMouseClicked(new EventHandler<MouseEvent>(){
-
 			@Override
 			public void handle(MouseEvent event) {
 				shouldRun = false;
 				updateCells();
 			}
-			
 		});
 		
 		Button loadNew = new Button("New");
 		loadNew.setMinWidth(70);
-		
 		loadNew.setOnMouseClicked(new EventHandler<MouseEvent>(){
-
 			@Override
 			public void handle(MouseEvent event) {
-				//run xml loader
-				
+				//run xml loader	
 			}
-			
 		});
 			
-		
 		fpsSlider = new Slider(1, 5, 1);
 		fpsSlider.setValue(framesPerSecond);
 		fpsSlider.setMajorTickUnit(1);
 		fpsSlider.setSnapToTicks(true);
 		fpsSlider.setMinWidth(70);
-		
 		
 		int rightSide = numRows - (70 / GRID_CELL_SIZE) - 2;
 		
@@ -446,7 +437,6 @@ public class SimulationLoop {
 		grid.add(step, 1, numCols + 4);
 		grid.add(quit, rightSide, numCols + 4);
 		
-
 		Scene s = new Scene(grid);
 		stage.setScene(s);
 	}
