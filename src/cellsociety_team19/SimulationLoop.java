@@ -227,8 +227,8 @@ public class SimulationLoop {
 				}
 
 				//startSegSimDebugVersion();
-				startTreeSimDebugVersion();
-				//startPredPreySimDebugVersion();
+				//startTreeSimDebugVersion();
+				startPredPreySimDebugVersion();
 				//startGameOfLifeSimDebugVersion();
 
 				//				int c = 0;
@@ -395,8 +395,8 @@ public class SimulationLoop {
 			@Override
 			public void handle(MouseEvent event) {
 				//startTreeSimDebugVersion();
-				startSegSimDebugVersion();
-				//startPredPreySimDebugVersion();
+				//startSegSimDebugVersion();
+				startPredPreySimDebugVersion();
 				//startGameOfLifeSimDebugVersion();
 				genNum = 0;
 			}

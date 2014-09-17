@@ -193,7 +193,7 @@ public class PredPreyCell extends Cell {
 		ArrayList<Cell> adjacentNeighbors = removeNullValuesFromListOfNeighbors();
 		int space = 0;
 		for (int i = 0; i < adjacentNeighbors.size(); i++) {
-			if (adjacentNeighbors.get(i).myState == 0) {
+			if (adjacentNeighbors.get(i).myState == 0 && adjacentNeighbors.get(i).myNextState == 0) {
 				space++;
 			}
 		}
