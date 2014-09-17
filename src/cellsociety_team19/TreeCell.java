@@ -7,7 +7,7 @@ import javafx.scene.paint.Color;
 
 public class TreeCell extends Cell {
 
-	protected final static double PROBABILITY_OF_CATCHING_FIRE = 0.6;
+	protected final static double PROBABILITY_OF_CATCHING_FIRE = 0.8;
 	protected int nextState = 0;
 
 	protected Map<Integer, Color> colorMap = new HashMap<Integer, Color>();
