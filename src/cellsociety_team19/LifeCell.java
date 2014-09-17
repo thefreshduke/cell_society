@@ -19,9 +19,8 @@ public class LifeCell extends Cell {
 		colorMap.put(1, Color.GREEN);
 	}
 
-	//Q1: does this do anything...?
 	public LifeCell() {
-		super();
+
 	}
 
 	@Override
@@ -31,56 +30,56 @@ public class LifeCell extends Cell {
 
 		Cell[] returnListOfNeighbors = new LifeCell[8];
 
-//		if (myState == 1) {
-//		System.out.println("myX: " + myX + ", myY: " + myY);
-		
+		//		if (myState == 1) {
+		//		System.out.println("myX: " + myX + ", myY: " + myY);
+
 		for (int i = 0; i < returnListOfNeighbors.length; i++) {
 			try {
-//				System.out.println("X: " + (myX + xDelta[i]) + ", Y: " + (myY + yDelta[i]));
-//				System.out.println(xDelta[i]);
-//				System.out.println(yDelta[i]);
-//				System.out.println(myX + xDelta[i]);
-//				System.out.println(myY + yDelta[i]);
-//				System.out.println("myState: " + listOfCellsInGrid[myX + xDelta[i]] [myY + yDelta[i]].myState);
+				//				System.out.println("X: " + (myX + xDelta[i]) + ", Y: " + (myY + yDelta[i]));
+				//				System.out.println(xDelta[i]);
+				//				System.out.println(yDelta[i]);
+				//				System.out.println(myX + xDelta[i]);
+				//				System.out.println(myY + yDelta[i]);
+				//				System.out.println("myState: " + listOfCellsInGrid[myX + xDelta[i]] [myY + yDelta[i]].myState);
 				returnListOfNeighbors[i] = listOfCellsInGrid[myX + xDelta[i]] [myY + yDelta[i]];
 			}
 			catch (Exception e) {
 				returnListOfNeighbors[i] = null;
 			}
 		}
-//		System.out.println("============");
-//		}
+		//		System.out.println("============");
+		//		}
 		return returnListOfNeighbors;
 	}
 
 	public int countNumberOfLiveNeighbors() {
 		int counter = 0;
-//		Cell[] listOfNeighbors = calculateNeighbors();
+		//		Cell[] listOfNeighbors = calculateNeighbors();
 		ArrayList<Cell> listOfNeighbors = removeNullValuesFromListOfNeighbors();
-//		System.out.println(listOfNeighbors.toString());
+		//		System.out.println(listOfNeighbors.toString());
 		for (int i = 0; i < listOfNeighbors.size(); i++) {
-//			System.out.println(listOfNeighbors[i].myState);
-//			System.out.println(i);
-//			if (listOfNeighbors[i] != null) {
-//				System.out.println("wut1");
-				if (listOfNeighbors.get(i).myState == 1) {
-					counter++;
-//					System.out.println("wut2");
-				}
-//			}
+			//			System.out.println(listOfNeighbors[i].myState);
+			//			System.out.println(i);
+			//			if (listOfNeighbors[i] != null) {
+			//				System.out.println("wut1");
+			if (listOfNeighbors.get(i).myState == 1) {
+				counter++;
+				//					System.out.println("wut2");
+			}
+			//			}
 		}
-//		if (myState == 1) {
-//		System.out.println(myX + ", " + myY);
-//		for (int i = 0; i < listOfNeighbors.size(); i++) {
-//			System.out.println(listOfNeighbors.get(i).myX + ", " + listOfNeighbors.get(i).myY + ": " + listOfNeighbors.get(i).myState);
-//		}
-//		System.out.println("counter: " + counter);
-//		System.out.println("=============");
-//		System.out.println("wut");
-//		}
+		//		if (myState == 1) {
+		//		System.out.println(myX + ", " + myY);
+		//		for (int i = 0; i < listOfNeighbors.size(); i++) {
+		//			System.out.println(listOfNeighbors.get(i).myX + ", " + listOfNeighbors.get(i).myY + ": " + listOfNeighbors.get(i).myState);
+		//		}
+		//		System.out.println("counter: " + counter);
+		//		System.out.println("=============");
+		//		System.out.println("wut");
+		//		}
 		return counter;
 	}
-	
+
 	public ArrayList<Cell> removeNullValuesFromListOfNeighbors() {
 		Cell[] neighbors = calculateNeighbors();
 		ArrayList<Cell> goodNeighbors = new ArrayList<Cell>();
@@ -96,9 +95,9 @@ public class LifeCell extends Cell {
 	public void doAction() {
 		int numLiveNeighbors = countNumberOfLiveNeighbors();
 
-//		if (myState == 1) {
-//			System.out.println("Live: " + numLiveNeighbors);
-//		}
+		//		if (myState == 1) {
+		//			System.out.println("Live: " + numLiveNeighbors);
+		//		}
 		if (numLiveNeighbors == 3) {
 			myNextState = 1;
 		}

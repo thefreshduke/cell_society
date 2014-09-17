@@ -20,12 +20,14 @@ public class TreeCell extends Cell {
 		colorMap.put(2, Color.RED);
 	}
 
-	//Q1: does this do anything...?
 	public TreeCell() {
-		super();
+
 	}
 
 	@Override
+	/**
+	 * this method does something awesome. 
+	 */
 	public void doAction() {
 
 		//0 - dead tree or no tree
@@ -39,15 +41,11 @@ public class TreeCell extends Cell {
 
 		Cell[] neighbors = calculateNeighbors();
 		for (int i = 0; i < neighbors.length; i++) {
-			if (neighbors[i] != null && neighbors[i].myState == 2) {
-				if (Math.random() < PROBABILITY_OF_CATCHING_FIRE) {
+			if (neighbors[i] != null) {
+				if (neighbors[i].myState == 2 && Math.random() < PROBABILITY_OF_CATCHING_FIRE) {
 					nextState = 2;
+					break;
 				}
-				else {
-					nextState = 1;
-				}
-			}
-			else {
 				nextState = myState;
 			}
 		}

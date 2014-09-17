@@ -192,16 +192,16 @@ public class SimulationLoop {
 				/*instantiate 2d array of game type to keep track of grid*/
 				gridArrayOfCells = new Cell[numRows] [numCols];
 
-				for (int i = 0; i < numRows; i++) {
-					for (int j = 0; j < numCols; j++) {
-						gridArrayOfCells[i][j] = (simulations[choiceIndex].makeNewCell(i, j, 1));
+				for (int x = 0; x < numRows; x++) {
+					for (int y = 0; y < numCols; y++) {
+						gridArrayOfCells[x][y] = (simulations[choiceIndex].makeNewCell(x, y, 1));
 					}
 				}
 
-				//startSegSimDebugVersion();
 				//startTreeSimDebugVersion();
-				//startPredPreySimDebugVersion();
-				startGameOfLifeSimDebugVersion();
+				//startSegSimDebugVersion();
+				startPredPreySimDebugVersion();
+				//startGameOfLifeSimDebugVersion();
 
 				//				int c = 0;
 				//				for (int i = 0; i < numRows; i++) {
@@ -230,12 +230,19 @@ public class SimulationLoop {
 	}
 
 	private void startTreeSimDebugVersion() {
+		for (int x = 0; x < gridArrayOfCells.length; x++) {
+			for (int y = 0; y < gridArrayOfCells[x].length; y++) {
+				gridArrayOfCells[x] [y] = new TreeCell(x, y, 1);
+			}
+		}
 		gridArrayOfCells[numRows / 2] [numCols / 2] = new TreeCell(numRows / 2, numCols / 2, 2);
+		gridArrayOfCells[numRows / 2] [numCols / 2 + 1] = new TreeCell(numRows / 2, numCols / 2 + 1, 2);
+		gridArrayOfCells[numRows / 2 + 1] [numCols / 2] = new TreeCell(numRows / 2 + 1, numCols / 2, 2);
 	}
 
 	private void startSegSimDebugVersion() {
-		for (int i = 0; i < numRows; i++) {
-			for (int j = 0; j < numCols; j++) {
+		for (int x = 0; x < numCols; x++) {
+			for (int y = 0; y < numRows; y++) {
 				int state = 0;
 
 				double r = Math.random();
@@ -254,15 +261,24 @@ public class SimulationLoop {
 				else {
 					state = 4;
 				}
-				gridArrayOfCells[i][j] = new SegCell(i, j, state);
+				//				if (j % 4 == 2) {
+				//					state = 2;
+				//				}
+				//				if (j % 4 == 1) {
+				//					state = 1;
+				//				}
+				//				if (j % 4 == 0) {
+				//					state = 3;
+				//				}
+				gridArrayOfCells[x][y] = new SegCell(x, y, state);
 			}
 		}
 	}
 
 	private void startPredPreySimDebugVersion() {
-		for (int i = 0; i < gridArrayOfCells.length; i++) {
-			for (int j = 0; j < gridArrayOfCells[i].length; j++) {
-				gridArrayOfCells[i][j] = new PredPreyCell(i, j, 0);
+		for (int x = 0; x < gridArrayOfCells.length; x++) {
+			for (int y = 0; y < gridArrayOfCells[x].length; y++) {
+				gridArrayOfCells[x][y] = new PredPreyCell(x, y, 0);
 			}
 		}
 		gridArrayOfCells[numRows / 2] [numCols / 2] = new PredPreyCell(numRows / 2, numCols / 2, 1);
@@ -275,11 +291,8 @@ public class SimulationLoop {
 	}
 
 	private void startGameOfLifeSimDebugVersion() {
-		
-		//are x and y values flipped for all other debugVersions?
-		
-		for (int y = 0; y < gridArrayOfCells.length; y++) {
-			for (int x = 0; x < gridArrayOfCells[y].length; x++) {
+		for (int x = 0; x < gridArrayOfCells.length; x++) {
+			for (int y = 0; y < gridArrayOfCells[x].length; y++) {
 				gridArrayOfCells[x][y] = new LifeCell(x, y, 0);
 			}
 		}
@@ -335,7 +348,7 @@ public class SimulationLoop {
 
 		generationNumber = new Text("Generation number: " + genNum);
 		generationNumber.setFill(Color.WHITE);
-		grid.add(generationNumber, (int) ( numCols * .4), numCols + 3);
+		grid.add(generationNumber, (int) (numCols * 0.4), numCols + 3);
 
 		Button pause = new Button("Pause");
 		pause.setMinWidth(70);

@@ -25,7 +25,6 @@ public class SegCell extends Cell {
 		colorMap.put(6, Color.ORANGE);
 	}
 
-	//Q1: does this do anything...?
 	public SegCell() {
 
 	}
