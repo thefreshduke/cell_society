@@ -348,7 +348,7 @@ public class SimulationLoop {
 		for (int i = 0; i < numRows; i++) {
 			grid.getRowConstraints().add(new RowConstraints(GRID_CELL_SIZE));
 		}
-
+	
 		grid.setHgap(1);
 		grid.setVgap(1);
 		grid.setStyle("-fx-background-color: black");
