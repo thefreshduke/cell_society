@@ -35,9 +35,8 @@ public class PredPreyCell extends Cell {
 		sharkEnergy = SHARK_INITIAL_ENERGY;
 	}
 
-	// Q1: does this do anything...?
 	public PredPreyCell() {
-		super();
+
 	}
 
 	@Override
@@ -81,6 +80,7 @@ public class PredPreyCell extends Cell {
 	private void doFishAction() {
 
 		if (imminentSharkAttack) {
+			imminentSharkAttack = false;
 			return;
 		}
 
@@ -126,6 +126,9 @@ public class PredPreyCell extends Cell {
 			int choice = r.nextInt(neighbors.size());
 			Cell newCell = neighbors.get(choice);
 			PredPreyCell destinationCell = (PredPreyCell) listOfCellsInGrid[newCell.myX] [newCell.myY];
+			if (newCell.myState == 2 || newCell.myNextState == 2) {
+				return;
+			}
 			if (newCell.myState == 1) { //fish are food, not friends
 				sharkEnergy += FISH_ENERGY;			
 				destinationCell.imminentSharkAttack = true;
@@ -166,6 +169,7 @@ public class PredPreyCell extends Cell {
 
 		//System.out.println(Arrays.toString(neighbors));
 
+		//create generic neighbors method that creates an arraylist of neighbors, modify it for otherneighbors (specific cases)
 		ArrayList<Cell> fishNeighbors = new ArrayList<Cell>();
 		for (Cell c : neighbors) {
 			if (c != null && c.myState == 1) {
@@ -193,7 +197,7 @@ public class PredPreyCell extends Cell {
 		ArrayList<Cell> adjacentNeighbors = removeNullValuesFromListOfNeighbors();
 		int space = 0;
 		for (int i = 0; i < adjacentNeighbors.size(); i++) {
-			if (adjacentNeighbors.get(i).myState == 0) {
+			if (adjacentNeighbors.get(i).myState == 0 && adjacentNeighbors.get(i).myNextState == 0) {
 				space++;
 			}
 		}

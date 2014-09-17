@@ -1,9 +1,11 @@
 package cellsociety_team19;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -12,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
@@ -33,10 +36,13 @@ public class SimulationLoop {
 	private int numCols;
 	private int GRID_CELL_SIZE;
 
-	private static final int GUI_HEIGHT = 500;
-	private static final int GUI_WIDTH = 500;
 	
 	private GridPane gridNew;
+
+	private static final int GUI_HEIGHT = 400;
+	private static final int GUI_WIDTH = 400;
+
+
 
 	private Cell[][] gridArrayOfCells;
 
@@ -46,6 +52,11 @@ public class SimulationLoop {
 	private Text generationNumber;
 
 	private ReadXmlInput xmlReader; //keep
+	
+	Slider fpsSlider;
+	
+	KeyFrame frame;
+	Timeline animation;
 	
 	/**
 	 * Create the game's frame
@@ -57,36 +68,30 @@ public class SimulationLoop {
 	private EventHandler<ActionEvent> oneFrame = new EventHandler<ActionEvent>() {
 		@Override
 		public void handle(ActionEvent evt) {
+			
+			
 			if (shouldRun) {
 				updateCells();
-				genNum++;
-
-				gridNew.getChildren().remove(generationNumber);
-				generationNumber = new Text("Generation number: " + genNum);
-				generationNumber.setFill(Color.WHITE);
-				gridNew.add(generationNumber, (int) (numCols * 0.4), numCols + 3);
+				framesPerSecond = (int) Math.round(fpsSlider.getValue());
 			}
 		}
 	};
+	
+	
+	
 
 	public void updateCells() {
 
-		for (int i = 0; i < gridArrayOfCells.length; i++) {
-			for (int j = 0; j < gridArrayOfCells[i].length; j++) {
-				gridArrayOfCells[i][j].setGrid(gridArrayOfCells);
-			}
-		}
+		updateGenerationNumber();
+		
+		setUpGridForCells();
+		
+		doCellsAction();
+		
+		updateGraphicalInterface();
+	}
 
-		for (int i = 0; i < gridArrayOfCells.length; i++) {
-			for (int j = 0; j < gridArrayOfCells[i].length; j++) {
-				gridArrayOfCells[i][j].setGrid(gridArrayOfCells);
-				Cell curCell = gridArrayOfCells[i][j];
-				curCell.doAction();
-			}
-		}
-
-		//grid.getChildren().removeAll();
-
+	private void updateGraphicalInterface() {
 		for (int i = 0; i < gridArrayOfCells.length; i++) {
 			for (int j = 0; j < gridArrayOfCells[i].length; j++) {
 
@@ -101,6 +106,35 @@ public class SimulationLoop {
 				curCell.updateCell();
 			}
 		}
+	}
+
+	private void doCellsAction() {
+		for (int i = 0; i < gridArrayOfCells.length; i++) {
+			for (int j = 0; j < gridArrayOfCells[i].length; j++) {
+				gridArrayOfCells[i][j].setGrid(gridArrayOfCells);
+				Cell curCell = gridArrayOfCells[i][j];
+				curCell.doAction();
+			}
+		}
+	}
+
+	private void setUpGridForCells() {
+	
+		for (int i = 0; i < gridArrayOfCells.length; i++) {
+			for (int j = 0; j < gridArrayOfCells[i].length; j++) {
+				
+				gridArrayOfCells[i][j].setGrid(gridArrayOfCells);
+
+			}
+		}
+	}
+
+	private void updateGenerationNumber() {
+		genNum++;
+		gridNew.getChildren().remove(generationNumber);
+		generationNumber = new Text("Generation number: " + genNum);
+		generationNumber.setFill(Color.WHITE);
+		gridNew.add(generationNumber, 1, numCols + 1);
 	}
 
 	public Scene init (Stage s, int width, int height) {
@@ -163,8 +197,8 @@ public class SimulationLoop {
 
 		final FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open XML File");
-		fileChooser.getExtensionFilters().addAll(
-				new FileChooser.ExtensionFilter("XML File", "*.xml*"));
+		//fileChooser.getExtensionFilters().addAll(
+		//		new FileChooser.ExtensionFilter("XML File", "*.xml*"));
 
 		final Button openXMLButton = new Button("Open XML File");
 		grid.add(openXMLButton, 0, 30);
@@ -195,6 +229,7 @@ public class SimulationLoop {
 				
 				gridArrayOfCells = xmlReader.parseFile();  //keep this line!!!!!!
 				
+			
 				/*for(int i = 0;i<gridArrayOfCells.length;i++){
 					for(int j = 0;j<gridArrayOfCells[i].length;j++){
 						System.out.print(gridArrayOfCells[i][j].myState);
@@ -216,16 +251,17 @@ public class SimulationLoop {
 				//get rid, since xml file does this
 				/*gridArrayOfCells = new Cell[numRows] [numCols];
 
-				for (int i = 0; i < numRows; i++) {
-					for (int j = 0; j < numCols; j++) {
-						gridArrayOfCells[i][j] = (simulations[choiceIndex].makeNewCell(i, j, 1));
+				for (int x = 0; x < numRows; x++) {
+					for (int y = 0; y < numCols; y++) {
+						gridArrayOfCells[x][y] = (simulations[choiceIndex].makeNewCell(x, y, 1));
 					}
 				}
 				*/
 				
 				/* once xml is finished, get rid of these, use these only for testing purposes; we will setup state using xmlfile */
-				//startSegSimDebugVersion();
+
 				//startTreeSimDebugVersion();
+				//startSegSimDebugVersion();
 				//startPredPreySimDebugVersion();
 				//startGameOfLifeSimDebugVersion();
 
@@ -256,12 +292,19 @@ public class SimulationLoop {
 	}
 
 	private void startTreeSimDebugVersion() {
+		for (int x = 0; x < gridArrayOfCells.length; x++) {
+			for (int y = 0; y < gridArrayOfCells[x].length; y++) {
+				gridArrayOfCells[x] [y] = new TreeCell(x, y, 1);
+			}
+		}
 		gridArrayOfCells[numRows / 2] [numCols / 2] = new TreeCell(numRows / 2, numCols / 2, 2);
+		gridArrayOfCells[numRows / 2] [numCols / 2 + 1] = new TreeCell(numRows / 2, numCols / 2 + 1, 2);
+		gridArrayOfCells[numRows / 2 + 1] [numCols / 2] = new TreeCell(numRows / 2 + 1, numCols / 2, 2);
 	}
 
 	private void startSegSimDebugVersion() {
-		for (int i = 0; i < numRows; i++) {
-			for (int j = 0; j < numCols; j++) {
+		for (int x = 0; x < numCols; x++) {
+			for (int y = 0; y < numRows; y++) {
 				int state = 0;
 
 				double r = Math.random();
@@ -280,15 +323,15 @@ public class SimulationLoop {
 				else {
 					state = 4;
 				}
-				gridArrayOfCells[i][j] = new SegCell(i, j, state);
+				gridArrayOfCells[x][y] = new SegCell(x, y, state);
 			}
 		}
 	}
 
 	private void startPredPreySimDebugVersion() {
-		for (int i = 0; i < gridArrayOfCells.length; i++) {
-			for (int j = 0; j < gridArrayOfCells[i].length; j++) {
-				gridArrayOfCells[i][j] = new PredPreyCell(i, j, 0);
+		for (int x = 0; x < gridArrayOfCells.length; x++) {
+			for (int y = 0; y < gridArrayOfCells[x].length; y++) {
+				gridArrayOfCells[x][y] = new PredPreyCell(x, y, 0);
 			}
 		}
 		gridArrayOfCells[numRows / 2] [numCols / 2] = new PredPreyCell(numRows / 2, numCols / 2, 1);
@@ -301,11 +344,8 @@ public class SimulationLoop {
 	}
 
 	private void startGameOfLifeSimDebugVersion() {
-		
-		//are x and y values flipped for all other debugVersions?
-		
-		for (int y = 0; y < gridArrayOfCells.length; y++) {
-			for (int x = 0; x < gridArrayOfCells[y].length; x++) {
+		for (int x = 0; x < gridArrayOfCells.length; x++) {
+			for (int y = 0; y < gridArrayOfCells[x].length; y++) {
 				gridArrayOfCells[x][y] = new LifeCell(x, y, 0);
 			}
 		}
@@ -350,6 +390,7 @@ public class SimulationLoop {
 		for (int i = 0; i < numRows; i++) {
 			gridNew.getRowConstraints().add(new RowConstraints(GRID_CELL_SIZE));
 		}
+
 		for (int i = 0; i < numCols; i++) {
 			for (int j = 0; j < numRows; j++) {
 				Rectangle r = new Rectangle(0, 0, GRID_CELL_SIZE, GRID_CELL_SIZE);
@@ -364,11 +405,10 @@ public class SimulationLoop {
 
 		generationNumber = new Text("Generation number: " + genNum);
 		generationNumber.setFill(Color.WHITE);
-		gridNew.add(generationNumber, (int) ( numCols * .4), numCols + 3);
 
 		Button pause = new Button("Pause");
 		pause.setMinWidth(70);
-		gridNew.add(pause, (int) (numCols * 0), numCols + 5);
+
 		pause.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -378,7 +418,7 @@ public class SimulationLoop {
 
 		Button resume = new Button("Resume");
 		resume.setMinWidth(70);
-		gridNew.add(resume, (int) (numCols * 0.25), numCols + 5);
+
 		resume.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -388,7 +428,7 @@ public class SimulationLoop {
 
 		Button reset = new Button("Reset");
 		reset.setMinWidth(70);
-		gridNew.add(reset, (int) (numCols * 0.5), numCols + 5);
+
 		reset.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -402,7 +442,8 @@ public class SimulationLoop {
 
 		Button quit = new Button("Quit");
 		quit.setMinWidth(70);
-		gridNew.add(quit, (int) (numCols * 0.75), numCols + 5);
+
+
 		quit.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -410,7 +451,48 @@ public class SimulationLoop {
 			}
 		});
 
+
+		
+
+		
+		Button step = new Button("Step");
+		step.setMinWidth(70);
+		step.setOnMouseClicked(new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent event) {
+				shouldRun = false;
+				updateCells();
+			}
+		});
+		
+		Button loadNew = new Button("New");
+		loadNew.setMinWidth(70);
+		loadNew.setOnMouseClicked(new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent event) {
+				//run xml loader	
+			}
+		});
+			
+		fpsSlider = new Slider(1, 5, 1);
+		fpsSlider.setValue(framesPerSecond);
+		fpsSlider.setMajorTickUnit(1);
+		fpsSlider.setSnapToTicks(true);
+		fpsSlider.setMinWidth(70);
+		
+		int rightSide = numRows - (70 / GRID_CELL_SIZE) - 2;
+		
+		gridNew.add(generationNumber, 1, numCols + 1);
+		gridNew.add(fpsSlider, rightSide, numCols+1);
+		gridNew.add(pause, 1, numCols+2);
+		gridNew.add(loadNew, rightSide, numCols + 2);
+		gridNew.add(resume, 1, numCols + 3);
+		gridNew.add(reset, rightSide, numCols + 3);
+		gridNew.add(step, 1, numCols + 4);
+		gridNew.add(quit, rightSide, numCols + 4);
+		
 		Scene s = new Scene(gridNew);
+
 		stage.setScene(s);
 	}
 }

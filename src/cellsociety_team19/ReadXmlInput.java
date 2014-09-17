@@ -70,9 +70,6 @@ public class ReadXmlInput {
 				choice = simulationMap.get(eElement
 						.getAttribute("gametype"));
 
-				System.out.println("Simulation Type: "
-						+choice); // print out
-																// gameType
 
 			}
 
@@ -112,12 +109,12 @@ public class ReadXmlInput {
 
 					// columns will be parsed from the <row> states attribute
 					String[] colStates = eElement.getAttribute("states").split(",");
-					System.out.println("Colstate: " + Arrays.toString(colStates));
+
 					int col = colStates.length;
 					/* Make 2d grid array that tracks the cells in the grid */
 					for (x = 0; x < col; x++) {
 						
-						System.out.println(choice.getClass());
+						
 						
 						gridArrayOfCells[i][x] = choice.makeNewCell(i, x, Integer.parseInt(colStates[x]));
 						//gridArrayOfCells[i][x] = new SegCell(i, x, 0);
@@ -129,12 +126,6 @@ public class ReadXmlInput {
 
 			}
 
-			for (int i = 0; i < gridArrayOfCells.length; i++) {
-				for (int j = 0; j < gridArrayOfCells[i].length; j++) {
-					System.out.print(gridArrayOfCells[i][j]);
-				}
-				System.out.println();
-			}
 
 			return gridArrayOfCells;
 		}
