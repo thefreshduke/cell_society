@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simulation gametype = "Tree">
+
+	<grid>
+
+		<row states = "1,1,1,1,1,1,1,1,1,1,1,1"></row>
+		<row states = "1,1,1,1,1,1,1,1,1,1,1,1"></row>
+		<row states = "1,1,1,1,1,1,1,1,1,1,1,1"></row>
+		<row states = "1,1,1,1,1,1,1,1,1,1,1,1"></row>
+		<row states = "1,1,1,1,1,2,1,1,1,1,1,1"></row>
+		<row states = "1,1,1,1,1,2,1,1,1,1,1,1"></row>
+		<row states = "1,1,1,1,1,2,1,1,1,1,1,1"></row>
+		<row states = "1,1,1,1,1,2,1,1,1,1,1,1"></row>
+		<row states = "1,1,1,1,1,1,1,1,1,1,1,1"></row>
+		<row states = "1,1,1,1,1,1,1,1,1,1,1,1"></row>
+		<row states = "1,1,1,1,1,1,1,1,1,1,1,1"></row>
+		<row states = "1,1,1,1,1,1,1,1,1,1,1,1"></row>
+		
+		
+
+
+
+
+
+	</grid>
+
+
+
+
+
+
+
+</simulation>

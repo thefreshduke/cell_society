@@ -1,7 +1,4 @@
 package cellsociety_team19;
-
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -17,7 +14,7 @@ import javafx.stage.Stage;
 public class Main extends Application
 {
 	private SimulationLoop mySimulation;
-	private int guiSize = 300;
+	private int guiSize = 400;
 
 	/**
 	 * Set things up at the beginning.
@@ -36,13 +33,7 @@ public class Main extends Application
 
 		// sets up the loop
 
-
-
-		KeyFrame frame = mySimulation.start();
-		Timeline animation = new Timeline();
-		animation.setCycleCount(Timeline.INDEFINITE);
-		animation.getKeyFrames().add(frame);
-		animation.play();
+		mySimulation.start();
 	}
 
 	/**

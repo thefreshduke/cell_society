@@ -1,4 +1,4 @@
-package cellsociety_team19;
+package simulationTypes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,10 +12,10 @@ public class PredPreyCell extends Cell {
 
 	private Map<Integer, Color> colorMap = new HashMap<Integer, Color>();
 
-	private final static int SHARK_BREED_TIME = 7;
-	private final static int FISH_BREED_TIME = 1;
-	private final static int SHARK_INITIAL_ENERGY = 2;
-	private final static int FISH_ENERGY = 2;
+	private final static int SHARK_BREED_TIME = 10;
+	private final static int FISH_BREED_TIME = 3;
+	private final static int SHARK_INITIAL_ENERGY = 7;
+	private final static int FISH_ENERGY = 1;
 	private int sharkEnergy;
 	private static int chronons = 0;
 
@@ -33,6 +33,7 @@ public class PredPreyCell extends Cell {
 		// but if instance variable, also able to say %3 => fish give birth and
 		// %10 => sharks give birth
 		sharkEnergy = SHARK_INITIAL_ENERGY;
+		chronons = 0;
 	}
 
 	public PredPreyCell() {

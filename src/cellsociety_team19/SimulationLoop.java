@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import simulationTypes.Cell;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -16,6 +17,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -35,30 +38,30 @@ public class SimulationLoop {
 	private int numRows;
 	private int numCols;
 	private int GRID_CELL_SIZE;
-
 	private GridPane gridNew;
-
 	private static final int GUI_HEIGHT = 400;
 	private static final int GUI_WIDTH = 400;
-
 	private Cell[][] gridArrayOfCells;
-
 	private boolean shouldRun = false;
-
 	private int genNum = 0;
 	private Text generationNumber;
-
 	private XMLReader xmlReader; //keep
+	private Slider fpsSlider;
+	private KeyFrame frame;
+	private Timeline animation;
 
-	Slider fpsSlider;
-
-	KeyFrame frame;
-	Timeline animation;
+	public void start(){	
+		frame = makeFrame();
+		animation = new Timeline();
+		animation.setCycleCount(Timeline.INDEFINITE);
+		animation.getKeyFrames().add(frame);
+		animation.play();
+	}
 
 	/**
 	 * Create the game's frame
 	 */
-	public KeyFrame start() {
+	public KeyFrame makeFrame() {
 		return new KeyFrame(Duration.millis(1000 / framesPerSecond), oneFrame);
 	}
 
@@ -66,15 +69,26 @@ public class SimulationLoop {
 		@Override
 		public void handle(ActionEvent evt) {
 			if (shouldRun) {
-				updateCells();
-				framesPerSecond = (int) Math.round(fpsSlider.getValue());
+				updateCells();			
+				updateFPS();
+
 			}
 		}
+
 	};
+
+	private void updateFPS() {
+		framesPerSecond = (int) Math.round(fpsSlider.getValue());		
+		animation.stop();
+		animation.getKeyFrames().remove(frame);
+		frame = makeFrame();
+		animation.getKeyFrames().add(frame);
+		animation.play();
+	}
 
 	public void updateCells() {
 		updateGenerationNumber();
-		setUpGridForCells();
+		//setUpGridForCells();
 		doCellsAction();
 		updateGraphicalInterface();
 	}
@@ -123,59 +137,19 @@ public class SimulationLoop {
 	}
 
 	public Scene init (Stage s, int width, int height) {
-		/* instantiate arraylist of simulation game types */
-
-		//stage = s;
-
-		/*run method to obtain user input, initalize gridsize/xml file */
-		//Scene sceneForUserInput = askUserForInput();
-
-		//GridPane grid = new GridPane();
-
-
-		//Scene scene = new Scene(grid, width, height, Color.WHITE);
-
 		return askUserForInput(s);
 	}
 
 	private Scene askUserForInput(final Stage stage) {
-		Scene scene = new Scene(new Group(), 400, 400);
-		final Cell[] simulations = new Cell[] {
-				new TreeCell(),
-				new PredPreyCell(),
-				new SegCell(),
-				new LifeCell()
-				//add here	
-		};
-
-		final HashMap<Cell, Integer> map = new HashMap<Cell, Integer>();
-		for (int i = 0; i < simulations.length; i++) {
-			map.put(simulations[i], i);
-		}
-
-		final ComboBox<Cell> simulationBox = new ComboBox<Cell>();
-		simulationBox.getItems().addAll(simulations);
-
-		final Label labelForGridSizeRow = new Label("How many rows?");
-		final Label labelForGridSizeCol = new Label("How many columns?");
-
-		final TextField textForRow = new TextField();
-		final TextField textForCol = new TextField();
+		Scene scene = new Scene(new Group(), GUI_WIDTH, GUI_HEIGHT);
 		Button submit = new Button("Submit");
 
 		GridPane grid = new GridPane();
 		grid.setVgap(4);
 		grid.setHgap(10);
 		grid.setPadding(new Insets(5, 5, 5, 5));
-		grid.add(new Label("Choose a simulation: "), 0, 0);
-		grid.add(simulationBox, 1, 0);
-		grid.add(labelForGridSizeRow, 0, 3);
-		grid.add(labelForGridSizeCol, 0, 4);
-		grid.add(textForRow, 1, 3);
-		grid.add(textForCol, 1, 4);
 		Group root = (Group) scene.getRoot();
 		root.getChildren().add(grid);
-		//grid.setGridLinesVisible(true);
 		grid.add(submit, 1, 30);
 
 		final FileChooser fileChooser = new FileChooser();
@@ -195,11 +169,7 @@ public class SimulationLoop {
 
 						File file = fileChooser.showOpenDialog(stage);
 						if (file != null) {
-
-							System.out.println(file + " has been opened");
-							System.out.println("----------------");
 							xmlReader = new XMLReader(file);
-
 						}
 					}
 				});
@@ -207,66 +177,7 @@ public class SimulationLoop {
 		submit.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				//delete the setRows, set simulation type gui code --> replcae with:
-
-
-				gridArrayOfCells = xmlReader.parseFile();  //keep this line!!!!!!
-
-
-				/*for(int i = 0;i<gridArrayOfCells.length;i++){
-					for(int j = 0;j<gridArrayOfCells[i].length;j++){
-						System.out.print(gridArrayOfCells[i][j].myState);
-					}
-					System.out.println();
-				}*/
-
-				//set the grid instance variable to what the user typed in
-				//get rid, since xml file does this 
-				//numRows = Integer.parseInt(textForRow.getText()); // surround in try/catch for errors?
-				//numCols = Integer.parseInt(textForCol.getText());
-				//System.out.println("row: " + numRows + ", col: " + numCols);
-
-				//get rid, since xml file does this
-				//Cell choice = (Cell) simulationBox.getValue();
-				//int choiceIndex = map.get(choice);
-
-				/*instantiate 2d array of game type to keep track of grid*/
-				//get rid, since xml file does this
-				/*gridArrayOfCells = new Cell[numRows] [numCols];
-
-				for (int x = 0; x < numRows; x++) {
-					for (int y = 0; y < numCols; y++) {
-						gridArrayOfCells[x][y] = (simulations[choiceIndex].makeNewCell(x, y, 1));
-					}
-				}
-				 */
-
-				/* once xml is finished, get rid of these, use these only for testing purposes; we will setup state using xmlfile */
-
-				//startTreeSimDebugVersion();
-				//startSegSimDebugVersion();
-				//startPredPreySimDebugVersion();
-				//startGameOfLifeSimDebugVersion();
-
-				//				int c = 0;
-				//				for (int i = 0; i < numRows; i++) {
-				//					for (int j = 0; j < numCols; j++) {
-				//						gridArrayOfCells[i][j] = new SegCell(i, j, (c % 3));
-				//						c++;
-				//					}
-				//				}
-
-				//gridArrayOfCells[numRows / 2][numCols / 2] = new TreeCell(numRows / 2, numCols / 2, 2);
-
-				/*for (int i = 0; i < gridArrayOfCells.length; i++) {
-					for (int j = 0; j < gridArrayOfCells[i].length; j++) {
-						System.out.println(gridArrayOfCells[i][j].toString());
-					}
-				}*/
-
-				/* exit the scene */
-				//stage.close();
-
+				gridArrayOfCells = xmlReader.parseFile();
 				createGrid(stage);
 				shouldRun = true;
 			}
@@ -274,82 +185,7 @@ public class SimulationLoop {
 		return scene;
 	}
 
-	private void startTreeSimDebugVersion() {
-		for (int x = 0; x < gridArrayOfCells.length; x++) {
-			for (int y = 0; y < gridArrayOfCells[x].length; y++) {
-				gridArrayOfCells[x] [y] = new TreeCell(x, y, 1);
-			}
-		}
-		gridArrayOfCells[numRows / 2] [numCols / 2] = new TreeCell(numRows / 2, numCols / 2, 2);
-		gridArrayOfCells[numRows / 2] [numCols / 2 + 1] = new TreeCell(numRows / 2, numCols / 2 + 1, 2);
-		gridArrayOfCells[numRows / 2 + 1] [numCols / 2] = new TreeCell(numRows / 2 + 1, numCols / 2, 2);
-	}
-
-	private void startSegSimDebugVersion() {
-		for (int x = 0; x < numCols; x++) {
-			for (int y = 0; y < numRows; y++) {
-				int state = 0;
-
-				double r = Math.random();
-				if (r < 0.2) {
-					state = 0;
-				}
-				else if (r < 0.4) {
-					state = 1;
-				}
-				else if (r < 0.6) {
-					state = 2;
-				}
-				else if (r < 0.8) {
-					state = 3;
-				}
-				else {
-					state = 4;
-				}
-				gridArrayOfCells[x][y] = new SegCell(x, y, state);
-			}
-		}
-	}
-
-	private void startPredPreySimDebugVersion() {
-		for (int x = 0; x < gridArrayOfCells.length; x++) {
-			for (int y = 0; y < gridArrayOfCells[x].length; y++) {
-				gridArrayOfCells[x][y] = new PredPreyCell(x, y, 1);
-			}
-		}
-		//		gridArrayOfCells[numRows / 2] [numCols / 2] = new PredPreyCell(numRows / 2, numCols / 2, 1);
-		//		gridArrayOfCells[3] [2] = new PredPreyCell(3, 2, 1);
-		//		gridArrayOfCells[0] [0] = new PredPreyCell(0, 0, 1);
-
-		gridArrayOfCells[2] [1] = new PredPreyCell(2, 1, 2);
-		gridArrayOfCells[1] [2] = new PredPreyCell(1, 2, 2);
-		gridArrayOfCells[2] [2] = new PredPreyCell(2, 2, 2);
-		gridArrayOfCells[2] [3] = new PredPreyCell(2, 3, 2);
-		gridArrayOfCells[3] [2] = new PredPreyCell(3, 2, 2);
-	}
-
-	private void startGameOfLifeSimDebugVersion() {
-		for (int x = 0; x < gridArrayOfCells.length; x++) {
-			for (int y = 0; y < gridArrayOfCells[x].length; y++) {
-				gridArrayOfCells[x][y] = new LifeCell(x, y, 0);
-			}
-		}
-		gridArrayOfCells[0] [0] = new LifeCell(0, 0, 1);
-		gridArrayOfCells[1] [0] = new LifeCell(1, 0, 1);
-		gridArrayOfCells[0] [1] = new LifeCell(0, 1, 1);
-		gridArrayOfCells[1] [1] = new LifeCell(1, 1, 1);
-		gridArrayOfCells[2] [0] = new LifeCell(2, 0, 1);
-		gridArrayOfCells[0] [2] = new LifeCell(0, 2, 1);
-		gridArrayOfCells[numRows / 2] [numCols / 2] = new LifeCell(numRows / 2, numCols / 2, 1);
-		gridArrayOfCells[numRows / 2 + 1] [numCols / 2] = new LifeCell(numRows / 2 + 1, numCols / 2, 1);
-		gridArrayOfCells[numRows / 2 - 1] [numCols / 2] = new LifeCell(numRows / 2 - 1, numCols / 2, 1);
-		gridArrayOfCells[numRows - 1] [numCols - 1] = new LifeCell(numRows - 1, numCols - 1, 1);
-		gridArrayOfCells[3] [3] = new LifeCell(3, 3, 1);
-		gridArrayOfCells[4] [4] = new LifeCell(4, 4, 1);
-		gridArrayOfCells[3] [4] = new LifeCell(3, 4, 1);
-	}
-
-	private void createGrid(Stage stage) {
+	private void createGrid(final Stage stage) {
 		gridNew = new GridPane(); 
 
 		gridNew.setMinSize(GUI_WIDTH, GUI_HEIGHT);//keep
@@ -416,7 +252,6 @@ public class SimulationLoop {
 		reset.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-
 				shouldRun = true; //keep
 				gridArrayOfCells = xmlReader.parseFile(); //keep
 				genNum = 0;
@@ -448,7 +283,18 @@ public class SimulationLoop {
 		loadNew.setOnMouseClicked(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent event) {
-				//run xml loader	
+				shouldRun = false;
+
+				final FileChooser fileChooser = new FileChooser();
+				File file = fileChooser.showOpenDialog(stage);
+
+				if (file != null) {
+					xmlReader = new XMLReader(file);
+					gridArrayOfCells = xmlReader.parseFile();
+					genNum = 0;
+				}
+				createGrid(stage);
+				shouldRun = true;
 			}
 		});
 
