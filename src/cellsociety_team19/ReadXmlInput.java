@@ -15,6 +15,12 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 
+import simulationTypes.Cell;
+import simulationTypes.LifeCell;
+import simulationTypes.PredPreyCell;
+import simulationTypes.SegCell;
+import simulationTypes.TreeCell;
+
 /**
  * MARCUS'S XML READER, KEEP ALL
  * @author Marcus Cain
@@ -83,8 +89,7 @@ public class ReadXmlInput {
 																// only for
 																// testing
 																// purposes now
-				System.out
-						.println("Parsing through the <grid> to get the elements <row>");
+
 
 				NodeList rowList = doc.getElementsByTagName("row");
 				

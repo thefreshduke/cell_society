@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simulation gametype = "GameOfLife">
+
+	<grid>
+
+		<row states = "0,0,0,1,1,1"></row>
+		<row states = "0,0,0,1,1,1"></row>
+		<row states = "0,0,0,1,1,1"></row>
+		<row states = "0,0,0,1,1,1"></row>
+		<row states = "0,0,0,1,1,1"></row>
+		<row states = "0,0,0,1,1,1"></row>
+
+		
+		
+
+
+
+
+
+	</grid>
+
+
+
+
+
+
+
+</simulation>

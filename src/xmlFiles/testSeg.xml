@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simulation gametype = "PredPrey">
+
+	<grid>
+
+		<row states = "1,0,0,0,0,0,1,1"></row>
+		<row states = "1,0,0,0,0,0,1,1"></row>
+		<row states = "1,0,0,2,0,0,1,1"></row>
+		<row states = "1,0,2,2,2,0,1,1"></row>
+		<row states = "1,0,0,2,0,0,1,1"></row>
+		<row states = "1,0,0,0,0,0,1,1"></row>
+		<row states = "1,0,0,0,0,0,1,1"></row>
+		<row states = "1,0,0,0,0,0,1,1"></row>
+
+		
+		
+
+
+
+
+
+	</grid>
+
+
+
+
+
+
+
+</simulation>
