@@ -83,8 +83,7 @@ public class ReadXmlInput {
 																// only for
 																// testing
 																// purposes now
-				System.out
-						.println("Parsing through the <grid> to get the elements <row>");
+
 
 				NodeList rowList = doc.getElementsByTagName("row");
 				
