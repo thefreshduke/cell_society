@@ -27,11 +27,6 @@ public class PredPreyCell extends Cell {
 		colorMap.put(0, Color.BLUE);
 		colorMap.put(1, Color.SALMON);
 		colorMap.put(2, Color.GRAY);
-
-		// chronons = 0; //instance variable or unique to each cell? shark
-		// births out of sync with fish births
-		// but if instance variable, also able to say %3 => fish give birth and
-		// %10 => sharks give birth
 		sharkEnergy = SHARK_INITIAL_ENERGY;
 		chronons = 0;
 	}
