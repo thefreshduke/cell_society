@@ -1,4 +1,4 @@
-package cellsociety_team19;
+package simulationTypes;
 
 import java.util.HashMap;
 import java.util.Map;

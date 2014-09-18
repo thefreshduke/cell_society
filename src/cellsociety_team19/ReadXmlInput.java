@@ -15,6 +15,12 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 
+import simulationTypes.Cell;
+import simulationTypes.LifeCell;
+import simulationTypes.PredPreyCell;
+import simulationTypes.SegCell;
+import simulationTypes.TreeCell;
+
 /**
  * MARCUS'S XML READER, KEEP ALL
  * @author Marcus Cain
