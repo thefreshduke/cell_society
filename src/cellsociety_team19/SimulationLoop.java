@@ -149,9 +149,16 @@ public class SimulationLoop {
 		grid.setHgap(10);
 		grid.setPadding(new Insets(5, 5, 5, 5));
 		Group root = (Group) scene.getRoot();
+		
 		root.getChildren().add(grid);
+		
 		grid.add(submit, 1, 30);
-
+		
+		submit.setLayoutX(100);
+		submit.setLayoutY(50);
+		root.getChildren().add(submit);
+		
+		
 		final FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open XML File");
 		//fileChooser.getExtensionFilters().addAll(
@@ -184,6 +191,9 @@ public class SimulationLoop {
 		});
 		return scene;
 	}
+	
+	
+	
 
 	private void createGrid(final Stage stage) {
 		gridNew = new GridPane(); 
