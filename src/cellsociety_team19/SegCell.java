@@ -47,7 +47,7 @@ public class SegCell extends Cell {
 		 */
 
 		/* calculate neighbors */
-		Cell[] myNeighbors = calculateNeighbors();
+		Cell[] myNeighbors = calculateFishNeighbors();
 
 		/*determine if neighbor is satisfied*/
 		if (isSatisfied(myNeighbors)) {
@@ -110,7 +110,7 @@ public class SegCell extends Cell {
 	}
 
 	@Override
-	public Cell[] calculateNeighbors() {
+	public Cell[] calculateFishNeighbors() {
 		int[] xDelta = {1,-1, 0, 0,-1,-1, 1, 1};
 		int[] yDelta = {0, 0,-1, 1, 1,-1,-1, 1};
 		//fixed xDelta and yDelta issue... there was a duplicate
@@ -135,7 +135,7 @@ public class SegCell extends Cell {
 
 	@Override
 	public String toString() {
-		return "Segregation Simulation";
+		return "Seg Cell Simulation";
 	}
 
 	@Override

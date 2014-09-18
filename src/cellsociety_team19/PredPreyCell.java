@@ -12,9 +12,9 @@ public class PredPreyCell extends Cell {
 
 	private Map<Integer, Color> colorMap = new HashMap<Integer, Color>();
 
-	private final static int SHARK_BREED_TIME = 8;
-	private final static int FISH_BREED_TIME = 6;
-	private final static int SHARK_INITIAL_ENERGY = 5;
+	private final static int SHARK_BREED_TIME = 7;
+	private final static int FISH_BREED_TIME = 1;
+	private final static int SHARK_INITIAL_ENERGY = 2;
 	private final static int FISH_ENERGY = 2;
 	private int sharkEnergy;
 	private static int chronons = 0;
@@ -41,7 +41,7 @@ public class PredPreyCell extends Cell {
 
 	@Override
 	public String toString() {
-		return "Predator/Prey Simulation";
+		return "Pred/Prey Simulation";
 	}
 
 	public String getFirstAnimalCoords() {
@@ -153,25 +153,34 @@ public class PredPreyCell extends Cell {
 		int[] xDelta = {-1, 1, 0, 0};
 		int[] yDelta = { 0, 0, 1,-1};
 
-		Cell[] neighbors = new PredPreyCell[4];
+		Cell[] returnListOfNeighbors = new PredPreyCell[4];
 
-		for (int i = 0; i < neighbors.length; i++) {
-			int xLength = listOfCellsInGrid[0].length;
-			int yLength = listOfCellsInGrid.length;
-
-			int newX = (myX + xDelta[i] + xLength) % xLength;
-			int newY = (myY + yDelta[i] + yLength) % yLength;
-
-			if (listOfCellsInGrid[newX] [newY].myNextState != 2 && listOfCellsInGrid[newX] [newY].myState != 2) {
-				neighbors[i] = listOfCellsInGrid[newX] [newY];
+		for (int i = 0; i < returnListOfNeighbors.length; i++) {
+			try {
+				Cell destinationCell = listOfCellsInGrid[myX + xDelta[i]] [myY + yDelta[i]];
+				if (destinationCell.myState != 2 && destinationCell.myNextState != 2) {
+					returnListOfNeighbors[i] = destinationCell;
+				}
 			}
+			catch (Exception e) {
+				returnListOfNeighbors[i] = null;
+			}
+//			int xLength = listOfCellsInGrid[0].length;
+//			int yLength = listOfCellsInGrid.length;
+//
+//			int newX = (myX + xDelta[i] + xLength) % xLength;
+//			int newY = (myY + yDelta[i] + yLength) % yLength;
+//
+//			if (listOfCellsInGrid[newX] [newY].myNextState != 2 && listOfCellsInGrid[newX] [newY].myState != 2) {
+//				returnListOfNeighbors[i] = listOfCellsInGrid[newX] [newY];
+//			}
 		}
 
 		//System.out.println(Arrays.toString(neighbors));
 
 		//create generic neighbors method that creates an arraylist of neighbors, modify it for otherneighbors (specific cases)
 		ArrayList<Cell> fishNeighbors = new ArrayList<Cell>();
-		for (Cell c : neighbors) {
+		for (Cell c : returnListOfNeighbors) {
 			if (c != null && c.myState == 1) {
 				fishNeighbors.add(c);
 			}
@@ -182,7 +191,7 @@ public class PredPreyCell extends Cell {
 		}
 
 		ArrayList<Cell> otherNeighbors = new ArrayList<Cell>();
-		for (Cell c : neighbors) {
+		for (Cell c : returnListOfNeighbors) {
 			if (c != null && c.myState == 0 && c.myNextState == 0) { // Assuming sharks can
 				// only move where no
 				// other animal is
@@ -210,23 +219,21 @@ public class PredPreyCell extends Cell {
 	}
 
 	@Override
-	public Cell[] calculateNeighbors() {
+	public Cell[] calculateFishNeighbors() {
 		int[] xDelta = {-1, 1, 0, 0};
 		int[] yDelta = { 0, 0, 1,-1};
 
 		Cell[] returnListOfNeighbors = new PredPreyCell[4];
 
+		/* this for loop is repeated in all subclasses (subcells) - think about refactoring this */
 		for (int i = 0; i < returnListOfNeighbors.length; i++) {
-			int xLength = listOfCellsInGrid[0].length;
-			int yLength = listOfCellsInGrid.length;
-
-			int newX = (myX + xDelta[i] + xLength) % xLength;
-			int newY = (myY + yDelta[i] + yLength) % yLength;
-
-			if (listOfCellsInGrid[newX][newY].myNextState == 0) {
-				returnListOfNeighbors[i] = listOfCellsInGrid[newX] [newY];
+			try {
+				Cell destinationCell = listOfCellsInGrid[myX + xDelta[i]] [myY + yDelta[i]];
+				if (destinationCell.myState == 0 && destinationCell.myNextState == 0) {
+					returnListOfNeighbors[i] = destinationCell;
+				}
 			}
-			else {
+			catch (Exception e) {
 				returnListOfNeighbors[i] = null;
 			}
 		}
@@ -234,7 +241,7 @@ public class PredPreyCell extends Cell {
 	}
 
 	public ArrayList<Cell> removeNullValuesFromListOfNeighbors() {
-		Cell[] neighbors = calculateNeighbors();
+		Cell[] neighbors = calculateFishNeighbors();
 		ArrayList<Cell> goodNeighbors = new ArrayList<Cell>();
 		for (int i = 0; i < neighbors.length; i++) {
 			if (neighbors[i] != null) {

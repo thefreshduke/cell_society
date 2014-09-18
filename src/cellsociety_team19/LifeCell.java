@@ -24,7 +24,7 @@ public class LifeCell extends Cell {
 	}
 
 	@Override
-	public Cell[] calculateNeighbors() {
+	public Cell[] calculateFishNeighbors() {
 		int[] xDelta = {1,-1, 0, 0,-1,-1, 1, 1};
 		int[] yDelta = {0, 0,-1, 1, 1,-1,-1, 1};
 
@@ -81,7 +81,7 @@ public class LifeCell extends Cell {
 	}
 
 	public ArrayList<Cell> removeNullValuesFromListOfNeighbors() {
-		Cell[] neighbors = calculateNeighbors();
+		Cell[] neighbors = calculateFishNeighbors();
 		ArrayList<Cell> goodNeighbors = new ArrayList<Cell>();
 		for (int i = 0; i < neighbors.length; i++) {
 			if (neighbors[i] != null) {
@@ -116,7 +116,7 @@ public class LifeCell extends Cell {
 
 	@Override
 	public String toString() {
-		return "Game of Life Simulation";
+		return "Life Cell Simulation";
 	}
 
 	@Override

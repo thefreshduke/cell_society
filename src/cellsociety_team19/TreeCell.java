@@ -7,7 +7,7 @@ import javafx.scene.paint.Color;
 
 public class TreeCell extends Cell {
 
-	protected final static double PROBABILITY_OF_CATCHING_FIRE = 0.8;
+	protected final static double PROBABILITY_OF_CATCHING_FIRE = 1;
 	protected int nextState = 0;
 
 	protected Map<Integer, Color> colorMap = new HashMap<Integer, Color>();
@@ -39,7 +39,7 @@ public class TreeCell extends Cell {
 			return;
 		}
 
-		Cell[] neighbors = calculateNeighbors();
+		Cell[] neighbors = calculateFishNeighbors();
 		for (int i = 0; i < neighbors.length; i++) {
 			if (neighbors[i] != null) {
 				if (neighbors[i].myState == 2 && Math.random() < PROBABILITY_OF_CATCHING_FIRE) {
@@ -52,7 +52,7 @@ public class TreeCell extends Cell {
 	}
 
 	@Override
-	public Cell[] calculateNeighbors() {
+	public Cell[] calculateFishNeighbors() {
 		int[] xDelta = {-1, 1, 0, 0};
 		int[] yDelta = { 0, 0, 1,-1};
 
@@ -87,7 +87,7 @@ public class TreeCell extends Cell {
 
 	@Override
 	public String toString() {
-		return "Forest Fire Simulation";
+		return "Tree Fire Simulation";
 	}
 
 	@Override

@@ -34,7 +34,7 @@ public abstract class Cell {
 
 	//superclass abstract methods
 
-	public abstract Cell[] calculateNeighbors();
+	public abstract Cell[] calculateFishNeighbors();
 
 	public abstract void doAction();
 
