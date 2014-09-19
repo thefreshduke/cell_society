@@ -3,6 +3,7 @@ package simulationTypes;
 import java.util.HashMap;
 import java.util.Map;
 
+import cellsociety_team19.XMLReader;
 import javafx.scene.paint.Color;
 
 public abstract class Cell {
@@ -11,7 +12,7 @@ public abstract class Cell {
 	protected int myY;
 	protected int myState;
 	protected int myNextState;
-
+	protected XMLReader xmlReader;
 	//protected int myPatch; ?
 
 	protected Map<Integer, Color> colorMap = new HashMap<Integer, Color>();
@@ -25,6 +26,7 @@ public abstract class Cell {
 		myY = y;
 
 		myState = state;
+		xmlReader = new XMLReader();
 	}
 
 	//Creates a null Cell
