@@ -49,6 +49,7 @@ public class SimulationLoop {
 	private Slider fpsSlider;
 	private KeyFrame frame;
 	private Timeline animation;
+	private int BUTTON_WIDTH = 70;
 
 	public void start(){	
 		frame = makeFrame();
@@ -133,11 +134,19 @@ public class SimulationLoop {
 		gridNew.getChildren().remove(generationNumber);
 		generationNumber = new Text("Generation number: " + genNum);
 		generationNumber.setFill(Color.WHITE);
-		gridNew.add(generationNumber, 1, numCols + 1);
+		gridNew.add(generationNumber, 0, numCols + 1);
 	}
 
 	public Scene init (Stage s, int width, int height) {
 		return askUserForInput(s);
+	}
+	
+	private File chooseFile(final Stage stage) {
+		final FileChooser fileChooser = new FileChooser();
+		fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("XML File", "*.xml*"));
+		fileChooser.setInitialDirectory(new File(System.getProperty("user.dir") +"/src/xmlFiles"));
+		File file = fileChooser.showOpenDialog(stage);
+		return file;
 	}
 
 	private Scene askUserForInput(final Stage stage) {
@@ -152,11 +161,8 @@ public class SimulationLoop {
 		root.getChildren().add(grid);
 		grid.add(submit, 1, 30);
 
-		final FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Open XML File");
-		//fileChooser.getExtensionFilters().addAll(
-		//		new FileChooser.ExtensionFilter("XML File", "*.xml*"));
-
+		
+		
 		final Button openXMLButton = new Button("Open XML File");
 		grid.add(openXMLButton, 0, 30);
 
@@ -167,7 +173,8 @@ public class SimulationLoop {
 
 						//keep everything in here
 
-						File file = fileChooser.showOpenDialog(stage);
+						File file = chooseFile(stage);
+						
 						if (file != null) {
 							xmlReader = new XMLReader(file);
 						}
@@ -227,7 +234,7 @@ public class SimulationLoop {
 		generationNumber.setFill(Color.WHITE);
 
 		Button pause = new Button("Pause");
-		pause.setMinWidth(70);
+		pause.setMinWidth(BUTTON_WIDTH);
 
 		pause.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
@@ -237,7 +244,7 @@ public class SimulationLoop {
 		});
 
 		Button resume = new Button("Resume");
-		resume.setMinWidth(70);
+		resume.setMinWidth(BUTTON_WIDTH);
 
 		resume.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
@@ -247,7 +254,7 @@ public class SimulationLoop {
 		});
 
 		Button reset = new Button("Reset");
-		reset.setMinWidth(70);
+		reset.setMinWidth(BUTTON_WIDTH);
 
 		reset.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
@@ -259,7 +266,7 @@ public class SimulationLoop {
 		});
 
 		Button quit = new Button("Quit");
-		quit.setMinWidth(70);
+		quit.setMinWidth(BUTTON_WIDTH);
 
 		quit.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
@@ -269,7 +276,7 @@ public class SimulationLoop {
 		});
 
 		Button step = new Button("Step");
-		step.setMinWidth(70);
+		step.setMinWidth(BUTTON_WIDTH);
 		step.setOnMouseClicked(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent event) {
@@ -279,14 +286,13 @@ public class SimulationLoop {
 		});
 
 		Button loadNew = new Button("New");
-		loadNew.setMinWidth(70);
+		loadNew.setMinWidth(BUTTON_WIDTH);
 		loadNew.setOnMouseClicked(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent event) {
 				shouldRun = false;
 
-				final FileChooser fileChooser = new FileChooser();
-				File file = fileChooser.showOpenDialog(stage);
+				File file = chooseFile(stage);
 
 				if (file != null) {
 					xmlReader = new XMLReader(file);
@@ -302,17 +308,22 @@ public class SimulationLoop {
 		fpsSlider.setValue(framesPerSecond);
 		fpsSlider.setMajorTickUnit(1);
 		fpsSlider.setSnapToTicks(true);
-		fpsSlider.setMinWidth(70);
+		fpsSlider.setMinWidth(BUTTON_WIDTH);
 
-		int rightSide = numRows - (70 / GRID_CELL_SIZE) - 2;
+		
+		
+		int rightSide = numRows - (BUTTON_WIDTH / GRID_CELL_SIZE) - 1;
+		int leftSide = 0;
+		
 
-		gridNew.add(generationNumber, 1, numCols + 1);
-		gridNew.add(fpsSlider, rightSide, numCols+1);
-		gridNew.add(pause, 1, numCols+2);
-		gridNew.add(loadNew, rightSide, numCols + 2);
-		gridNew.add(resume, 1, numCols + 3);
-		gridNew.add(reset, rightSide, numCols + 3);
-		gridNew.add(step, 1, numCols + 4);
+		gridNew.add(generationNumber, leftSide, numCols + 1);
+		gridNew.add(pause, leftSide, numCols+2);
+		gridNew.add(resume, leftSide, numCols + 3);
+		gridNew.add(step, leftSide, numCols + 4);
+		
+		gridNew.add(fpsSlider, rightSide, numCols+1);		
+		gridNew.add(loadNew, rightSide, numCols + 2);		
+		gridNew.add(reset, rightSide, numCols + 3);		
 		gridNew.add(quit, rightSide, numCols + 4);
 
 		Scene s = new Scene(gridNew);

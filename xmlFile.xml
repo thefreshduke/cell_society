@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ========= Standard XML format for our CA Game ===========-->
+
+	<!-- Simulation Types:
+			1) Segregation CA : "Segregation"
+			2) Forest Fire CA : "Tree"
+			3) Wa-tor CA      : "PredPrey"
+			4) Game Of Life   : "GameOfLife"
+			
+			ex: To run the Segregation CA Simulation use the following tag:  <simulation gametype="Segregation">   </simulation>
+			
+============================================================== -->
+
+
+<simulation gametype = "Tree">
+
+	<!-- Grid Tag: Identifies what tag affect the Grid -->
+	<grid> 
+
+		<!-- Define the States of the Rows for the Grid: ==============================================================================================
+			1) To Setup a NxN Grid, then ensure that there are N <row> tags and N comma seperated elements for the attribute states
+			
+				ex: *Defines 4 rows and 4 columns
+					<row states = "0,1,2,1"></row>		*Row 0:   Column State 0 = 1,  Column State 1 = 1  , Column State 2 = 2,  Column State 3 = 1
+					<row states = "1,1,2,2"></row>		*Row 1:   Column State 0 = 1,  Column State 1 = 1  , Column State 2 = 2,  Column State 3 = 2		
+					<row states = "1,2,1,2"></row>		*Row 2:   Column State 0 = 1,  Column State 1 = 2  , Column State 2 = 1,  Column State 3 = 2
+					<row states = "1,1,1,1"></row>		*Row 3:   Column State 0 = 1,  Column State 1 = 1  , Column State 2 = 1,  Column State 3 = 1
+					
+			2)  For Each <row> tag: the column states are comma separated values, with the first value representing column 0 etc.	
+					
+		========================================================================================================================================== -->			
+					
+		<row states = "1,1,1,1"></row>
+		<row states = "1,1,2,2"></row>
+		<row states = "1,2,1,2"></row>
+		<row states = "1,1,1,1"></row>
+
+
+
+
+
+	</grid>
+
+
+
+
+
+
+
+</simulation>
+

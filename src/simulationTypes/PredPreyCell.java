@@ -12,11 +12,11 @@ public class PredPreyCell extends Cell {
 
 	private Map<Integer, Color> colorMap = new HashMap<Integer, Color>();
 
-	private final static int SHARK_BREED_TIME = 10;
-	private final static int FISH_BREED_TIME = 3;
-	private final static int SHARK_INITIAL_ENERGY = 7;
-	private final static int FISH_ENERGY = 1;
-	private int sharkEnergy;
+	private static double SHARK_BREED_TIME;
+	private static double FISH_BREED_TIME;
+	private static double SHARK_INITIAL_ENERGY;
+	private static double FISH_ENERGY;
+	private double sharkEnergy;
 	private static int chronons = 0;
 
 	private boolean imminentSharkAttack = false; //just for fish
@@ -24,6 +24,15 @@ public class PredPreyCell extends Cell {
 	public PredPreyCell(int x, int y, int state) {
 		super(x, y, state);
 
+		
+		Map<String, Double> paramMap = xmlReader.getParameterMap();
+		
+		SHARK_BREED_TIME = paramMap.get("SHARK_BREED_TIME");
+		FISH_BREED_TIME = paramMap.get("FISH_BREED_TIME");
+		SHARK_INITIAL_ENERGY = paramMap.get("SHARK_INITIAL_ENERGY");
+		FISH_ENERGY = paramMap.get("FISH_ENERGY");
+		
+		
 		colorMap.put(0, Color.BLUE);
 		colorMap.put(1, Color.SALMON);
 		colorMap.put(2, Color.GRAY);

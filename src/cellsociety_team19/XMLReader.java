@@ -26,31 +26,55 @@ import simulationTypes.TreeCell;
 
 public class XMLReader {
 	static File xmlFile;
-
+	static DocumentBuilderFactory dbFactory;
+	static DocumentBuilder dBuilder;
+	private Document doc;
+	
+	
 	public int numRows;
 	public int numCols;
 
 	private Cell[][] gridArrayOfCells;
+	
+	private Cell choice;
 
-	Cell choice;
-
-	Map<String, Cell> simulationMap;
-
+	private Map<String, Cell> simulationMap;
+	
+	public Map<String,Double> parameterMap;
+	
+	private String gameType;
+	
+	public XMLReader(){
+		/*paraments for all seg types*/
+		parameterMap = new HashMap<String,Double>();
+		parameterMap.put("THRESHOLD_OF_HAPPINESS", 0.);
+		parameterMap.put("PROBABILITY_OF_CATCHING_FIRE", 0.);
+		parameterMap.put("SHARK_BREED_TIME", 0.);
+		parameterMap.put("FISH_BREED_TIME", 0.);
+		parameterMap.put("SHARK_INITIAL_ENERGY", 0.);
+		parameterMap.put("FISH_ENERGY", 0.);
+		
+		setupDOMParser();
+		
+		parseCell();
+	}
 	public XMLReader(File xml) {
 		xmlFile = xml;
+		
 		simulationMap = new HashMap<String, Cell>();
 		simulationMap.put("Seg", new SegCell());
 		simulationMap.put("Fish", new PredPreyCell());
 		simulationMap.put("Tree", new TreeCell());
 		simulationMap.put("Life", new LifeCell());
+		
+		
+		setupDOMParser();
+		
 	}
 
 	public Cell[][] parseFile() {
-		try {
-			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-			Document doc = dBuilder.parse(xmlFile);
-			doc.getDocumentElement().normalize();
+		
+			
 
 			/* get the simulation type --> root node(tag) */
 			// list of size 1
@@ -60,7 +84,8 @@ public class XMLReader {
 				Node nNode = gameTypeList.item(i);
 				Element eElement = (Element) nNode;
 				/* set CellType from gametype */
-				choice = simulationMap.get(eElement.getAttribute("gametype"));
+				gameType =eElement.getAttribute("gametype");
+				choice = simulationMap.get(gameType);
 			}
 
 			/* parse through the XMl to set up the Grid */
@@ -102,13 +127,53 @@ public class XMLReader {
 				}
 			}
 			return gridArrayOfCells;
-		}
+		
 
-		catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("Unable to parse: Fix XML file");
-			System.exit(0);
-			return null;
+		
+	}
+	
+	
+	public void parseCell(){
+		
+		/*Get through the list of <paramter> tags */
+		NodeList parameterList = doc.getElementsByTagName("parameter");
+		
+		/*Loop through the paramters and only get the ones with specified gameType */
+		for(int i=0;i<parameterList.getLength();i++){
+			Node nNode = parameterList.item(i);
+			Element eElement = (Element) nNode;
+			
+			//Dont need this if statement --> refactoring to setup all parameters for all gametypes; indivual game cell will choose from the map the correct one
+			//if(eElement.getAttribute("game").equals(gameType)){
+				/*parameterMap will contain values for varaibles according to game type; all other will be null of 0 */
+			//	parameterMap.put(eElement.getAttribute("name"), Integer.parseInt(eElement.getAttribute("value")));
+			//}
+			
+			parameterMap.put(eElement.getAttribute("name"), Double.parseDouble(eElement.getAttribute("value")));
+			
+			
 		}
+		
+		
+		
+	}
+	
+	private void setupDOMParser(){
+		try{
+			 dbFactory = DocumentBuilderFactory.newInstance();
+			dBuilder = dbFactory.newDocumentBuilder();
+			doc = dBuilder.parse(xmlFile);
+			doc.getDocumentElement().normalize();
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				System.out.println("Unable to parse: Fix XML file");
+				System.exit(0);
+				
+			}
+	}
+	
+	public Map<String,Double> getParameterMap(){
+		return parameterMap;
 	}
 }
