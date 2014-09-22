@@ -13,7 +13,7 @@ public class SegCell extends Cell {
 	protected static double THRESHOLD_OF_HAPPINESS;
 
 	private static double EDGE_TYPE;
-	
+
 	protected HashMap<Integer, Color> colorMap = new HashMap<Integer, Color>();
 
 	public SegCell(int x, int y, int state) {
@@ -25,7 +25,7 @@ public class SegCell extends Cell {
 		colorMap.put(4, Color.YELLOW);
 		colorMap.put(5, Color.PURPLE);
 		colorMap.put(6, Color.ORANGE);
-		
+
 		THRESHOLD_OF_HAPPINESS = xmlReader.getParameterMap().get("THRESHOLD_OF_HAPPINESS");
 		EDGE_TYPE = xmlReader.getParameterMap().get("EDGE_TYPE");
 	}
@@ -125,7 +125,7 @@ public class SegCell extends Cell {
 		for (int i = 0; i < returnListOfNeighbors.length; i++) {
 			int newX = 0;
 			int newY = 0;
-			
+
 			int xLength = listOfCellsInGrid[0].length;
 			int yLength = listOfCellsInGrid.length;
 
@@ -141,7 +141,7 @@ public class SegCell extends Cell {
 				newX = (myX + xDelta[i] + xLength) % xLength;
 				newY = (myY + yDelta[i] + yLength) % yLength;
 			}
-			
+
 			try {
 				returnListOfNeighbors[i] = listOfCellsInGrid[newX] [newY];
 			}

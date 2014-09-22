@@ -44,7 +44,7 @@ public class SimulationLoop {
 	private Timeline animation;
 	private int BUTTON_WIDTH = 70;
 
-	public void start(){	
+	public void start() {	
 		frame = makeFrame();
 		animation = new Timeline();
 		animation.setCycleCount(Timeline.INDEFINITE);
@@ -80,7 +80,6 @@ public class SimulationLoop {
 
 	public void updateCells() {
 		updateGenerationNumber();
-		//setUpGridForCells();
 		doCellsAction();
 		updateGraphicalInterface();
 	}
@@ -178,12 +177,12 @@ public class SimulationLoop {
 		submit.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				try{
+				try {
 					gridArrayOfCells = xmlReader.parseFile();
 					createGrid(stage);
 					shouldRun = true;
 				}
-				catch(Exception e){
+				catch(Exception e) {
 					System.out.println("Need to enter an XML File");
 				}
 			}
@@ -194,10 +193,10 @@ public class SimulationLoop {
 	private void createGrid(final Stage stage) {
 		gridNew = new GridPane(); 
 
-		gridNew.setMinSize(GUI_WIDTH, GUI_HEIGHT);//keep
-		numRows = xmlReader.numRows;//keep
-		numCols = xmlReader.numCols;//keep
-		GRID_CELL_SIZE = GUI_WIDTH / xmlReader.numCols;//keep
+		gridNew.setMinSize(GUI_WIDTH, GUI_HEIGHT);
+		numRows = xmlReader.numRows;
+		numCols = xmlReader.numCols;
+		GRID_CELL_SIZE = GUI_WIDTH / xmlReader.numCols;
 
 		//
 		//
@@ -286,7 +285,7 @@ public class SimulationLoop {
 
 		Button loadNew = new Button("New");
 		loadNew.setMinWidth(BUTTON_WIDTH);
-		loadNew.setOnMouseClicked(new EventHandler<MouseEvent>(){
+		loadNew.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				shouldRun = false;

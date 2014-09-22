@@ -24,15 +24,15 @@ public class PredPreyCell extends Cell {
 
 	public PredPreyCell(int x, int y, int state) {
 		super(x, y, state);
-		
+
 		Map<String, Double> paramMap = xmlReader.getParameterMap();
-		
+
 		SHARK_BREED_TIME = paramMap.get("SHARK_BREED_TIME");
 		FISH_BREED_TIME = paramMap.get("FISH_BREED_TIME");
 		SHARK_INITIAL_ENERGY = paramMap.get("SHARK_INITIAL_ENERGY");
 		FISH_ENERGY = paramMap.get("FISH_ENERGY");
 		EDGE_TYPE = paramMap.get("EDGE_TYPE");
-		
+
 		colorMap.put(0, Color.BLUE);
 		colorMap.put(1, Color.SALMON);
 		colorMap.put(2, Color.GRAY);
@@ -163,7 +163,7 @@ public class PredPreyCell extends Cell {
 		for (int i = 0; i < returnListOfNeighbors.length; i++) {
 			int newX = 0;
 			int newY = 0;
-			
+
 			int xLength = listOfCellsInGrid[0].length;
 			int yLength = listOfCellsInGrid.length;
 
@@ -179,7 +179,7 @@ public class PredPreyCell extends Cell {
 				newX = (myX + xDelta[i] + xLength) % xLength;
 				newY = (myY + yDelta[i] + yLength) % yLength;
 			}
-			
+
 			try {
 				if (listOfCellsInGrid[newX] [newY].myState != 2 && listOfCellsInGrid[newX] [newY].myNextState != 2) {
 					returnListOfNeighbors[i] = listOfCellsInGrid[newX] [newY];
@@ -243,7 +243,7 @@ public class PredPreyCell extends Cell {
 		for (int i = 0; i < returnListOfNeighbors.length; i++) {
 			int newX = 0;
 			int newY = 0;
-			
+
 			int xLength = listOfCellsInGrid[0].length;
 			int yLength = listOfCellsInGrid.length;
 
@@ -259,7 +259,7 @@ public class PredPreyCell extends Cell {
 				newX = (myX + xDelta[i] + xLength) % xLength;
 				newY = (myY + yDelta[i] + yLength) % yLength;
 			}
-			
+
 			try {
 				if (listOfCellsInGrid[newX] [newY].myState == 0 && listOfCellsInGrid[newX] [newY].myNextState == 0) {
 					returnListOfNeighbors[i] = listOfCellsInGrid[newX] [newY];

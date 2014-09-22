@@ -106,7 +106,7 @@ public class XMLReader {
 				 * set numRows and numColums --> assuming numRows = numCols
 				 * square grid
 				 */
-				
+
 				// for (int row = 0; row < numRows; row++) {
 
 				// columns will be parsed from the <row> states attribute
@@ -143,8 +143,8 @@ public class XMLReader {
 		}
 	}
 
-	private void setupDOMParser(){
-		try{
+	private void setupDOMParser() {
+		try {
 			dbFactory = DocumentBuilderFactory.newInstance();
 			dBuilder = dbFactory.newDocumentBuilder();
 			doc = dBuilder.parse(xmlFile);

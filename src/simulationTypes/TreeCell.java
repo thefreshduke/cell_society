@@ -19,7 +19,7 @@ public class TreeCell extends Cell {
 		colorMap.put(0, Color.LIGHTGRAY);
 		colorMap.put(1, Color.GREEN);
 		colorMap.put(2, Color.RED);
-		
+
 		PROBABILITY_OF_CATCHING_FIRE = xmlReader.getParameterMap().get("PROBABILITY_OF_CATCHING_FIRE");
 		EDGE_TYPE = xmlReader.getParameterMap().get("EDGE_TYPE");
 	}
@@ -66,7 +66,7 @@ public class TreeCell extends Cell {
 		for (int i = 0; i < returnListOfNeighbors.length; i++) {
 			int newX = 0;
 			int newY = 0;
-			
+
 			int xLength = listOfCellsInGrid[0].length;
 			int yLength = listOfCellsInGrid.length;
 
@@ -82,7 +82,7 @@ public class TreeCell extends Cell {
 				newX = (myX + xDelta[i] + xLength) % xLength;
 				newY = (myY + yDelta[i] + yLength) % yLength;
 			}
-			
+
 			try {
 				returnListOfNeighbors[i] = listOfCellsInGrid[newX] [newY];
 			}

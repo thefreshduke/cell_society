@@ -11,7 +11,7 @@ public class LifeCell extends Cell {
 	protected int nextState = 0;
 
 	protected Map<Integer, Color> colorMap = new HashMap<Integer, Color>();
-	
+
 	private static double EDGE_TYPE;
 
 	public LifeCell(int x, int y, int state) {
@@ -19,7 +19,7 @@ public class LifeCell extends Cell {
 
 		colorMap.put(0, Color.WHITE);
 		colorMap.put(1, Color.GREEN);
-		
+
 		EDGE_TYPE = xmlReader.getParameterMap().get("EDGE_TYPE");
 	}
 
@@ -33,11 +33,11 @@ public class LifeCell extends Cell {
 		int[] yDelta = {0, 0,-1, 1, 1,-1,-1, 1};
 
 		Cell[] returnListOfNeighbors = new LifeCell[8];
-		
+
 		for (int i = 0; i < returnListOfNeighbors.length; i++) {
 			int newX = 0;
 			int newY = 0;
-			
+
 			int xLength = listOfCellsInGrid[0].length;
 			int yLength = listOfCellsInGrid.length;
 
@@ -53,7 +53,7 @@ public class LifeCell extends Cell {
 				newX = (myX + xDelta[i] + xLength) % xLength;
 				newY = (myY + yDelta[i] + yLength) % yLength;
 			}
-			
+
 			try {
 				returnListOfNeighbors[i] = listOfCellsInGrid[newX] [newY];
 			}
@@ -89,7 +89,7 @@ public class LifeCell extends Cell {
 	@Override
 	public void doAction() {
 		int numLiveNeighbors = countNumberOfLiveNeighbors();
-		
+
 		if (numLiveNeighbors == 3) {
 			myNextState = 1;
 		}
