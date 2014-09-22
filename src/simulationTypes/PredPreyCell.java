@@ -16,6 +16,7 @@ public class PredPreyCell extends Cell {
 	private static double FISH_BREED_TIME;
 	private static double SHARK_INITIAL_ENERGY;
 	private static double FISH_ENERGY;
+	private static double EDGE_TYPE;
 	private double sharkEnergy;
 	private static int chronons = 0;
 
@@ -23,7 +24,6 @@ public class PredPreyCell extends Cell {
 
 	public PredPreyCell(int x, int y, int state) {
 		super(x, y, state);
-
 		
 		Map<String, Double> paramMap = xmlReader.getParameterMap();
 		
@@ -31,7 +31,7 @@ public class PredPreyCell extends Cell {
 		FISH_BREED_TIME = paramMap.get("FISH_BREED_TIME");
 		SHARK_INITIAL_ENERGY = paramMap.get("SHARK_INITIAL_ENERGY");
 		FISH_ENERGY = paramMap.get("FISH_ENERGY");
-		
+		EDGE_TYPE = paramMap.get("EDGE_TYPE");
 		
 		colorMap.put(0, Color.BLUE);
 		colorMap.put(1, Color.SALMON);
@@ -70,7 +70,7 @@ public class PredPreyCell extends Cell {
 			chronons++;
 		}
 
-		/*if(myState == 0){
+		/*if(myState == 0) {
 			myNextState = 0;
 		}*/
 
@@ -161,24 +161,33 @@ public class PredPreyCell extends Cell {
 		Cell[] returnListOfNeighbors = new PredPreyCell[4];
 
 		for (int i = 0; i < returnListOfNeighbors.length; i++) {
+			int newX = 0;
+			int newY = 0;
+			
+			int xLength = listOfCellsInGrid[0].length;
+			int yLength = listOfCellsInGrid.length;
+
+			//we can eliminate this following if statement by using finite edges as the default
+			//toroidal edges (wrap-around) is edge type 1
+			//infiniate edges is edge type 2
+			if (EDGE_TYPE == 0) {
+				newX = myX + xDelta[i];
+				newY = myY + yDelta[i];
+			}
+
+			if (EDGE_TYPE == 1) {
+				newX = (myX + xDelta[i] + xLength) % xLength;
+				newY = (myY + yDelta[i] + yLength) % yLength;
+			}
+			
 			try {
-				Cell destinationCell = listOfCellsInGrid[myX + xDelta[i]] [myY + yDelta[i]];
-				if (destinationCell.myState != 2 && destinationCell.myNextState != 2) {
-					returnListOfNeighbors[i] = destinationCell;
+				if (listOfCellsInGrid[newX] [newY].myState != 2 && listOfCellsInGrid[newX] [newY].myNextState != 2) {
+					returnListOfNeighbors[i] = listOfCellsInGrid[newX] [newY];
 				}
 			}
 			catch (Exception e) {
 				returnListOfNeighbors[i] = null;
 			}
-//			int xLength = listOfCellsInGrid[0].length;
-//			int yLength = listOfCellsInGrid.length;
-//
-//			int newX = (myX + xDelta[i] + xLength) % xLength;
-//			int newY = (myY + yDelta[i] + yLength) % yLength;
-//
-//			if (listOfCellsInGrid[newX] [newY].myNextState != 2 && listOfCellsInGrid[newX] [newY].myState != 2) {
-//				returnListOfNeighbors[i] = listOfCellsInGrid[newX] [newY];
-//			}
 		}
 
 		//System.out.println(Arrays.toString(neighbors));
@@ -224,7 +233,7 @@ public class PredPreyCell extends Cell {
 	}
 
 	@Override
-	public Cell[] calculateFishNeighbors() {
+	public Cell[] calculateNeighbors() {
 		int[] xDelta = {-1, 1, 0, 0};
 		int[] yDelta = { 0, 0, 1,-1};
 
@@ -232,10 +241,28 @@ public class PredPreyCell extends Cell {
 
 		/* this for loop is repeated in all subclasses (subcells) - think about refactoring this */
 		for (int i = 0; i < returnListOfNeighbors.length; i++) {
+			int newX = 0;
+			int newY = 0;
+			
+			int xLength = listOfCellsInGrid[0].length;
+			int yLength = listOfCellsInGrid.length;
+
+			//we can eliminate this following if statement by using finite edges as the default
+			//toroidal edges (wrap-around) is edge type 1
+			//infiniate edges is edge type 2
+			if (EDGE_TYPE == 0) {
+				newX = myX + xDelta[i];
+				newY = myY + yDelta[i];
+			}
+
+			if (EDGE_TYPE == 1) {
+				newX = (myX + xDelta[i] + xLength) % xLength;
+				newY = (myY + yDelta[i] + yLength) % yLength;
+			}
+			
 			try {
-				Cell destinationCell = listOfCellsInGrid[myX + xDelta[i]] [myY + yDelta[i]];
-				if (destinationCell.myState == 0 && destinationCell.myNextState == 0) {
-					returnListOfNeighbors[i] = destinationCell;
+				if (listOfCellsInGrid[newX] [newY].myState == 0 && listOfCellsInGrid[newX] [newY].myNextState == 0) {
+					returnListOfNeighbors[i] = listOfCellsInGrid[newX] [newY];
 				}
 			}
 			catch (Exception e) {
@@ -246,7 +273,7 @@ public class PredPreyCell extends Cell {
 	}
 
 	public ArrayList<Cell> removeNullValuesFromListOfNeighbors() {
-		Cell[] neighbors = calculateFishNeighbors();
+		Cell[] neighbors = calculateNeighbors();
 		ArrayList<Cell> goodNeighbors = new ArrayList<Cell>();
 		for (int i = 0; i < neighbors.length; i++) {
 			if (neighbors[i] != null) {

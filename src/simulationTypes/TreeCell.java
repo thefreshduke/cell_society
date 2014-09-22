@@ -8,6 +8,7 @@ import javafx.scene.paint.Color;
 public class TreeCell extends Cell {
 
 	protected static double PROBABILITY_OF_CATCHING_FIRE;
+	protected static double EDGE_TYPE;
 	protected int nextState = 0;
 
 	protected Map<Integer, Color> colorMap = new HashMap<Integer, Color>();
@@ -20,6 +21,7 @@ public class TreeCell extends Cell {
 		colorMap.put(2, Color.RED);
 		
 		PROBABILITY_OF_CATCHING_FIRE = xmlReader.getParameterMap().get("PROBABILITY_OF_CATCHING_FIRE");
+		EDGE_TYPE = xmlReader.getParameterMap().get("EDGE_TYPE");
 	}
 
 	public TreeCell() {
@@ -41,7 +43,7 @@ public class TreeCell extends Cell {
 			return;
 		}
 
-		Cell[] neighbors = calculateFishNeighbors();
+		Cell[] neighbors = calculateNeighbors();
 		for (int i = 0; i < neighbors.length; i++) {
 			if (neighbors[i] != null) {
 				if (neighbors[i].myState == 2 && Math.random() < PROBABILITY_OF_CATCHING_FIRE) {
@@ -54,7 +56,7 @@ public class TreeCell extends Cell {
 	}
 
 	@Override
-	public Cell[] calculateFishNeighbors() {
+	public Cell[] calculateNeighbors() {
 		int[] xDelta = {-1, 1, 0, 0};
 		int[] yDelta = { 0, 0, 1,-1};
 
@@ -62,8 +64,27 @@ public class TreeCell extends Cell {
 
 		/* this for loop is repeated in all subclasses (subcells) - think about refactoring this */
 		for (int i = 0; i < returnListOfNeighbors.length; i++) {
+			int newX = 0;
+			int newY = 0;
+			
+			int xLength = listOfCellsInGrid[0].length;
+			int yLength = listOfCellsInGrid.length;
+
+			//we can eliminate this following if statement by using finite edges as the default
+			//toroidal edges (wrap-around) is edge type 1
+			//infiniate edges is edge type 2
+			if (EDGE_TYPE == 0) {
+				newX = myX + xDelta[i];
+				newY = myY + yDelta[i];
+			}
+
+			if (EDGE_TYPE == 1) {
+				newX = (myX + xDelta[i] + xLength) % xLength;
+				newY = (myY + yDelta[i] + yLength) % yLength;
+			}
+			
 			try {
-				returnListOfNeighbors[i] = listOfCellsInGrid[myX + xDelta[i]] [myY + yDelta[i]];
+				returnListOfNeighbors[i] = listOfCellsInGrid[newX] [newY];
 			}
 			catch (Exception e) {
 				returnListOfNeighbors[i] = null;

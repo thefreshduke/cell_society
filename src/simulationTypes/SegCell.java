@@ -10,8 +10,9 @@ import javafx.scene.paint.Color;
 public class SegCell extends Cell {
 	Cell[][] listOfCellsInGrid;
 
-	protected static double THRESHOLD_OF_HAPPINESS ;
-	
+	protected static double THRESHOLD_OF_HAPPINESS;
+
+	private static double EDGE_TYPE;
 	
 	protected HashMap<Integer, Color> colorMap = new HashMap<Integer, Color>();
 
@@ -25,7 +26,8 @@ public class SegCell extends Cell {
 		colorMap.put(5, Color.PURPLE);
 		colorMap.put(6, Color.ORANGE);
 		
-		 THRESHOLD_OF_HAPPINESS = xmlReader.getParameterMap().get("THRESHOLD_OF_HAPPINESS");
+		THRESHOLD_OF_HAPPINESS = xmlReader.getParameterMap().get("THRESHOLD_OF_HAPPINESS");
+		EDGE_TYPE = xmlReader.getParameterMap().get("EDGE_TYPE");
 	}
 
 	public SegCell() {
@@ -50,7 +52,7 @@ public class SegCell extends Cell {
 		 */
 
 		/* calculate neighbors */
-		Cell[] myNeighbors = calculateFishNeighbors();
+		Cell[] myNeighbors = calculateNeighbors();
 
 		/*determine if neighbor is satisfied*/
 		if (isSatisfied(myNeighbors)) {
@@ -113,7 +115,7 @@ public class SegCell extends Cell {
 	}
 
 	@Override
-	public Cell[] calculateFishNeighbors() {
+	public Cell[] calculateNeighbors() {
 		int[] xDelta = {1,-1, 0, 0,-1,-1, 1, 1};
 		int[] yDelta = {0, 0,-1, 1, 1,-1,-1, 1};
 		//fixed xDelta and yDelta issue... there was a duplicate
@@ -121,8 +123,27 @@ public class SegCell extends Cell {
 		Cell[] returnListOfNeighbors = new SegCell[8];
 
 		for (int i = 0; i < returnListOfNeighbors.length; i++) {
+			int newX = 0;
+			int newY = 0;
+			
+			int xLength = listOfCellsInGrid[0].length;
+			int yLength = listOfCellsInGrid.length;
+
+			//we can eliminate this following if statement by using finite edges as the default
+			//toroidal edges (wrap-around) is edge type 1
+			//infiniate edges is edge type 2
+			if (EDGE_TYPE == 0) {
+				newX = myX + xDelta[i];
+				newY = myY + yDelta[i];
+			}
+
+			if (EDGE_TYPE == 1) {
+				newX = (myX + xDelta[i] + xLength) % xLength;
+				newY = (myY + yDelta[i] + yLength) % yLength;
+			}
+			
 			try {
-				returnListOfNeighbors[i] = listOfCellsInGrid[myX + xDelta[i]] [myY + yDelta[i]];
+				returnListOfNeighbors[i] = listOfCellsInGrid[newX] [newY];
 			}
 			catch (Exception e) {
 				returnListOfNeighbors[i] = null;

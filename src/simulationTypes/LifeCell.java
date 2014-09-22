@@ -11,12 +11,16 @@ public class LifeCell extends Cell {
 	protected int nextState = 0;
 
 	protected Map<Integer, Color> colorMap = new HashMap<Integer, Color>();
+	
+	private static double EDGE_TYPE;
 
 	public LifeCell(int x, int y, int state) {
 		super(x, y, state);
 
 		colorMap.put(0, Color.WHITE);
 		colorMap.put(1, Color.GREEN);
+		
+		EDGE_TYPE = xmlReader.getParameterMap().get("EDGE_TYPE");
 	}
 
 	public LifeCell() {
@@ -24,64 +28,55 @@ public class LifeCell extends Cell {
 	}
 
 	@Override
-	public Cell[] calculateFishNeighbors() {
+	public Cell[] calculateNeighbors() {
 		int[] xDelta = {1,-1, 0, 0,-1,-1, 1, 1};
 		int[] yDelta = {0, 0,-1, 1, 1,-1,-1, 1};
 
 		Cell[] returnListOfNeighbors = new LifeCell[8];
-
-		//		if (myState == 1) {
-		//		System.out.println("myX: " + myX + ", myY: " + myY);
-
+		
 		for (int i = 0; i < returnListOfNeighbors.length; i++) {
+			int newX = 0;
+			int newY = 0;
+			
+			int xLength = listOfCellsInGrid[0].length;
+			int yLength = listOfCellsInGrid.length;
+
+			//we can eliminate this following if statement by using finite edges as the default
+			//toroidal edges (wrap-around) is edge type 1
+			//infiniate edges is edge type 2
+			if (EDGE_TYPE == 0) {
+				newX = myX + xDelta[i];
+				newY = myY + yDelta[i];
+			}
+
+			if (EDGE_TYPE == 1) {
+				newX = (myX + xDelta[i] + xLength) % xLength;
+				newY = (myY + yDelta[i] + yLength) % yLength;
+			}
+			
 			try {
-				//				System.out.println("X: " + (myX + xDelta[i]) + ", Y: " + (myY + yDelta[i]));
-				//				System.out.println(xDelta[i]);
-				//				System.out.println(yDelta[i]);
-				//				System.out.println(myX + xDelta[i]);
-				//				System.out.println(myY + yDelta[i]);
-				//				System.out.println("myState: " + listOfCellsInGrid[myX + xDelta[i]] [myY + yDelta[i]].myState);
-				returnListOfNeighbors[i] = listOfCellsInGrid[myX + xDelta[i]] [myY + yDelta[i]];
+				returnListOfNeighbors[i] = listOfCellsInGrid[newX] [newY];
 			}
 			catch (Exception e) {
 				returnListOfNeighbors[i] = null;
 			}
 		}
-		//		System.out.println("============");
-		//		}
 		return returnListOfNeighbors;
 	}
 
 	public int countNumberOfLiveNeighbors() {
 		int counter = 0;
-		//		Cell[] listOfNeighbors = calculateNeighbors();
 		ArrayList<Cell> listOfNeighbors = removeNullValuesFromListOfNeighbors();
-		//		System.out.println(listOfNeighbors.toString());
 		for (int i = 0; i < listOfNeighbors.size(); i++) {
-			//			System.out.println(listOfNeighbors[i].myState);
-			//			System.out.println(i);
-			//			if (listOfNeighbors[i] != null) {
-			//				System.out.println("wut1");
 			if (listOfNeighbors.get(i).myState == 1) {
 				counter++;
-				//					System.out.println("wut2");
 			}
-			//			}
 		}
-		//		if (myState == 1) {
-		//		System.out.println(myX + ", " + myY);
-		//		for (int i = 0; i < listOfNeighbors.size(); i++) {
-		//			System.out.println(listOfNeighbors.get(i).myX + ", " + listOfNeighbors.get(i).myY + ": " + listOfNeighbors.get(i).myState);
-		//		}
-		//		System.out.println("counter: " + counter);
-		//		System.out.println("=============");
-		//		System.out.println("wut");
-		//		}
 		return counter;
 	}
 
 	public ArrayList<Cell> removeNullValuesFromListOfNeighbors() {
-		Cell[] neighbors = calculateFishNeighbors();
+		Cell[] neighbors = calculateNeighbors();
 		ArrayList<Cell> goodNeighbors = new ArrayList<Cell>();
 		for (int i = 0; i < neighbors.length; i++) {
 			if (neighbors[i] != null) {
@@ -94,10 +89,7 @@ public class LifeCell extends Cell {
 	@Override
 	public void doAction() {
 		int numLiveNeighbors = countNumberOfLiveNeighbors();
-
-		//		if (myState == 1) {
-		//			System.out.println("Live: " + numLiveNeighbors);
-		//		}
+		
 		if (numLiveNeighbors == 3) {
 			myNextState = 1;
 		}
