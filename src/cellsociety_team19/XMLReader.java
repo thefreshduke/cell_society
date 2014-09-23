@@ -25,9 +25,9 @@ import simulationTypes.TreeCell;
  */
 
 public class XMLReader {
-	static File xmlFile;
-	static DocumentBuilderFactory dbFactory;
-	static DocumentBuilder dBuilder;
+	private File xmlFile;
+	private DocumentBuilderFactory dbFactory;
+	private DocumentBuilder dBuilder;
 	private Document doc;
 
 	public int numRows;
