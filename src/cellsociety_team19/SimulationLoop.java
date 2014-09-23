@@ -93,7 +93,7 @@ public class SimulationLoop {
 				Cell curCell = gridArrayOfCells[i][j];
 
 				Rectangle rec = new Rectangle(0, 0, GRID_CELL_SIZE, GRID_CELL_SIZE); 
-				rec.setFill(curCell.retrieveCorrespondingColorFromMap());
+				rec.setFill(curCell.getCorrespondingColor());
 
 				gridNew.add(rec, j, i); //GridPane uses reversed coordinates
 				curCell.updateCell();

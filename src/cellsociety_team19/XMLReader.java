@@ -12,11 +12,11 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 
-import simulationTypes.Cell;
-import simulationTypes.LifeCell;
-import simulationTypes.PredPreyCell;
-import simulationTypes.SegCell;
-import simulationTypes.TreeCell;
+import edgeTypes.Edge;
+import edgeTypes.FiniteEdge;
+import edgeTypes.ToroidalEdge;
+import edgeTypes.Edge.*;
+import simulationTypes.*;
 
 /**
  * MARCUS'S XML READER, KEEP ALL
@@ -30,18 +30,25 @@ public class XMLReader {
 	static DocumentBuilder dBuilder;
 	private Document doc;
 
+//	public double edgeType; //temporary hardcode for refactoring purposes; this will need to be refactored soon
 	public int numRows;
 	public int numCols;
 
 	private Cell[][] gridArrayOfCells;
 
-	private Cell choice;
+	private Cell gameChoice;
+	
+	private Edge edgeChoice;
 
-	private Map<String, Cell> simulationMap;
+	private Map<String, Object> simulationMap;
+	
+//	private Map<String, Edge> edgeMap;
 
 	public Map<String, Double> parameterMap;
 
 	private String gameType;
+	
+	private String edgeType;
 
 	public XMLReader() {
 		/*paraments for all seg types*/
@@ -52,7 +59,12 @@ public class XMLReader {
 		parameterMap.put("FISH_BREED_TIME", 0.);
 		parameterMap.put("SHARK_INITIAL_ENERGY", 0.);
 		parameterMap.put("FISH_ENERGY", 0.);
-		parameterMap.put("EDGE_TYPE", 0.);
+//		parameterMap.put("EDGE_TYPE", 0.);
+		
+		
+//		edgeMap.put("finite", new FiniteEdge(gridArrayOfCells));
+//		edgeMap.put("toroidal", new ToroidalEdge(gridArrayOfCells));
+		//edgeMap.put("infinite", new InfiniteEdge(gridArrayOfCells));
 
 		setupDOMParser();
 
@@ -62,16 +74,21 @@ public class XMLReader {
 	public XMLReader(File xml) {
 		xmlFile = xml;
 
-		simulationMap = new HashMap<String, Cell>();
+		simulationMap = new HashMap<String, Object>();
 		simulationMap.put("Seg", new SegCell());
 		simulationMap.put("Fish", new PredPreyCell());
 		simulationMap.put("Tree", new TreeCell());
 		simulationMap.put("Life", new LifeCell());
+		simulationMap.put("Finite", new FiniteEdge());
+		simulationMap.put("Toroidal", new ToroidalEdge());
 
 		setupDOMParser();
 	}
 
 	public Cell[][] parseFile() {
+		
+//		parseCell();
+		
 		/* get the simulation type --> root node(tag) */
 		// list of size 1
 		NodeList gameTypeList = doc.getElementsByTagName("simulation");
@@ -80,8 +97,12 @@ public class XMLReader {
 			Node nNode = gameTypeList.item(i);
 			Element eElement = (Element) nNode;
 			/* set CellType from gametype */
-			gameType = eElement.getAttribute("gametype");
-			choice = simulationMap.get(gameType);
+			gameType = eElement.getAttribute("gameType");
+			gameChoice = (Cell) simulationMap.get(gameType);
+			//???
+			edgeType = eElement.getAttribute("edgeType");
+			edgeChoice = (Edge) simulationMap.get(edgeType);
+			//edgeType = parameterMap.get("EDGE_TYPE"); //temporary hardcode for refactoring purposes; this will need to be refactored soon
 		}
 
 		/* parse through the XML to set up the Grid */
@@ -115,7 +136,8 @@ public class XMLReader {
 				int col = colStates.length;
 				/* Make 2d grid array that tracks the cells in the grid */
 				for (x = 0; x < col; x++) {
-					gridArrayOfCells[i][x] = choice.makeNewCell(i, x, Integer.parseInt(colStates[x]));
+//					Edge curEdge = edgeMap.get(parameterMap.get("EDGE_TYPE"));
+					gridArrayOfCells[i][x] = gameChoice.makeNewCell(i, x, Integer.parseInt(colStates[x]), edgeChoice);
 					//gridArrayOfCells[i][x] = new SegCell(i, x, 0);
 				}
 			}

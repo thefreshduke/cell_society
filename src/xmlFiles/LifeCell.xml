@@ -2,7 +2,7 @@
 <simulation gametype = "Life">
 
 	<parameters>
-		<parameter name="EDGE_TYPE" value ="1"></parameter>
+		<parameter name="EDGE_TYPE" value ="finite"></parameter>
  	</parameters>
 
   	<grid>

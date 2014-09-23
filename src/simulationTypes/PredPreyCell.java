@@ -158,7 +158,7 @@ public class PredPreyCell extends Cell {
 		int[] xDelta = {-1, 1, 0, 0};
 		int[] yDelta = { 0, 0, 1,-1};
 
-		Cell[] returnListOfNeighbors = new PredPreyCell[4];
+		Cell[] returnListOfNeighbors = new PredPreyCell[xDelta.length];
 
 		for (int i = 0; i < returnListOfNeighbors.length; i++) {
 			int newX = 0;
@@ -284,11 +284,6 @@ public class PredPreyCell extends Cell {
 	}
 
 	@Override
-	public void setGrid(Cell[][] listOfCells) {
-		listOfCellsInGrid = listOfCells;
-	}
-
-	@Override
 	public void updateCell() {
 		myState = myNextState;
 	}
@@ -299,12 +294,12 @@ public class PredPreyCell extends Cell {
 	}
 
 	@Override
-	public Color retrieveCorrespondingColorFromMap() {
+	public Color getCorrespondingColor() {
 		return colorMap.get(myState);
 	}
 
-	@Override
-	public Cell[][] updateGrid() {
-		return listOfCellsInGrid;
-	}
+//	@Override
+//	public Cell[][] updateGrid() {
+//		return listOfCellsInGrid;
+//	}
 }

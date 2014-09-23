@@ -12,12 +12,10 @@ public class SegCell extends Cell {
 
 	protected static double THRESHOLD_OF_HAPPINESS;
 
-	private static double EDGE_TYPE;
-
 	protected HashMap<Integer, Color> colorMap = new HashMap<Integer, Color>();
 
-	public SegCell(int x, int y, int state) {
-		super(x, y, state);
+	public SegCell(int x, int y, int state, double edgeType) {
+		super(x, y, state, edgeType);
 		colorMap.put(0, Color.WHITE);
 		colorMap.put(1, Color.RED);
 		colorMap.put(2, Color.BLUE);
@@ -27,7 +25,6 @@ public class SegCell extends Cell {
 		colorMap.put(6, Color.ORANGE);
 
 		THRESHOLD_OF_HAPPINESS = xmlReader.getParameterMap().get("THRESHOLD_OF_HAPPINESS");
-		EDGE_TYPE = xmlReader.getParameterMap().get("EDGE_TYPE");
 	}
 
 	public SegCell() {
@@ -114,57 +111,52 @@ public class SegCell extends Cell {
 		return (numNeighborsWithSameState >= (THRESHOLD_OF_HAPPINESS * counter));
 	}
 
+//	@Override
+//	public Cell[] calculateNeighbors() {
+//		int[] xDelta = {1,-1, 0, 0,-1,-1, 1, 1};
+//		int[] yDelta = {0, 0,-1, 1, 1,-1,-1, 1};
+//		//fixed xDelta and yDelta issue... there was a duplicate
+//
+//		Cell[] returnListOfNeighbors = new SegCell[xDelta.length];
+//
+//		for (int i = 0; i < returnListOfNeighbors.length; i++) {
+//			int newX = 0;
+//			int newY = 0;
+//
+//			int xLength = listOfCellsInGrid[0].length;
+//			int yLength = listOfCellsInGrid.length;
+//
+//			//we can eliminate this following if statement by using finite edges as the default
+//			//toroidal edges (wrap-around) is edge type 1
+//			//infiniate edges is edge type 2
+//			if (EDGE_TYPE == 0) {
+//				newX = myX + xDelta[i];
+//				newY = myY + yDelta[i];
+//			}
+//
+//			if (EDGE_TYPE == 1) {
+//				newX = (myX + xDelta[i] + xLength) % xLength;
+//				newY = (myY + yDelta[i] + yLength) % yLength;
+//			}
+//
+//			try {
+//				returnListOfNeighbors[i] = listOfCellsInGrid[newX] [newY];
+//			}
+//			catch (Exception e) {
+//				returnListOfNeighbors[i] = null;
+//			}
+//		}
+//		return returnListOfNeighbors;
+//	}
+
 	@Override
-	public Cell[] calculateNeighbors() {
-		int[] xDelta = {1,-1, 0, 0,-1,-1, 1, 1};
-		int[] yDelta = {0, 0,-1, 1, 1,-1,-1, 1};
-		//fixed xDelta and yDelta issue... there was a duplicate
-
-		Cell[] returnListOfNeighbors = new SegCell[8];
-
-		for (int i = 0; i < returnListOfNeighbors.length; i++) {
-			int newX = 0;
-			int newY = 0;
-
-			int xLength = listOfCellsInGrid[0].length;
-			int yLength = listOfCellsInGrid.length;
-
-			//we can eliminate this following if statement by using finite edges as the default
-			//toroidal edges (wrap-around) is edge type 1
-			//infiniate edges is edge type 2
-			if (EDGE_TYPE == 0) {
-				newX = myX + xDelta[i];
-				newY = myY + yDelta[i];
-			}
-
-			if (EDGE_TYPE == 1) {
-				newX = (myX + xDelta[i] + xLength) % xLength;
-				newY = (myY + yDelta[i] + yLength) % yLength;
-			}
-
-			try {
-				returnListOfNeighbors[i] = listOfCellsInGrid[newX] [newY];
-			}
-			catch (Exception e) {
-				returnListOfNeighbors[i] = null;
-			}
-		}
-		return returnListOfNeighbors;
-	}
-
-	@Override
-	public SegCell makeNewCell(int cellX, int cellY, int cellState) {
-		return new SegCell(cellX, cellY, cellState);
+	public SegCell makeNewCell(int cellX, int cellY, int cellState, double edgeType) {
+		return new SegCell(cellX, cellY, cellState, edgeType);
 	}
 
 	@Override
 	public String toString() {
 		return "Seg Cell Simulation";
-	}
-
-	@Override
-	public void setGrid(Cell[][] listOfCells) {
-		listOfCellsInGrid = listOfCells;
 	}
 
 	@Override
@@ -178,12 +170,12 @@ public class SegCell extends Cell {
 	}
 
 	@Override
-	public Color retrieveCorrespondingColorFromMap() {
+	public Color getCorrespondingColor() {
 		return colorMap.get(myState);
 	}
 
-	@Override 
-	public Cell[][] updateGrid() {
-		return null;
-	}
+//	@Override 
+//	public Cell[][] updateGrid() {
+//		return null;
+//	}
 }
