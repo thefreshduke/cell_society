@@ -13,15 +13,15 @@ public class TreeCell extends Cell {
 
 	protected Map<Integer, Color> colorMap = new HashMap<Integer, Color>();
 
-	public TreeCell(int x, int y, int state) {
-		super(x, y, state);
+	public TreeCell(int x, int y, int state, Map<String,Double> paramMap) {
+		super(x, y, state, paramMap);
 
 		colorMap.put(0, Color.LIGHTGRAY);
 		colorMap.put(1, Color.GREEN);
 		colorMap.put(2, Color.RED);
 
-		PROBABILITY_OF_CATCHING_FIRE = xmlReader.getParameterMap().get("PROBABILITY_OF_CATCHING_FIRE");
-		EDGE_TYPE = xmlReader.getParameterMap().get("EDGE_TYPE");
+		PROBABILITY_OF_CATCHING_FIRE = super.parameterMap.get("PROBABILITY_OF_CATCHING_FIRE");
+		EDGE_TYPE = super.parameterMap.get("EDGE_TYPE");
 	}
 
 	public TreeCell() {
@@ -94,8 +94,8 @@ public class TreeCell extends Cell {
 	}
 
 	@Override
-	public TreeCell makeNewCell(int cellX, int cellY, int cellState) {
-		return new TreeCell(cellX, cellY, cellState);
+	public TreeCell makeNewCell(int cellX, int cellY, int cellState, Map<String,Double> paramMap) {
+		return new TreeCell(cellX, cellY, cellState, paramMap);
 	}
 
 	@Override

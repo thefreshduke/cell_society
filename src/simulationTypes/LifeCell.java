@@ -14,13 +14,13 @@ public class LifeCell extends Cell {
 
 	private static double EDGE_TYPE;
 
-	public LifeCell(int x, int y, int state) {
-		super(x, y, state);
+	public LifeCell(int x, int y, int state, Map<String,Double> paramMap) {
+		super(x, y, state, paramMap);
 
 		colorMap.put(0, Color.WHITE);
 		colorMap.put(1, Color.GREEN);
 
-		EDGE_TYPE = xmlReader.getParameterMap().get("EDGE_TYPE");
+		EDGE_TYPE = super.parameterMap.get("EDGE_TYPE");
 	}
 
 	public LifeCell() {
@@ -102,8 +102,8 @@ public class LifeCell extends Cell {
 	}
 
 	@Override
-	public Cell makeNewCell(int cellX, int cellY, int cellState) {
-		return new LifeCell(cellX, cellY, cellState);
+	public Cell makeNewCell(int cellX, int cellY, int cellState, Map<String,Double> paramMap) {
+		return new LifeCell(cellX, cellY, cellState, paramMap);
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package simulationTypes;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import javafx.scene.paint.Color;
@@ -16,8 +17,8 @@ public class SegCell extends Cell {
 
 	protected HashMap<Integer, Color> colorMap = new HashMap<Integer, Color>();
 
-	public SegCell(int x, int y, int state) {
-		super(x, y, state);
+	public SegCell(int x, int y, int state, Map<String,Double> paramMap) {
+		super(x, y, state, paramMap);
 		colorMap.put(0, Color.WHITE);
 		colorMap.put(1, Color.RED);
 		colorMap.put(2, Color.BLUE);
@@ -26,8 +27,8 @@ public class SegCell extends Cell {
 		colorMap.put(5, Color.PURPLE);
 		colorMap.put(6, Color.ORANGE);
 
-		THRESHOLD_OF_HAPPINESS = xmlReader.getParameterMap().get("THRESHOLD_OF_HAPPINESS");
-		EDGE_TYPE = xmlReader.getParameterMap().get("EDGE_TYPE");
+		THRESHOLD_OF_HAPPINESS = super.parameterMap.get("THRESHOLD_OF_HAPPINESS");
+		EDGE_TYPE = super.parameterMap.get("EDGE_TYPE");
 	}
 
 	public SegCell() {
@@ -67,7 +68,7 @@ public class SegCell extends Cell {
 				int randChoice = rand.nextInt(openCells.size());
 				Cell newCell = openCells.get(randChoice);
 				if (myState != 0) {
-					SegCell moveCell = new SegCell(newCell.myX, newCell.myY, 0);
+					SegCell moveCell = new SegCell(newCell.myX, newCell.myY, 0, super.parameterMap);
 					moveCell.myNextState = myState;
 
 					listOfCellsInGrid[newCell.myX] [newCell.myY] = moveCell;
@@ -153,8 +154,8 @@ public class SegCell extends Cell {
 	}
 
 	@Override
-	public SegCell makeNewCell(int cellX, int cellY, int cellState) {
-		return new SegCell(cellX, cellY, cellState);
+	public SegCell makeNewCell(int cellX, int cellY, int cellState, Map<String,Double> paramMap) {
+		return new SegCell(cellX, cellY, cellState,paramMap);
 	}
 
 	@Override

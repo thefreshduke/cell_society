@@ -12,7 +12,7 @@ public abstract class Cell {
 	protected int myY;
 	protected int myState;
 	protected int myNextState;
-	protected XMLReader xmlReader;
+	protected Map<String,Double> parameterMap;
 	//protected int myPatch; ?
 
 	protected Map<Integer, Color> colorMap = new HashMap<Integer, Color>();
@@ -21,12 +21,11 @@ public abstract class Cell {
 
 	//superclass constructor
 
-	public Cell(int x, int y, int state) {
+	public Cell(int x, int y, int state, Map<String,Double> paramMap) {
 		myX = x;
 		myY = y;
-
 		myState = state;
-		xmlReader = new XMLReader();
+		parameterMap = paramMap;
 	}
 
 	//Creates a null Cell
@@ -40,7 +39,7 @@ public abstract class Cell {
 
 	public abstract void doAction();
 
-	public abstract Cell makeNewCell(int cellX, int cellY, int cellState);
+	public abstract Cell makeNewCell(int cellX, int cellY, int cellState, Map<String,Double> paramMap);
 
 	public abstract String toString();
 
