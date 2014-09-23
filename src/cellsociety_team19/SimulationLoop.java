@@ -1,20 +1,29 @@
 package cellsociety_team19;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import simulationTypes.Cell;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.ConstraintsBase;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
@@ -44,6 +53,11 @@ public class SimulationLoop {
 	private KeyFrame frame;
 	private Timeline animation;
 	private int BUTTON_WIDTH = 70;
+	
+	private Map<Integer, Integer> populationCounts;
+	
+	private LineChart<Number,Number> lineChart;
+	private ArrayList<XYChart.Series> myLines;
 
 	public void start(){	
 		frame = makeFrame();
@@ -51,6 +65,13 @@ public class SimulationLoop {
 		animation.setCycleCount(Timeline.INDEFINITE);
 		animation.getKeyFrames().add(frame);
 		animation.play();
+	}
+	
+	public void initializePopulationMap(){
+		populationCounts = new HashMap<Integer, Integer>();
+		for(int i = 0; i < gridArrayOfCells[0][0].myNumStates; i++){
+			populationCounts.put(i, 0);
+		}
 	}
 
 	/**
@@ -66,12 +87,41 @@ public class SimulationLoop {
 			if (shouldRun) {
 				updateCells();			
 				updateFPS();
-
+				
 			}
 		}
 
 	};
 
+	public void updatePopulationGraph(){
+		System.out.println(populationCounts);
+		
+		
+		if(gridNew.getChildren().contains(lineChart)) gridNew.getChildren().remove(lineChart);
+		
+		final NumberAxis xAxis = new NumberAxis();
+        final NumberAxis yAxis = new NumberAxis();
+        xAxis.setLabel("Generation Number");
+        //creating the chart
+        lineChart = new LineChart<Number,Number>(xAxis,yAxis);
+                
+        lineChart.setTitle("Population Monitoring");
+        lineChart.setAnimated(false);
+        //defining a series
+        
+        for(Integer i: populationCounts.keySet()){
+        	if(i != 0){
+	        	XYChart.Series series = new XYChart.Series();
+	            series.getData().add(new XYChart.Data(genNum, populationCounts.get(i)));
+	            lineChart.getData().add(series);
+        	}
+        }
+        
+        gridNew.add(lineChart, numRows+10, 3);
+		
+	}
+	
+	
 	private void updateFPS() {
 		framesPerSecond = (int) Math.round(fpsSlider.getValue());		
 		animation.stop();
@@ -82,8 +132,11 @@ public class SimulationLoop {
 	}
 
 	public void updateCells() {
+		updatePopulationGraph();
+		initializePopulationMap(); //should probably be in own method
+		
+		
 		updateGenerationNumber();
-		//setUpGridForCells();
 		doCellsAction();
 		updateGraphicalInterface();
 	}
@@ -94,31 +147,59 @@ public class SimulationLoop {
 
 				//System.out.println(gridArrayOfCells[i][j].getDesc());
 
-				Cell curCell = gridArrayOfCells[i][j];
+				final Cell curCell = gridArrayOfCells[i][j];
+				int cellState = curCell.getState();
+				
+				
+				populationCounts.put(cellState, populationCounts.get(cellState)+1);
+				
+				Rectangle existingRectangle = (Rectangle) getNodeByRowColumnIndex(i, j, gridNew);
+				
+				gridNew.getChildren().remove(existingRectangle);
+				
+				final Rectangle rec = new Rectangle(0, 0, GRID_CELL_SIZE, GRID_CELL_SIZE); 
 
-				Rectangle rec = new Rectangle(0, 0, GRID_CELL_SIZE, GRID_CELL_SIZE); 
+				rec.setOnMouseClicked(new EventHandler<MouseEvent>(){
+
+					@Override
+					public void handle(MouseEvent event) {
+						int newState = (curCell.getState() + 1) % curCell.myNumStates;
+						curCell.setState(newState);
+						curCell.setNextState(newState);
+						rec.setFill(curCell.retrieveCorrespondingColorFromMap());
+						
+					}
+					
+				});
+			
+				
 				rec.setFill(curCell.retrieveCorrespondingColorFromMap());
-
+				
 				gridNew.add(rec, j, i); //GridPane uses reversed coordinates
 				curCell.updateCell();
 			}
 		}
 	}
 
+	public Node getNodeByRowColumnIndex(final int row,final int column,GridPane gridPane) {
+        Node result = null;
+        ObservableList<Node> childrens = gridPane.getChildren();
+        for(Node node : childrens) {
+            if(gridPane.getRowIndex(node) == row && gridPane.getColumnIndex(node) == column) {
+                result = node;
+                break;
+            }
+        }
+        return result;
+    }
+	
+	
 	private void doCellsAction() {
 		for (int i = 0; i < gridArrayOfCells.length; i++) {
 			for (int j = 0; j < gridArrayOfCells[i].length; j++) {
 				gridArrayOfCells[i][j].setGrid(gridArrayOfCells);
 				Cell curCell = gridArrayOfCells[i][j];
 				curCell.doAction();
-			}
-		}
-	}
-
-	private void setUpGridForCells() {
-		for (int i = 0; i < gridArrayOfCells.length; i++) {
-			for (int j = 0; j < gridArrayOfCells[i].length; j++) {
-				gridArrayOfCells[i][j].setGrid(gridArrayOfCells);
 			}
 		}
 	}
@@ -196,13 +277,15 @@ public class SimulationLoop {
 			public void handle(MouseEvent event) {
 				
 				try{
-					gridArrayOfCells = xmlReader.parseFile();
-					createGrid(stage);
-					shouldRun = true;
+					gridArrayOfCells = xmlReader.parseFile();					
 				}
 				catch(Exception e){
 					System.out.println("Need to enter an XML File");
 				}
+				
+				initializePopulationMap();
+				createGrid(stage);
+				shouldRun = true;
 			}
 		});
 		return scene;
@@ -348,6 +431,8 @@ public class SimulationLoop {
 		gridNew.add(reset, rightSide, numCols + 3);		
 		gridNew.add(quit, rightSide, numCols + 4);
 
+		updatePopulationGraph();
+		
 		Scene s = new Scene(gridNew);
 
 		stage.setScene(s);

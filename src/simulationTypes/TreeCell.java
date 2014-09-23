@@ -10,11 +10,14 @@ public class TreeCell extends Cell {
 	protected static double PROBABILITY_OF_CATCHING_FIRE;
 	protected int nextState = 0;
 
+	
 	protected Map<Integer, Color> colorMap = new HashMap<Integer, Color>();
 
 	public TreeCell(int x, int y, int state) {
 		super(x, y, state);
 
+		myNumStates = 3;
+		
 		colorMap.put(0, Color.LIGHTGRAY);
 		colorMap.put(1, Color.GREEN);
 		colorMap.put(2, Color.RED);
@@ -23,7 +26,7 @@ public class TreeCell extends Cell {
 	}
 
 	public TreeCell() {
-
+		super();
 	}
 
 	@Override
@@ -41,7 +44,7 @@ public class TreeCell extends Cell {
 			return;
 		}
 
-		Cell[] neighbors = calculateFishNeighbors();
+		Cell[] neighbors = calculateNeighbors();
 		for (int i = 0; i < neighbors.length; i++) {
 			if (neighbors[i] != null) {
 				if (neighbors[i].myState == 2 && Math.random() < PROBABILITY_OF_CATCHING_FIRE) {
@@ -54,7 +57,7 @@ public class TreeCell extends Cell {
 	}
 
 	@Override
-	public Cell[] calculateFishNeighbors() {
+	public Cell[] calculateNeighbors() {
 		int[] xDelta = {-1, 1, 0, 0};
 		int[] yDelta = { 0, 0, 1,-1};
 

@@ -18,6 +18,7 @@ public class PredPreyCell extends Cell {
 	private static double FISH_ENERGY;
 	private double sharkEnergy;
 	private static int chronons = 0;
+	
 
 	private boolean imminentSharkAttack = false; //just for fish
 
@@ -38,10 +39,12 @@ public class PredPreyCell extends Cell {
 		colorMap.put(2, Color.GRAY);
 		sharkEnergy = SHARK_INITIAL_ENERGY;
 		chronons = 0;
+		
+		myNumStates = 3;
 	}
 
 	public PredPreyCell() {
-
+		super();
 	}
 
 	@Override
@@ -224,7 +227,7 @@ public class PredPreyCell extends Cell {
 	}
 
 	@Override
-	public Cell[] calculateFishNeighbors() {
+	public Cell[] calculateNeighbors() {
 		int[] xDelta = {-1, 1, 0, 0};
 		int[] yDelta = { 0, 0, 1,-1};
 
@@ -246,7 +249,7 @@ public class PredPreyCell extends Cell {
 	}
 
 	public ArrayList<Cell> removeNullValuesFromListOfNeighbors() {
-		Cell[] neighbors = calculateFishNeighbors();
+		Cell[] neighbors = calculateNeighbors();
 		ArrayList<Cell> goodNeighbors = new ArrayList<Cell>();
 		for (int i = 0; i < neighbors.length; i++) {
 			if (neighbors[i] != null) {

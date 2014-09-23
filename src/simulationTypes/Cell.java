@@ -13,6 +13,7 @@ public abstract class Cell {
 	protected int myState;
 	protected int myNextState;
 	protected XMLReader xmlReader;
+	public int myNumStates;
 	//protected int myPatch; ?
 
 	protected Map<Integer, Color> colorMap = new HashMap<Integer, Color>();
@@ -29,14 +30,16 @@ public abstract class Cell {
 		xmlReader = new XMLReader();
 	}
 
-	//Creates a null Cell
+	//Creates a null Cell, allows us to make a parameterless cell before we know what its states are
 	public Cell() {
-
+		myState = 0;
+		myX = 0;
+		myY = 0;
 	}
 
 	//superclass abstract methods
 
-	public abstract Cell[] calculateFishNeighbors();
+	public abstract Cell[] calculateNeighbors();
 
 	public abstract void doAction();
 
@@ -55,4 +58,16 @@ public abstract class Cell {
 	public abstract Color retrieveCorrespondingColorFromMap();
 
 	public abstract void setGrid(Cell[][] listOfCells);
+	
+	public void setState(int s){
+		myState = s;
+	}
+	public void setNextState(int s){
+		myNextState = s;
+	}
+	public int getState(){
+		return myState;
+	}
+	
+	
 }

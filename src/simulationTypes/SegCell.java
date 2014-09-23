@@ -22,14 +22,14 @@ public class SegCell extends Cell {
 		colorMap.put(2, Color.BLUE);
 		colorMap.put(3, Color.GREEN);
 		colorMap.put(4, Color.YELLOW);
-		colorMap.put(5, Color.PURPLE);
-		colorMap.put(6, Color.ORANGE);
 		
 		 THRESHOLD_OF_HAPPINESS = xmlReader.getParameterMap().get("THRESHOLD_OF_HAPPINESS");
+		 
+		 myNumStates = 5;
 	}
 
 	public SegCell() {
-
+		super();
 	}
 
 	@Override
@@ -50,7 +50,7 @@ public class SegCell extends Cell {
 		 */
 
 		/* calculate neighbors */
-		Cell[] myNeighbors = calculateFishNeighbors();
+		Cell[] myNeighbors = calculateNeighbors();
 
 		/*determine if neighbor is satisfied*/
 		if (isSatisfied(myNeighbors)) {
@@ -113,7 +113,7 @@ public class SegCell extends Cell {
 	}
 
 	@Override
-	public Cell[] calculateFishNeighbors() {
+	public Cell[] calculateNeighbors() {
 		int[] xDelta = {1,-1, 0, 0,-1,-1, 1, 1};
 		int[] yDelta = {0, 0,-1, 1, 1,-1,-1, 1};
 		//fixed xDelta and yDelta issue... there was a duplicate

@@ -100,6 +100,7 @@ public class XMLReader {
 				numCols = numRows;
 				gridArrayOfCells = new Cell[numRows][numCols];
 
+				
 				for (int i = 0; i < rowList.getLength(); i++) {
 					// searching through the row tags
 					Node nNode = rowList.item(i);

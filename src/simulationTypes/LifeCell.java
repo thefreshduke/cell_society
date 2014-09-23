@@ -11,20 +11,24 @@ public class LifeCell extends Cell {
 	protected int nextState = 0;
 
 	protected Map<Integer, Color> colorMap = new HashMap<Integer, Color>();
+	
 
 	public LifeCell(int x, int y, int state) {
 		super(x, y, state);
 
 		colorMap.put(0, Color.WHITE);
-		colorMap.put(1, Color.GREEN);
+		String col = "lightcoral";
+		colorMap.put(1, Color.web(col.toLowerCase()));
+		
+		myNumStates = 2;
 	}
 
 	public LifeCell() {
-
+		super();
 	}
 
 	@Override
-	public Cell[] calculateFishNeighbors() {
+	public Cell[] calculateNeighbors() {
 		int[] xDelta = {1,-1, 0, 0,-1,-1, 1, 1};
 		int[] yDelta = {0, 0,-1, 1, 1,-1,-1, 1};
 
@@ -81,7 +85,7 @@ public class LifeCell extends Cell {
 	}
 
 	public ArrayList<Cell> removeNullValuesFromListOfNeighbors() {
-		Cell[] neighbors = calculateFishNeighbors();
+		Cell[] neighbors = calculateNeighbors();
 		ArrayList<Cell> goodNeighbors = new ArrayList<Cell>();
 		for (int i = 0; i < neighbors.length; i++) {
 			if (neighbors[i] != null) {
