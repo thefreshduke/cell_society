@@ -19,29 +19,32 @@ public class PredPreyCell extends Cell {
 	private static double EDGE_TYPE;
 	private double sharkEnergy;
 	private static int chronons = 0;
+	
 
 	private boolean imminentSharkAttack = false; //just for fish
 
-	public PredPreyCell(int x, int y, int state) {
-		super(x, y, state);
+	public PredPreyCell(int x, int y, int state, Map<String,Double> paramMap) {
+		super(x, y, state, paramMap);
 
-		Map<String, Double> paramMap = xmlReader.getParameterMap();
+		
 
-		SHARK_BREED_TIME = paramMap.get("SHARK_BREED_TIME");
-		FISH_BREED_TIME = paramMap.get("FISH_BREED_TIME");
-		SHARK_INITIAL_ENERGY = paramMap.get("SHARK_INITIAL_ENERGY");
-		FISH_ENERGY = paramMap.get("FISH_ENERGY");
-		EDGE_TYPE = paramMap.get("EDGE_TYPE");
+		SHARK_BREED_TIME = super.parameterMap.get("SHARK_BREED_TIME");
+		FISH_BREED_TIME = super.parameterMap.get("FISH_BREED_TIME");
+		SHARK_INITIAL_ENERGY = super.parameterMap.get("SHARK_INITIAL_ENERGY");
+		FISH_ENERGY = super.parameterMap.get("FISH_ENERGY");
+		EDGE_TYPE = super.parameterMap.get("EDGE_TYPE");
 
 		colorMap.put(0, Color.BLUE);
 		colorMap.put(1, Color.SALMON);
 		colorMap.put(2, Color.GRAY);
 		sharkEnergy = SHARK_INITIAL_ENERGY;
 		chronons = 0;
+		
+		myNumStates = 3;
 	}
 
 	public PredPreyCell() {
-
+		super();
 	}
 
 	@Override
@@ -158,7 +161,7 @@ public class PredPreyCell extends Cell {
 		int[] xDelta = {-1, 1, 0, 0};
 		int[] yDelta = { 0, 0, 1,-1};
 
-		Cell[] returnListOfNeighbors = new PredPreyCell[xDelta.length];
+		Cell[] returnListOfNeighbors = new PredPreyCell[4];
 
 		for (int i = 0; i < returnListOfNeighbors.length; i++) {
 			int newX = 0;
@@ -228,8 +231,8 @@ public class PredPreyCell extends Cell {
 	}
 
 	@Override
-	public PredPreyCell makeNewCell(int cellX, int cellY, int cellState) {
-		return new PredPreyCell(cellX, cellY, cellState);
+	public PredPreyCell makeNewCell(int cellX, int cellY, int cellState, Map<String,Double> paramMap) {
+		return new PredPreyCell(cellX, cellY, cellState, paramMap);
 	}
 
 	@Override
@@ -284,6 +287,11 @@ public class PredPreyCell extends Cell {
 	}
 
 	@Override
+	public void setGrid(Cell[][] listOfCells) {
+		listOfCellsInGrid = listOfCells;
+	}
+
+	@Override
 	public void updateCell() {
 		myState = myNextState;
 	}
@@ -298,8 +306,8 @@ public class PredPreyCell extends Cell {
 		return colorMap.get(myState);
 	}
 
-//	@Override
-//	public Cell[][] updateGrid() {
-//		return listOfCellsInGrid;
-//	}
+	@Override
+	public Cell[][] updateGrid() {
+		return listOfCellsInGrid;
+	}
 }

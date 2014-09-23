@@ -18,7 +18,7 @@ public abstract class Edge {
 	public Edge(int x, int y) {
 		myX = x;
 		myY = y;
-		xmlReader = new XMLReader();
+//		xmlReader = new XMLReader();
 	}
 	
 	public Edge() {
@@ -38,7 +38,7 @@ public abstract class Edge {
 	}
 
 //	public Cell[] calculateNeighbors() {
-	public List<Cell> calculateNeighbors(int myX, int myY) {
+	public List<Cell> calculateNeighbors(int myX, int myY, Cell[][] listOfCells) {
 		//use List<Cell> instead of Cell[] //maybe Collection or Iterable down the line???
 		//higher up interfaces have fewer functions allowed, which protect the structure a little more
 		//by disallowing certain things that "lower" interfaces allow
@@ -52,8 +52,8 @@ public abstract class Edge {
 			int newX = 0;
 			int newY = 0;
 
-			int xLength = listOfCellsInGrid[0].length;
-			int yLength = listOfCellsInGrid.length;
+			int xLength = listOfCells[0].length;
+			int yLength = listOfCells.length;
 
 			//we can eliminate this following if statement by using finite edges as the default
 			//toroidal edges (wrap-around) is edge type 1
@@ -72,12 +72,12 @@ public abstract class Edge {
 	
 	public abstract int calculateNewCoordinate(int delta, int length, int coordinate);
 	
-	public Cell[][] updateGrid() {
-		return listOfCellsInGrid;
-	}
-	
-	public void setGrid(Cell[][] listOfCells) {
-		listOfCellsInGrid = listOfCells;
-	}
+//	public Cell[][] updateGrid() {
+//		return listOfCellsInGrid;
+//	}
+//	
+//	public void setGrid(Cell[][] listOfCells) {
+//		listOfCellsInGrid = listOfCells;
+//	}
 
 }

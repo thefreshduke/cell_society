@@ -2,7 +2,7 @@ package cellsociety_team19;
 
 /**
  * @author
- * Scotty Shaw
+ * Chris Bernt, Marcus Cain, Scotty Shaw
  *
  */
 

@@ -2,10 +2,8 @@ package simulationTypes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import edgeTypes.Edge;
 import javafx.scene.paint.Color;
 
 public class LifeCell extends Cell {
@@ -13,36 +11,33 @@ public class LifeCell extends Cell {
 	protected int nextState = 0;
 
 	protected Map<Integer, Color> colorMap = new HashMap<Integer, Color>();
+	
 
 	private static double EDGE_TYPE;
 
-	public LifeCell(int x, int y, int state, double edgeType) {
-		super(x, y, state, edgeType);
+	public LifeCell(int x, int y, int state, Map<String,Double> paramMap) {
+		super(x, y, state, paramMap);
 
 		colorMap.put(0, Color.WHITE);
+		
+		myNumStates = 2;
 		colorMap.put(1, Color.GREEN);
 
-		EDGE_TYPE = xmlReader.getParameterMap().get("EDGE_TYPE");
+		EDGE_TYPE = super.parameterMap.get("EDGE_TYPE");
 	}
 
 	public LifeCell() {
-
+		super();
 	}
 
-	/*
 	@Override
-//	public Cell[] calculateNeighbors() {
-	public List<Cell> calculateNeighbors() {
-		//use List<Cell> instead of Cell[] //maybe Collection or Iterable down the line???
-		//higher up interfaces have fewer functions allowed, which protect the structure a little more
-		//by disallowing certain things that "lower" interfaces allow
+	public Cell[] calculateNeighbors() {
 		int[] xDelta = {1,-1, 0, 0,-1,-1, 1, 1};
 		int[] yDelta = {0, 0,-1, 1, 1,-1,-1, 1};
 
-//		Cell[] returnListOfNeighbors = new LifeCell[xDelta.length];
-		List<Cell> listOfNeighbors = new ArrayList<>();
+		Cell[] returnListOfNeighbors = new LifeCell[8];
 
-		for (int i = 0; i < xDelta.length; i++) {
+		for (int i = 0; i < returnListOfNeighbors.length; i++) {
 			int newX = 0;
 			int newY = 0;
 
@@ -51,15 +46,10 @@ public class LifeCell extends Cell {
 
 			//we can eliminate this following if statement by using finite edges as the default
 			//toroidal edges (wrap-around) is edge type 1
-			//infinite edges is edge type 2
-
-			//how to close edge type code???
+			//infiniate edges is edge type 2
 			if (EDGE_TYPE == 0) {
 				newX = myX + xDelta[i];
 				newY = myY + yDelta[i];
-				if (newX >= xLength || newY >= yLength) {
-					continue;
-				}
 			}
 
 			if (EDGE_TYPE == 1) {
@@ -67,17 +57,19 @@ public class LifeCell extends Cell {
 				newY = (myY + yDelta[i] + yLength) % yLength;
 			}
 
-			if (listOfCellsInGrid[newX] [newY] != null) {
-				listOfNeighbors.add(listOfCellsInGrid[newX] [newY]);
+			try {
+				returnListOfNeighbors[i] = listOfCellsInGrid[newX] [newY];
+			}
+			catch (Exception e) {
+				returnListOfNeighbors[i] = null;
 			}
 		}
-		return listOfNeighbors;
+		return returnListOfNeighbors;
 	}
-	*/
 
 	public int countNumberOfLiveNeighbors() {
 		int counter = 0;
-		List<Cell> listOfNeighbors = Edge.calculateNeighbors();
+		ArrayList<Cell> listOfNeighbors = removeNullValuesFromListOfNeighbors();
 		for (int i = 0; i < listOfNeighbors.size(); i++) {
 			if (listOfNeighbors.get(i).myState == 1) {
 				counter++;
@@ -86,16 +78,16 @@ public class LifeCell extends Cell {
 		return counter;
 	}
 
-//	public ArrayList<Cell> removeNullValuesFromListOfNeighbors() {
-//		Cell[] neighbors = calculateNeighbors();
-//		ArrayList<Cell> goodNeighbors = new ArrayList<Cell>();
-//		for (int i = 0; i < neighbors.length; i++) {
-//			if (neighbors[i] != null) {
-//				goodNeighbors.add(neighbors[i]);
-//			}
-//		}
-//		return goodNeighbors; // like State Farm
-//	}
+	public ArrayList<Cell> removeNullValuesFromListOfNeighbors() {
+		Cell[] neighbors = calculateNeighbors();
+		ArrayList<Cell> goodNeighbors = new ArrayList<Cell>();
+		for (int i = 0; i < neighbors.length; i++) {
+			if (neighbors[i] != null) {
+				goodNeighbors.add(neighbors[i]);
+			}
+		}
+		return goodNeighbors; // like State Farm
+	}
 
 	@Override
 	public void doAction() {
@@ -113,8 +105,8 @@ public class LifeCell extends Cell {
 	}
 
 	@Override
-	public Cell makeNewCell(int cellX, int cellY, int cellState, double cellEdgeType) {
-		return new LifeCell(cellX, cellY, cellState, cellEdgeType);
+	public Cell makeNewCell(int cellX, int cellY, int cellState, Map<String,Double> paramMap) {
+		return new LifeCell(cellX, cellY, cellState, paramMap);
 	}
 
 	@Override
@@ -127,10 +119,10 @@ public class LifeCell extends Cell {
 		myState = myNextState;
 	}
 
-//	@Override
-//	public Cell[][] updateGrid() {
-//		return listOfCellsInGrid;
-//	}
+	@Override
+	public Cell[][] updateGrid() {
+		return listOfCellsInGrid;
+	}
 
 	@Override
 	public String getDesc() {
@@ -140,5 +132,10 @@ public class LifeCell extends Cell {
 	@Override
 	public Color getCorrespondingColor() {
 		return colorMap.get(myState);
+	}
+
+	@Override
+	public void setGrid(Cell[][] listOfCells) {
+		listOfCellsInGrid = listOfCells;
 	}
 }
