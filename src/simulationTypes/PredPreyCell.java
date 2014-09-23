@@ -16,24 +16,24 @@ public class PredPreyCell extends Cell {
 	private static double FISH_BREED_TIME;
 	private static double SHARK_INITIAL_ENERGY;
 	private static double FISH_ENERGY;
+	private static double EDGE_TYPE;
 	private double sharkEnergy;
 	private static int chronons = 0;
 	
 
 	private boolean imminentSharkAttack = false; //just for fish
 
-	public PredPreyCell(int x, int y, int state) {
-		super(x, y, state);
+	public PredPreyCell(int x, int y, int state, Map<String,Double> paramMap) {
+		super(x, y, state, paramMap);
 
 		
-		Map<String, Double> paramMap = xmlReader.getParameterMap();
-		
-		SHARK_BREED_TIME = paramMap.get("SHARK_BREED_TIME");
-		FISH_BREED_TIME = paramMap.get("FISH_BREED_TIME");
-		SHARK_INITIAL_ENERGY = paramMap.get("SHARK_INITIAL_ENERGY");
-		FISH_ENERGY = paramMap.get("FISH_ENERGY");
-		
-		
+
+		SHARK_BREED_TIME = super.parameterMap.get("SHARK_BREED_TIME");
+		FISH_BREED_TIME = super.parameterMap.get("FISH_BREED_TIME");
+		SHARK_INITIAL_ENERGY = super.parameterMap.get("SHARK_INITIAL_ENERGY");
+		FISH_ENERGY = super.parameterMap.get("FISH_ENERGY");
+		EDGE_TYPE = super.parameterMap.get("EDGE_TYPE");
+
 		colorMap.put(0, Color.BLUE);
 		colorMap.put(1, Color.SALMON);
 		colorMap.put(2, Color.GRAY);
@@ -73,7 +73,7 @@ public class PredPreyCell extends Cell {
 			chronons++;
 		}
 
-		/*if(myState == 0){
+		/*if(myState == 0) {
 			myNextState = 0;
 		}*/
 
@@ -164,24 +164,33 @@ public class PredPreyCell extends Cell {
 		Cell[] returnListOfNeighbors = new PredPreyCell[4];
 
 		for (int i = 0; i < returnListOfNeighbors.length; i++) {
+			int newX = 0;
+			int newY = 0;
+
+			int xLength = listOfCellsInGrid[0].length;
+			int yLength = listOfCellsInGrid.length;
+
+			//we can eliminate this following if statement by using finite edges as the default
+			//toroidal edges (wrap-around) is edge type 1
+			//infiniate edges is edge type 2
+			if (EDGE_TYPE == 0) {
+				newX = myX + xDelta[i];
+				newY = myY + yDelta[i];
+			}
+
+			if (EDGE_TYPE == 1) {
+				newX = (myX + xDelta[i] + xLength) % xLength;
+				newY = (myY + yDelta[i] + yLength) % yLength;
+			}
+
 			try {
-				Cell destinationCell = listOfCellsInGrid[myX + xDelta[i]] [myY + yDelta[i]];
-				if (destinationCell.myState != 2 && destinationCell.myNextState != 2) {
-					returnListOfNeighbors[i] = destinationCell;
+				if (listOfCellsInGrid[newX] [newY].myState != 2 && listOfCellsInGrid[newX] [newY].myNextState != 2) {
+					returnListOfNeighbors[i] = listOfCellsInGrid[newX] [newY];
 				}
 			}
 			catch (Exception e) {
 				returnListOfNeighbors[i] = null;
 			}
-//			int xLength = listOfCellsInGrid[0].length;
-//			int yLength = listOfCellsInGrid.length;
-//
-//			int newX = (myX + xDelta[i] + xLength) % xLength;
-//			int newY = (myY + yDelta[i] + yLength) % yLength;
-//
-//			if (listOfCellsInGrid[newX] [newY].myNextState != 2 && listOfCellsInGrid[newX] [newY].myState != 2) {
-//				returnListOfNeighbors[i] = listOfCellsInGrid[newX] [newY];
-//			}
 		}
 
 		//System.out.println(Arrays.toString(neighbors));
@@ -222,8 +231,8 @@ public class PredPreyCell extends Cell {
 	}
 
 	@Override
-	public PredPreyCell makeNewCell(int cellX, int cellY, int cellState) {
-		return new PredPreyCell(cellX, cellY, cellState);
+	public PredPreyCell makeNewCell(int cellX, int cellY, int cellState, Map<String,Double> paramMap) {
+		return new PredPreyCell(cellX, cellY, cellState, paramMap);
 	}
 
 	@Override
@@ -235,10 +244,28 @@ public class PredPreyCell extends Cell {
 
 		/* this for loop is repeated in all subclasses (subcells) - think about refactoring this */
 		for (int i = 0; i < returnListOfNeighbors.length; i++) {
+			int newX = 0;
+			int newY = 0;
+
+			int xLength = listOfCellsInGrid[0].length;
+			int yLength = listOfCellsInGrid.length;
+
+			//we can eliminate this following if statement by using finite edges as the default
+			//toroidal edges (wrap-around) is edge type 1
+			//infiniate edges is edge type 2
+			if (EDGE_TYPE == 0) {
+				newX = myX + xDelta[i];
+				newY = myY + yDelta[i];
+			}
+
+			if (EDGE_TYPE == 1) {
+				newX = (myX + xDelta[i] + xLength) % xLength;
+				newY = (myY + yDelta[i] + yLength) % yLength;
+			}
+
 			try {
-				Cell destinationCell = listOfCellsInGrid[myX + xDelta[i]] [myY + yDelta[i]];
-				if (destinationCell.myState == 0 && destinationCell.myNextState == 0) {
-					returnListOfNeighbors[i] = destinationCell;
+				if (listOfCellsInGrid[newX] [newY].myState == 0 && listOfCellsInGrid[newX] [newY].myNextState == 0) {
+					returnListOfNeighbors[i] = listOfCellsInGrid[newX] [newY];
 				}
 			}
 			catch (Exception e) {
