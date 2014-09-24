@@ -15,8 +15,8 @@ public class LifeCell extends Cell {
 
 	private static double EDGE_TYPE;
 
-	public LifeCell(int x, int y, int state, Map<String,Double> paramMap) {
-		super(x, y, state, paramMap);
+	public LifeCell(int x, int y, int state, Map<String,Double> paramMap, Map<Integer,Color> colorMap) {
+		super(x, y, state, paramMap, colorMap);
 
 		colorMap.put(0, Color.WHITE);
 		
@@ -105,8 +105,8 @@ public class LifeCell extends Cell {
 	}
 
 	@Override
-	public Cell makeNewCell(int cellX, int cellY, int cellState, Map<String,Double> paramMap) {
-		return new LifeCell(cellX, cellY, cellState, paramMap);
+	public Cell makeNewCell(int cellX, int cellY, int cellState, Map<String,Double> paramMap, Map<Integer,Color> colourMap) {
+		return new LifeCell(cellX, cellY, cellState, paramMap, colourMap);
 	}
 
 	@Override

@@ -18,17 +18,18 @@ public abstract class Cell {
 
 	//protected int myPatch; ?
 
-	protected Map<Integer, Color> colorMap = new HashMap<Integer, Color>();
+	protected Map<Integer, Color> colorMap;
 
 	protected Cell[][] listOfCellsInGrid;
 
 	//superclass constructor
 
-	public Cell(int x, int y, int state, Map<String,Double> paramMap) {
+	public Cell(int x, int y, int state, Map<String,Double> paramMap, Map<Integer,Color> colourMap) {
 		myX = x;
 		myY = y;
 		myState = state;
 		parameterMap = paramMap;
+		colorMap = colourMap;
 	}
 
 	//Creates a null Cell, allows us to make a parameterless cell before we know what its states are
@@ -44,7 +45,7 @@ public abstract class Cell {
 
 	public abstract void doAction();
 
-	public abstract Cell makeNewCell(int cellX, int cellY, int cellState, Map<String,Double> paramMap);
+	public abstract Cell makeNewCell(int cellX, int cellY, int cellState, Map<String,Double> paramMap, Map<Integer,Color> colourMap);
 
 	public abstract String toString();
 

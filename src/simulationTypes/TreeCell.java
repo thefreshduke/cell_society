@@ -12,17 +12,13 @@ public class TreeCell extends Cell {
 	protected int nextState = 0;
 
 	
-	protected Map<Integer, Color> colorMap = new HashMap<Integer, Color>();
 
-	public TreeCell(int x, int y, int state, Map<String,Double> paramMap) {
-		super(x, y, state, paramMap);
+	public TreeCell(int x, int y, int state, Map<String,Double> paramMap, Map<Integer,Color> colourMap) {
+		super(x, y, state, paramMap,colourMap);
 
 		myNumStates = 3;
 		
-		colorMap.put(0, Color.LIGHTGRAY);
-		colorMap.put(1, Color.GREEN);
-		colorMap.put(2, Color.RED);
-
+		
 		PROBABILITY_OF_CATCHING_FIRE = super.parameterMap.get("PROBABILITY_OF_CATCHING_FIRE");
 		EDGE_TYPE = super.parameterMap.get("EDGE_TYPE");
 	}
@@ -97,8 +93,8 @@ public class TreeCell extends Cell {
 	}
 
 	@Override
-	public TreeCell makeNewCell(int cellX, int cellY, int cellState, Map<String,Double> paramMap) {
-		return new TreeCell(cellX, cellY, cellState, paramMap);
+	public TreeCell makeNewCell(int cellX, int cellY, int cellState, Map<String,Double> paramMap, Map<Integer,Color> colourMap) {
+		return new TreeCell(cellX, cellY, cellState, paramMap, colourMap);
 	}
 
 	@Override

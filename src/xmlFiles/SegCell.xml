@@ -11,6 +11,16 @@
 		<parameter name="EDGE_TYPE" value ="0"></parameter>
 	</parameters>
 	
+	<colormap>
+	
+		<color state = "0" color = "Gray"></color>
+		<color state = "1" color = "Green"></color>
+		<color state = "2" color = "Red"></color>
+		<color state = "3" color = "Green"></color>
+		<color state = "4" color = "Yellow"></color>
+	
+	</colormap>
+	
 	<grid>
 		<row states = "2,0,3,0,4,2,1,0"></row>
 		<row states = "2,0,3,0,4,2,1,0"></row>

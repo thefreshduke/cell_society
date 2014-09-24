@@ -23,8 +23,8 @@ public class PredPreyCell extends Cell {
 
 	private boolean imminentSharkAttack = false; //just for fish
 
-	public PredPreyCell(int x, int y, int state, Map<String,Double> paramMap) {
-		super(x, y, state, paramMap);
+	public PredPreyCell(int x, int y, int state, Map<String,Double> paramMap, Map<Integer,Color> colourMap) {
+		super(x, y, state, paramMap, colourMap);
 
 		
 
@@ -231,8 +231,8 @@ public class PredPreyCell extends Cell {
 	}
 
 	@Override
-	public PredPreyCell makeNewCell(int cellX, int cellY, int cellState, Map<String,Double> paramMap) {
-		return new PredPreyCell(cellX, cellY, cellState, paramMap);
+	public PredPreyCell makeNewCell(int cellX, int cellY, int cellState, Map<String,Double> paramMap, Map<Integer,Color> colourMap) {
+		return new PredPreyCell(cellX, cellY, cellState, paramMap, colourMap);
 	}
 
 	@Override

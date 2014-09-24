@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import javafx.scene.paint.Color;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 
@@ -39,10 +41,12 @@ public class XMLReader {
 
 	private Map<String, Cell> simulationMap;
 
-	public Map<String, Double> parameterMap;
+	public Map<String, Double> parameterMapForCells;
 
+	private Map<Integer,Color> colorMapForCells;
 	private String gameType;
 
+	
 	/***
 	 * One Constructor: Initialize parameterMap, SimulaitonMap, and DOMParser
 	 */
@@ -54,7 +58,10 @@ public class XMLReader {
 		setupDOMParser();
 		
 		/* iniltialize parameterMap */
-		parameterMap = parameterSetup();
+		parameterMapForCells = parameterSetup();
+		
+		/* initialize colorMap */
+		colorMapForCells = colorMapSetup();
 		
 		/* initialize simulationMap */
 		simulationMap = new HashMap<String, Cell>();
@@ -64,6 +71,29 @@ public class XMLReader {
 		simulationMap.put("Life", new LifeCell());
 		
 		
+	}
+
+	/***
+	 * 
+	 * @return Map<Integer,Color> for subcells to use as their mapping b/t state and color
+	 */
+	private Map<Integer, Color> colorMapSetup() {
+		/*map to return */
+		Map<Integer,Color> colourMap = new HashMap<Integer,Color>();
+		
+		/*Get the list of <color> tags */
+		NodeList colorList = doc.getElementsByTagName("color");
+		
+		/*Loop through the <color> tags and populate colourMap */
+		for (int i = 0; i < colorList.getLength(); i++) {
+			Node nNode = colorList.item(i);
+			Element eElement = (Element) nNode;
+			
+			/* get the state value and corresponding Color --> populate map */
+			colourMap.put(Integer.parseInt(eElement.getAttribute("state")), Color.valueOf(eElement.getAttribute("color")));
+			System.out.println(Integer.parseInt(eElement.getAttribute("state")) + ": " + Color.valueOf(eElement.getAttribute("color")));
+		}
+		return colourMap;
 	}
 
 	/***
@@ -138,7 +168,7 @@ public class XMLReader {
 			
 			/* Make 2d grid array that tracks the cells in the grid */
 			for (int j = 0; j < colStates.length; j++) {
-				gridArrayOfCells[i][j] = choice.makeNewCell(i, j, Integer.parseInt(colStates[j]), parameterMap); //also pass in paramMap
+				gridArrayOfCells[i][j] = choice.makeNewCell(i, j, Integer.parseInt(colStates[j]), parameterMapForCells, colorMapForCells); //also pass in paramMap
 			}
 		
 		}
