@@ -14,6 +14,8 @@ public class SegCell extends Cell {
 	protected static double THRESHOLD_OF_HAPPINESS;
 
 	private static double EDGE_TYPE;
+	protected int[] myXDelta = {1,-1, 0, 0,-1,-1, 1, 1};
+	protected int[] myYDelta = {0, 0,-1, 1,-1, 1, 1,-1};
 
 	protected HashMap<Integer, Color> colorMap = new HashMap<Integer, Color>();
 
@@ -25,8 +27,8 @@ public class SegCell extends Cell {
 		colorMap.put(3, Color.GREEN);
 		colorMap.put(4, Color.YELLOW);
 
-		 
-		 myNumStates = 5;
+
+		myNumStates = 5;
 		colorMap.put(5, Color.PURPLE);
 		colorMap.put(6, Color.ORANGE);
 
@@ -56,10 +58,10 @@ public class SegCell extends Cell {
 		 */
 
 		/* calculate neighbors */
-		Cell[] myNeighbors = calculateNeighbors();
+		List<Cell> neighbors = super.calculateNeighbors(myX, myY, listOfCellsInGrid);
 
 		/*determine if neighbor is satisfied*/
-		if (isSatisfied(myNeighbors)) {
+		if (isSatisfied(neighbors)) {
 			//System.out.println("This cell was satisfied " + this.getDesc());
 			myNextState = myState;
 		}
@@ -100,18 +102,18 @@ public class SegCell extends Cell {
 		return returnListOfAvailableCells;
 	}
 
-	private boolean isSatisfied(Cell[] neighbors) {
+	private boolean isSatisfied(List<Cell> neighbors) {
 		int counter = 0;
-		for (int i = 0; i < neighbors.length; i++) {
-			if (neighbors[i] != null && neighbors[i].myState != 0) {
+		for (int i = 0; i < neighbors.size(); i++) {
+			if (neighbors.get(i) != null && neighbors.get(i).myState != 0) {
 				counter++;
 			}
 		}
 
 		/* loop through neighbors and determine is current cell is satisfied */
 		double numNeighborsWithSameState = 0;
-		for (int i = 0; i < neighbors.length; i++) {
-			if (neighbors[i] != null && neighbors[i].myState == myState) {
+		for (int i = 0; i < neighbors.size(); i++) {
+			if (neighbors.get(i) != null && neighbors.get(i).myState == myState) {
 				numNeighborsWithSameState++;
 			}
 		}
@@ -119,75 +121,7 @@ public class SegCell extends Cell {
 	}
 
 	@Override
-	public Cell[] calculateNeighbors() {
-		int[] xDelta = {1,-1, 0, 0,-1,-1, 1, 1};
-		int[] yDelta = {0, 0,-1, 1, 1,-1,-1, 1};
-		//fixed xDelta and yDelta issue... there was a duplicate
-
-		Cell[] returnListOfNeighbors = new SegCell[8];
-
-		for (int i = 0; i < returnListOfNeighbors.length; i++) {
-			int newX = 0;
-			int newY = 0;
-
-			int xLength = listOfCellsInGrid[0].length;
-			int yLength = listOfCellsInGrid.length;
-
-			//we can eliminate this following if statement by using finite edges as the default
-			//toroidal edges (wrap-around) is edge type 1
-			//infiniate edges is edge type 2
-			if (EDGE_TYPE == 0) {
-				newX = myX + xDelta[i];
-				newY = myY + yDelta[i];
-			}
-
-			if (EDGE_TYPE == 1) {
-				newX = (myX + xDelta[i] + xLength) % xLength;
-				newY = (myY + yDelta[i] + yLength) % yLength;
-			}
-
-			try {
-				returnListOfNeighbors[i] = listOfCellsInGrid[newX] [newY];
-			}
-			catch (Exception e) {
-				returnListOfNeighbors[i] = null;
-			}
-		}
-		return returnListOfNeighbors;
-	}
-
-	@Override
 	public SegCell makeNewCell(int cellX, int cellY, int cellState, Map<String,Double> paramMap) {
 		return new SegCell(cellX, cellY, cellState,paramMap);
-	}
-
-	@Override
-	public String toString() {
-		return "Seg Cell Simulation";
-	}
-
-	@Override
-	public void setGrid(Cell[][] listOfCells) {
-		listOfCellsInGrid = listOfCells;
-	}
-
-	@Override
-	public void updateCell() {
-		myState = myNextState;
-	}
-
-	@Override
-	public String getDesc() {
-		return myX + " " + myY + " " + myState + " " + myNextState;
-	}
-
-	@Override
-	public Color retrieveCorrespondingColorFromMap() {
-		return colorMap.get(myState);
-	}
-
-	@Override 
-	public Cell[][] updateGrid() {
-		return null;
 	}
 }

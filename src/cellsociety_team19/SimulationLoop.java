@@ -2,6 +2,7 @@ package cellsociety_team19;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -91,7 +92,7 @@ public class SimulationLoop {
 	};
 
 	public void updatePopulationGraph(){
-		System.out.println(populationCounts);
+//		System.out.println(populationCounts);
 		
 		
 		if(gridNew.getChildren().contains(lineChart)) gridNew.getChildren().remove(lineChart);
@@ -129,6 +130,7 @@ public class SimulationLoop {
 	}
 
 	public void updateCells() {
+		System.out.println(Arrays.deepToString(gridArrayOfCells));
 		updatePopulationGraph();
 		initializePopulationMap(); //should probably be in own method
 		
@@ -163,14 +165,14 @@ public class SimulationLoop {
 						int newState = (curCell.getState() + 1) % curCell.myNumStates;
 						curCell.setState(newState);
 						curCell.setNextState(newState);
-						rec.setFill(curCell.retrieveCorrespondingColorFromMap());
+						rec.setFill(curCell.getCorrespondingColor());
 						
 					}
 					
 				});
 			
 				
-				rec.setFill(curCell.retrieveCorrespondingColorFromMap());
+				rec.setFill(curCell.getCorrespondingColor());
 				
 				gridNew.add(rec, j, i); //GridPane uses reversed coordinates
 				curCell.updateCell();
@@ -268,12 +270,12 @@ public class SimulationLoop {
 			@Override
 			public void handle(MouseEvent event) {
 
-				try{
+//				try{
 					gridArrayOfCells = xmlReader.parseFile();					
-				}
-				catch(Exception e) {
-					System.out.println("Need to enter an XML File");
-				}
+//				}
+//				catch(Exception e) {
+//					System.out.println("Need to enter an XML File");
+//				}
 				
 				initializePopulationMap();
 				createGrid(stage);
