@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import simulationTypes.Cell;
+import cellTypes.Cell;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.ObservableList;
@@ -197,7 +197,7 @@ public class SimulationLoop {
 						int newState = (curCell.getState() + 1) % curCell.myNumPatchTypes;
 						curCell.setState(newState);
 						curCell.setNextState(newState);
-						rec.setFill(curCell.getCorrespondingColor());
+						rec.setFill(curCell.getCorrespondingColor()); //move this before calculateNeighbors() happens
 						
 					}
 					

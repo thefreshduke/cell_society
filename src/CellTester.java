@@ -2,7 +2,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import simulationTypes.LifeCell;
+import cellTypes.LifeCell;
 
 public class CellTester {
 	

@@ -1,4 +1,4 @@
-package simulationTypes;
+package cellTypes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,38 +9,30 @@ import java.util.Random;
 import javafx.scene.paint.Color;
 
 public class PredPreyCell extends Cell {
-	Cell[][] listOfCellsInGrid;
-
-	private Map<Integer, Color> colorMap = new HashMap<Integer, Color>();
 
 	private static double SHARK_BREED_TIME;
 	private static double FISH_BREED_TIME;
 	private static double SHARK_INITIAL_ENERGY;
 	private static double FISH_ENERGY;
-	private static double EDGE_TYPE;
 	private double sharkEnergy;
 	private static int chronons = 0;
-	
 
 	private boolean imminentSharkAttack = false; //just for fish
 
 	public PredPreyCell(int x, int y, int state, Map<String,Double> paramMap) {
 		super(x, y, state, paramMap);
-
 		
-
 		SHARK_BREED_TIME = super.parameterMap.get("SHARK_BREED_TIME");
 		FISH_BREED_TIME = super.parameterMap.get("FISH_BREED_TIME");
 		SHARK_INITIAL_ENERGY = super.parameterMap.get("SHARK_INITIAL_ENERGY");
 		FISH_ENERGY = super.parameterMap.get("FISH_ENERGY");
-		EDGE_TYPE = super.parameterMap.get("EDGE_TYPE");
 
 		colorMap.put(0, Color.BLUE);
 		colorMap.put(1, Color.SALMON);
 		colorMap.put(2, Color.GRAY);
 		sharkEnergy = SHARK_INITIAL_ENERGY;
 		chronons = 0;
-		
+
 		myNumPatchTypes = 3;
 	}
 
@@ -209,7 +201,6 @@ public class PredPreyCell extends Cell {
 		return new PredPreyCell(cellX, cellY, cellState, paramMap);
 	}
 
-
 	public List<Cell> calculateNeighbors() {
 		List<Cell> superNeighbors = super.calculateNeighbors(listOfCellsInGrid, myXDelta, myYDelta);
 		List<Cell> returnListOfNeighbors = new ArrayList<Cell>();
@@ -219,31 +210,5 @@ public class PredPreyCell extends Cell {
 			}
 		}
 		return returnListOfNeighbors;
-	}
-
-
-	@Override
-	public void setGrid(Cell[][] listOfCells) {
-		listOfCellsInGrid = listOfCells;
-	}
-
-	@Override
-	public void updateCell() {
-		myState = myNextState;
-	}
-
-	@Override
-	public String getDesc() {
-		return myX + " " + myY + " " + myState + " " + myNextState;
-	}
-
-	@Override
-	public Color getCorrespondingColor() {
-		return colorMap.get(myState);
-	}
-
-	@Override
-	public Cell[][] updateGrid() {
-		return listOfCellsInGrid;
 	}
 }

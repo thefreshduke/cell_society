@@ -1,4 +1,4 @@
-package simulationTypes;
+package cellTypes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,6 +9,9 @@ import javafx.scene.paint.Color;
 
 public abstract class Cell {
 
+	//manually setting cells is still a turn behind for some reason...
+	//maybe recalculate for specified cell and neighbors when clicked???
+
 	protected int myX;
 	protected int myY;
 	protected int myState;
@@ -16,10 +19,10 @@ public abstract class Cell {
 
 	protected int[] myXDelta = {1,-1, 0, 0};
 	protected int[] myYDelta = {0, 0,-1, 1};
-	protected int myEdgeType = 0;
-	
+	protected double myEdgeType;
+
 	public int myNumPatchTypes;
-	protected Map<String,Double> parameterMap;
+	protected Map<String, Double> parameterMap;
 
 	//protected int myPatch; ?
 
@@ -29,11 +32,12 @@ public abstract class Cell {
 
 	//superclass constructor
 
-	public Cell(int x, int y, int state, Map<String,Double> paramMap) {
+	public Cell(int x, int y, int state, Map<String,Double> map) {
 		myX = x;
 		myY = y;
 		myState = state;
-		parameterMap = paramMap;
+		parameterMap = map;
+		myEdgeType = parameterMap.get("EDGE_TYPE");
 	}
 
 	//Creates a null Cell, allows us to make a parameterless cell before we know what its states are
@@ -43,7 +47,7 @@ public abstract class Cell {
 
 	//superclass abstract methods
 
-	public List<Cell> calculateNeighbors(Cell[][] listOfCells, int[] xDelta, int[] yDelta){
+	public List<Cell> calculateNeighbors(Cell[][] listOfCells, int[] xDelta, int[] yDelta) {
 		List<Cell> listOfNeighbors = new ArrayList<Cell>();
 
 		for (int i = 0; i < xDelta.length; i++) {
@@ -58,13 +62,12 @@ public abstract class Cell {
 			//infinite edges is edge type 2
 
 			if (myEdgeType == 0) {
-				if(myX + xDelta[i] >= 0 && myX + xDelta[i] < xLength){
+				if (myX + xDelta[i] >= 0 && myX + xDelta[i] < xLength) {
 					newX = myX + xDelta[i];
 				}
-				if(myY + yDelta[i] >= 0 && myY + yDelta[i] < yLength){
+				if (myY + yDelta[i] >= 0 && myY + yDelta[i] < yLength) {
 					newY = myY + yDelta[i];
 				}
-				
 			}
 
 			if (myEdgeType == 1) {
@@ -75,42 +78,42 @@ public abstract class Cell {
 			//			newX = calculateNewCoordinate(myXDelta[i], xLength, myX);
 			//			newY = calculateNewCoordinate(myYDelta[i], yLength, myY);
 
-			//			if (newX != -1 && newY != -1) {
 			if (newX != -1 && newY != -1) {
-				
 				listOfNeighbors.add(listOfCells[newX] [newY]);
 			}
 		}
 		return listOfNeighbors;
 	}
 
+	//	public abstract int calculateNewCoordinate(int delta, int length, int coordinate);//myXDelta[i], xLength, myX);
+
 	public abstract void doAction();
 
-	public abstract Cell makeNewCell(int cellX, int cellY, int cellState, Map<String,Double> paramMap);
+	public abstract Cell makeNewCell(int cellX, int cellY, int cellState, Map<String, Double> map);
 
-	public abstract String toString();
-
-	public abstract void updateCell();
-
-	public abstract Cell[][] updateGrid();
-
+	public void updateCell() {
+		myState = myNextState;
+	}
+	
 	//getters and setters
 
-	public abstract String getDesc();
+	public Color getCorrespondingColor() {
+		return colorMap.get(myState);
+	}
 
-	public abstract Color getCorrespondingColor();
+	public void setGrid(Cell[][] listOfCells) {
+		listOfCellsInGrid = listOfCells;
+	}
 
-	public abstract void setGrid(Cell[][] listOfCells);
-	
-	public void setState(int s){
+	public void setState(int s) {
 		myState = s;
 	}
-	public void setNextState(int s){
+
+	public void setNextState(int s) {
 		myNextState = s;
 	}
-	public int getState(){
+
+	public int getState() {
 		return myState;
 	}
-	
-	
 }

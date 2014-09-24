@@ -14,11 +14,11 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 
-import simulationTypes.Cell;
-import simulationTypes.LifeCell;
-import simulationTypes.PredPreyCell;
-import simulationTypes.SegCell;
-import simulationTypes.TreeCell;
+import cellTypes.Cell;
+import cellTypes.LifeCell;
+import cellTypes.PredPreyCell;
+import cellTypes.SegCell;
+import cellTypes.TreeCell;
 
 /**
  * MARCUS'S XML READER, KEEP ALL
@@ -130,9 +130,6 @@ public class XMLReader {
 			
 			paramMap.put(eElement.getAttribute("name"), Double.parseDouble(eElement.getAttribute("value")));
 		}
-		
-		
-		
 		return paramMap;
 	}
 
@@ -169,7 +166,6 @@ public class XMLReader {
 			for (int j = 0; j < colStates.length; j++) {
 				gridArrayOfCells[i][j] = choice.makeNewCell(i, j, Integer.parseInt(colStates[j]), parameterMapForCells); //also pass in paramMap
 			}
-		
 		}
 		
 		return gridArrayOfCells;

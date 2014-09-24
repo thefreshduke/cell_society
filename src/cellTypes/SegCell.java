@@ -1,4 +1,4 @@
-package simulationTypes;
+package cellTypes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,13 +9,8 @@ import java.util.Random;
 import javafx.scene.paint.Color;
 
 public class SegCell extends Cell {
-	Cell[][] listOfCellsInGrid;
 
 	protected static double THRESHOLD_OF_HAPPINESS;
-
-	private static double EDGE_TYPE;
-
-	protected HashMap<Integer, Color> colorMap = new HashMap<Integer, Color>();
 
 	public SegCell(int x, int y, int state, Map<String,Double> paramMap) {
 		super(x, y, state, paramMap);
@@ -31,7 +26,6 @@ public class SegCell extends Cell {
 		colorMap.put(6, Color.ORANGE);
 
 		THRESHOLD_OF_HAPPINESS = super.parameterMap.get("THRESHOLD_OF_HAPPINESS");
-		EDGE_TYPE = super.parameterMap.get("EDGE_TYPE");
 	}
 
 	public SegCell() {
@@ -122,35 +116,5 @@ public class SegCell extends Cell {
 	@Override
 	public SegCell makeNewCell(int cellX, int cellY, int cellState, Map<String,Double> paramMap) {
 		return new SegCell(cellX, cellY, cellState,paramMap);
-	}
-
-	@Override
-	public String toString() {
-		return "Seg Cell Simulation";
-	}
-
-	@Override
-	public void setGrid(Cell[][] listOfCells) {
-		listOfCellsInGrid = listOfCells;
-	}
-
-	@Override
-	public void updateCell() {
-		myState = myNextState;
-	}
-
-	@Override
-	public String getDesc() {
-		return myX + " " + myY + " " + myState + " " + myNextState;
-	}
-
-	@Override
-	public Color getCorrespondingColor() {
-		return colorMap.get(myState);
-	}
-
-	@Override 
-	public Cell[][] updateGrid() {
-		return null;
 	}
 }
