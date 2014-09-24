@@ -26,7 +26,7 @@ public class SegCell extends Cell {
 		colorMap.put(4, Color.YELLOW);
 
 		 
-		 myNumPatchTypes = 5;
+		myNumPatchTypes = 5;
 		colorMap.put(5, Color.PURPLE);
 		colorMap.put(6, Color.ORANGE);
 

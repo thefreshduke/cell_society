@@ -10,6 +10,15 @@
 		<parameter game ="Fish" name="FISH_ENERGY" value ="1"></parameter>
 		<parameter name="EDGE_TYPE" value ="1"></parameter>
 	</parameters>
+	
+	<colormap>
+	
+		<color state = "0" color = "Blue"></color>
+		<color state = "1" color = "Salmon"></color>
+		<color state = "2" color = "Gray"></color>
+		
+	
+	</colormap>
   
   	<grid>
 		<row states = "1,1,1,1,1,1,1,1,1,1,1,1"></row>

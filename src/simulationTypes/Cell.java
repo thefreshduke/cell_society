@@ -16,7 +16,7 @@ public abstract class Cell {
 
 	protected int[] myXDelta = {1,-1, 0, 0};
 	protected int[] myYDelta = {0, 0,-1, 1};
-	protected int myEdgeType = 1;
+	protected int myEdgeType = 0;
 	
 	public int myNumPatchTypes;
 	protected Map<String,Double> parameterMap;

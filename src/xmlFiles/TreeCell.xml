@@ -9,7 +9,19 @@
 		<parameter game ="Fish" name="SHARK_INITIAL_ENERGY" value ="7"></parameter>
 		<parameter game ="Fish" name="FISH_ENERGY" value ="1"></parameter>
 		<parameter name="EDGE_TYPE" value ="1"></parameter>
+		
+		
+		
 	</parameters>
+	
+	<colormap>
+	
+		<color state = "0" color = "Gray"></color>
+		<color state = "1" color = "Green"></color>
+		<color state = "2" color = "Red"></color>
+		
+	
+	</colormap>
 
   	<grid>
 		<row states = "1,1,1,1,1,1,1,1,1,1,1,1"></row>

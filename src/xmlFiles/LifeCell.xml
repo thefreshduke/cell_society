@@ -4,6 +4,13 @@
 	<parameters>
 		<parameter name="EDGE_TYPE" value ="1"></parameter>
  	</parameters>
+ 	
+ 	<colormap>
+	
+		<color state = "0" color = "White"></color>
+		<color state = "1" color = "Green"></color>
+		
+	</colormap>
 
   	<grid>
 		<row states = "0,0,0,0,0,0,0,0,1"></row>
