@@ -92,7 +92,7 @@ public class PredPreyCell extends Cell {
 			return;
 		}
 
-		List<Cell> myNeighbors = super.calculateNeighbors(myX, myY, listOfCellsInGrid);
+		List<Cell> myNeighbors = super.calculateNeighbors(listOfCellsInGrid);
 
 		if (hasAdjacentEmptySpaces()) {
 			Random rand = new Random();
@@ -219,7 +219,7 @@ public class PredPreyCell extends Cell {
 	}
 
 	private boolean hasAdjacentEmptySpaces() {
-		List<Cell> adjacentNeighbors = super.calculateNeighbors(myX, myY, listOfCellsInGrid);
+		List<Cell> adjacentNeighbors = super.calculateNeighbors(listOfCellsInGrid);
 		int space = 0;
 		for (int i = 0; i < adjacentNeighbors.size(); i++) {
 			if (adjacentNeighbors.get(i).myState == 0 && adjacentNeighbors.get(i).myNextState == 0) {

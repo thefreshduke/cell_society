@@ -58,7 +58,7 @@ public class SegCell extends Cell {
 		 */
 
 		/* calculate neighbors */
-		List<Cell> neighbors = super.calculateNeighbors(myX, myY, listOfCellsInGrid);
+		List<Cell> neighbors = super.calculateNeighbors(listOfCellsInGrid);
 
 		/*determine if neighbor is satisfied*/
 		if (isSatisfied(neighbors)) {

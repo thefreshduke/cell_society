@@ -33,7 +33,7 @@ public class LifeCell extends Cell {
 
 	public int countNumberOfLiveNeighbors() {
 		int counter = 0;
-		List<Cell> listOfNeighbors = super.calculateNeighbors(myX, myY, listOfCellsInGrid);
+		List<Cell> listOfNeighbors = super.calculateNeighbors(listOfCellsInGrid);
 		for (int i = 0; i < listOfNeighbors.size(); i++) {
 			if (listOfNeighbors.get(i).myState == 1) {
 				counter++;

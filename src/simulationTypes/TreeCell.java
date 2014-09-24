@@ -46,7 +46,7 @@ public class TreeCell extends Cell {
 			return;
 		}
 
-		List<Cell> neighbors = super.calculateNeighbors(myX, myY, listOfCellsInGrid);
+		List<Cell> neighbors = super.calculateNeighbors(listOfCellsInGrid, myXDelta, myYDelta);
 		for (int i = 0; i < neighbors.size(); i++) {
 			if (neighbors.get(i) != null) {
 				if (neighbors.get(i).myState == 2 && Math.random() < PROBABILITY_OF_CATCHING_FIRE) {

@@ -130,7 +130,7 @@ public class SimulationLoop {
 	}
 
 	public void updateCells() {
-		System.out.println(Arrays.deepToString(gridArrayOfCells));
+//		System.out.println(Arrays.deepToString(gridArrayOfCells));
 		updatePopulationGraph();
 		initializePopulationMap(); //should probably be in own method
 		

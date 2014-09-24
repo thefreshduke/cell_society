@@ -15,7 +15,7 @@ public abstract class Cell {
 	protected int[] myYDelta = {0, 0,-1, 1};
 	protected int myState;
 	protected int myNextState;
-	protected Double myEdgeType;
+	protected double myEdgeType = 0;
 	protected String edgeType;
 
 	public int myNumStates;
@@ -33,27 +33,22 @@ public abstract class Cell {
 		myX = x;
 		myY = y;
 		myState = state;
-		myEdgeType = map.get("EDGE_TYPE");
+		parameterMap = map;
 	}
 
 	//Creates a null Cell, allows us to make a parameterless cell before we know what its states are
 	public Cell() {
-		myState = 0;
-		myX = 0;
-		myY = 0;
+		
 	}
 
 	//superclass abstract methods
 
-	public List<Cell> calculateNeighbors(int myX, int myY, Cell[][] listOfCells) {
-		//maybe generalize List into Collection or Iterable down the line???
-		//higher up interfaces have fewer functions allowed, which protect the structure a little more
-		//by disallowing certain things that "lower" interfaces allow
-		List<Cell> listOfNeighbors = new ArrayList<>();
+	public List<Cell> calculateNeighbors(Cell[][] listOfCells, int[] xDelta, int[] yDelta) {
+		List<Cell> listOfNeighbors = new ArrayList<Cell>();
 
 		for (int i = 0; i < myXDelta.length; i++) {
-			int newX = 0;
-			int newY = 0;
+			int newX = -1;
+			int newY = -1;
 
 			int xLength = listOfCells[0].length;
 			int yLength = listOfCells.length;
@@ -63,8 +58,13 @@ public abstract class Cell {
 			//infinite edges is edge type 2
 
 			if (myEdgeType == 0) {
-				newX = myX + myXDelta[i];
-				newY = myY + myYDelta[i];
+				if (myX + myXDelta[i] >= 0 && myX + myXDelta[i] < xLength) {
+					newX = myX + myXDelta[i];
+				}
+				if (myY + myYDelta[i] >= 0 && myY + myYDelta[i] < yLength) {
+					newY = myY + myYDelta[i];
+				}
+
 			}
 
 			if (myEdgeType == 1) {
@@ -72,12 +72,12 @@ public abstract class Cell {
 				newY = (myY + myYDelta[i] + yLength) % yLength;
 			}
 
-			//			newX = calculateNewCoordinate(myXDelta[i], xLength, myX);
-			//			newY = calculateNewCoordinate(myYDelta[i], yLength, myY);
+			// newX = calculateNewCoordinate(myXDelta[i], xLength, myX);
+			// newY = calculateNewCoordinate(myYDelta[i], yLength, myY);
 
-			//			if (newX != -1 && newY != -1) {
-			if (listOfCellsInGrid[newX] [newY] != null) {
-				listOfNeighbors.add(listOfCellsInGrid[newX] [newY]);
+			// if (newX != -1 && newY != -1) {
+			if (newX != -1 && newY != -1) {
+				listOfNeighbors.add(listOfCells[newX] [newY]);
 			}
 		}
 		return listOfNeighbors;
@@ -113,9 +113,5 @@ public abstract class Cell {
 
 	public int getState() {
 		return myState;
-	}
-	
-	public String toString() {
-		return myX + " " + myY + " " + myState;
 	}
 }
