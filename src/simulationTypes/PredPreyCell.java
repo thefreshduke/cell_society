@@ -10,7 +10,6 @@ import javafx.scene.paint.Color;
 public class PredPreyCell extends Cell {
 	Cell[][] listOfCellsInGrid;
 
-	private Map<Integer, Color> colorMap = new HashMap<Integer, Color>();
 
 	private static double SHARK_BREED_TIME;
 	private static double FISH_BREED_TIME;
@@ -34,9 +33,7 @@ public class PredPreyCell extends Cell {
 		FISH_ENERGY = super.parameterMap.get("FISH_ENERGY");
 		EDGE_TYPE = super.parameterMap.get("EDGE_TYPE");
 
-		colorMap.put(0, Color.BLUE);
-		colorMap.put(1, Color.SALMON);
-		colorMap.put(2, Color.GRAY);
+		
 		sharkEnergy = SHARK_INITIAL_ENERGY;
 		chronons = 0;
 		

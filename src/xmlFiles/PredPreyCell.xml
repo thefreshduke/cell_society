@@ -13,11 +13,10 @@
 	
 	<colormap>
 	
-		<color state = "0" color = "Gray"></color>
-		<color state = "1" color = "Green"></color>
-		<color state = "2" color = "Red"></color>
-		<color state = "3" color = "Green"></color>
-		<color state = "4" color = "Yellow"></color>
+		<color state = "0" color = "Blue"></color>
+		<color state = "1" color = "Salmon"></color>
+		<color state = "2" color = "Gray"></color>
+		
 	
 	</colormap>
   

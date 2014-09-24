@@ -8,20 +8,15 @@ import javafx.scene.paint.Color;
 
 public class LifeCell extends Cell {
 
-	protected int nextState = 0;
-
-	protected Map<Integer, Color> colorMap = new HashMap<Integer, Color>();
-	
+	protected int nextState = 0;	
 
 	private static double EDGE_TYPE;
 
 	public LifeCell(int x, int y, int state, Map<String,Double> paramMap, Map<Integer,Color> colorMap) {
 		super(x, y, state, paramMap, colorMap);
 
-		colorMap.put(0, Color.WHITE);
 		
 		myNumStates = 2;
-		colorMap.put(1, Color.GREEN);
 
 		EDGE_TYPE = super.parameterMap.get("EDGE_TYPE");
 	}
