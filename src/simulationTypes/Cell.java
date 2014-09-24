@@ -56,7 +56,7 @@ public abstract class Cell {
 
 	public abstract String getDesc();
 
-	public abstract Color retrieveCorrespondingColorFromMap();
+	public abstract Color getCorrespondingColor();
 
 	public abstract void setGrid(Cell[][] listOfCells);
 	

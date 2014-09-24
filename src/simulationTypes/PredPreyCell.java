@@ -302,7 +302,7 @@ public class PredPreyCell extends Cell {
 	}
 
 	@Override
-	public Color retrieveCorrespondingColorFromMap() {
+	public Color getCorrespondingColor() {
 		return colorMap.get(myState);
 	}
 
