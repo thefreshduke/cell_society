@@ -71,7 +71,7 @@ public class SimulationLoop {
 	
 	public void initializePopulationMap(){
 		populationCounts = new HashMap<Integer, Integer>();
-		for(int i = 0; i < gridArrayOfCells[0][0].myNumStates; i++){
+		for(int i = 0; i < gridArrayOfCells[0][0].myNumPatchTypes; i++){
 			populationCounts.put(i, 0);
 		}
 	}
@@ -194,7 +194,7 @@ public class SimulationLoop {
 
 					@Override
 					public void handle(MouseEvent event) {
-						int newState = (curCell.getState() + 1) % curCell.myNumStates;
+						int newState = (curCell.getState() + 1) % curCell.myNumPatchTypes;
 						curCell.setState(newState);
 						curCell.setNextState(newState);
 						rec.setFill(curCell.getCorrespondingColor());

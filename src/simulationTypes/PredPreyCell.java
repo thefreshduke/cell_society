@@ -2,6 +2,7 @@ package simulationTypes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -40,7 +41,7 @@ public class PredPreyCell extends Cell {
 		sharkEnergy = SHARK_INITIAL_ENERGY;
 		chronons = 0;
 		
-		myNumStates = 3;
+		myNumPatchTypes = 3;
 	}
 
 	public PredPreyCell() {
@@ -92,7 +93,7 @@ public class PredPreyCell extends Cell {
 			return;
 		}
 
-		ArrayList<Cell> myNeighbors = removeNullValuesFromListOfNeighbors();
+		List<Cell> myNeighbors = calculateNeighbors();
 		// Cell[] myNeighbors = calculateNeighbors();
 
 		if (hasAdjacentEmptySpaces()) {
@@ -158,38 +159,11 @@ public class PredPreyCell extends Cell {
 	}
 
 	private ArrayList<Cell> calculateSharkNeighbors() {
-		int[] xDelta = {-1, 1, 0, 0};
-		int[] yDelta = { 0, 0, 1,-1};
-
-		Cell[] returnListOfNeighbors = new PredPreyCell[4];
-
-		for (int i = 0; i < returnListOfNeighbors.length; i++) {
-			int newX = 0;
-			int newY = 0;
-
-			int xLength = listOfCellsInGrid[0].length;
-			int yLength = listOfCellsInGrid.length;
-
-			//we can eliminate this following if statement by using finite edges as the default
-			//toroidal edges (wrap-around) is edge type 1
-			//infiniate edges is edge type 2
-			if (EDGE_TYPE == 0) {
-				newX = myX + xDelta[i];
-				newY = myY + yDelta[i];
-			}
-
-			if (EDGE_TYPE == 1) {
-				newX = (myX + xDelta[i] + xLength) % xLength;
-				newY = (myY + yDelta[i] + yLength) % yLength;
-			}
-
-			try {
-				if (listOfCellsInGrid[newX] [newY].myState != 2 && listOfCellsInGrid[newX] [newY].myNextState != 2) {
-					returnListOfNeighbors[i] = listOfCellsInGrid[newX] [newY];
-				}
-			}
-			catch (Exception e) {
-				returnListOfNeighbors[i] = null;
+		List<Cell> superNeighbors = super.calculateNeighbors(listOfCellsInGrid, myXDelta, myYDelta);
+		List<Cell> returnListOfNeighbors = new ArrayList<Cell>();
+		for(Cell c : superNeighbors){
+			if (c.myState != 2 && c.myNextState != 2) {
+				returnListOfNeighbors.add(c);
 			}
 		}
 
@@ -220,7 +194,7 @@ public class PredPreyCell extends Cell {
 	}
 
 	private boolean hasAdjacentEmptySpaces() {
-		ArrayList<Cell> adjacentNeighbors = removeNullValuesFromListOfNeighbors();
+		List<Cell> adjacentNeighbors = calculateNeighbors();
 		int space = 0;
 		for (int i = 0; i < adjacentNeighbors.size(); i++) {
 			if (adjacentNeighbors.get(i).myState == 0 && adjacentNeighbors.get(i).myNextState == 0) {
@@ -235,56 +209,18 @@ public class PredPreyCell extends Cell {
 		return new PredPreyCell(cellX, cellY, cellState, paramMap);
 	}
 
-	@Override
-	public Cell[] calculateNeighbors() {
-		int[] xDelta = {-1, 1, 0, 0};
-		int[] yDelta = { 0, 0, 1,-1};
 
-		Cell[] returnListOfNeighbors = new PredPreyCell[4];
-
-		/* this for loop is repeated in all subclasses (subcells) - think about refactoring this */
-		for (int i = 0; i < returnListOfNeighbors.length; i++) {
-			int newX = 0;
-			int newY = 0;
-
-			int xLength = listOfCellsInGrid[0].length;
-			int yLength = listOfCellsInGrid.length;
-
-			//we can eliminate this following if statement by using finite edges as the default
-			//toroidal edges (wrap-around) is edge type 1
-			//infiniate edges is edge type 2
-			if (EDGE_TYPE == 0) {
-				newX = myX + xDelta[i];
-				newY = myY + yDelta[i];
-			}
-
-			if (EDGE_TYPE == 1) {
-				newX = (myX + xDelta[i] + xLength) % xLength;
-				newY = (myY + yDelta[i] + yLength) % yLength;
-			}
-
-			try {
-				if (listOfCellsInGrid[newX] [newY].myState == 0 && listOfCellsInGrid[newX] [newY].myNextState == 0) {
-					returnListOfNeighbors[i] = listOfCellsInGrid[newX] [newY];
-				}
-			}
-			catch (Exception e) {
-				returnListOfNeighbors[i] = null;
+	public List<Cell> calculateNeighbors() {
+		List<Cell> superNeighbors = super.calculateNeighbors(listOfCellsInGrid, myXDelta, myYDelta);
+		List<Cell> returnListOfNeighbors = new ArrayList<Cell>();
+		for(Cell c : superNeighbors){
+			if (c.myState == 0 && c.myNextState == 0) {
+				returnListOfNeighbors.add(c);
 			}
 		}
 		return returnListOfNeighbors;
 	}
 
-	public ArrayList<Cell> removeNullValuesFromListOfNeighbors() {
-		Cell[] neighbors = calculateNeighbors();
-		ArrayList<Cell> goodNeighbors = new ArrayList<Cell>();
-		for (int i = 0; i < neighbors.length; i++) {
-			if (neighbors[i] != null) {
-				goodNeighbors.add(neighbors[i]);
-			}
-		}
-		return goodNeighbors; // like State Farm
-	}
 
 	@Override
 	public void setGrid(Cell[][] listOfCells) {

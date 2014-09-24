@@ -1,9 +1,10 @@
 package simulationTypes;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import cellsociety_team19.XMLReader;
 import javafx.scene.paint.Color;
 
 public abstract class Cell {
@@ -13,7 +14,11 @@ public abstract class Cell {
 	protected int myState;
 	protected int myNextState;
 
-	public int myNumStates;
+	protected int[] myXDelta = {1,-1, 0, 0};
+	protected int[] myYDelta = {0, 0,-1, 1};
+	protected int myEdgeType = 1;
+	
+	public int myNumPatchTypes;
 	protected Map<String,Double> parameterMap;
 
 	//protected int myPatch; ?
@@ -33,14 +38,51 @@ public abstract class Cell {
 
 	//Creates a null Cell, allows us to make a parameterless cell before we know what its states are
 	public Cell() {
-		myState = 0;
-		myX = 0;
-		myY = 0;
+
 	}
 
 	//superclass abstract methods
 
-	public abstract Cell[] calculateNeighbors();
+	public List<Cell> calculateNeighbors(Cell[][] listOfCells, int[] xDelta, int[] yDelta){
+		List<Cell> listOfNeighbors = new ArrayList<Cell>();
+
+		for (int i = 0; i < xDelta.length; i++) {
+			int newX = -1;
+			int newY = -1;
+
+			int xLength = listOfCells[0].length;
+			int yLength = listOfCells.length;
+
+			//we can eliminate this following if statement by using finite edges as the default
+			//toroidal edges (wrap-around) is edge type 1
+			//infinite edges is edge type 2
+
+			if (myEdgeType == 0) {
+				if(myX + xDelta[i] >= 0 && myX + xDelta[i] < xLength){
+					newX = myX + xDelta[i];
+				}
+				if(myY + yDelta[i] >= 0 && myY + yDelta[i] < yLength){
+					newY = myY + yDelta[i];
+				}
+				
+			}
+
+			if (myEdgeType == 1) {
+				newX = (myX + xDelta[i] + xLength) % xLength;
+				newY = (myY + yDelta[i] + yLength) % yLength;
+			}
+
+			//			newX = calculateNewCoordinate(myXDelta[i], xLength, myX);
+			//			newY = calculateNewCoordinate(myYDelta[i], yLength, myY);
+
+			//			if (newX != -1 && newY != -1) {
+			if (newX != -1 && newY != -1) {
+				
+				listOfNeighbors.add(listOfCells[newX] [newY]);
+			}
+		}
+		return listOfNeighbors;
+	}
 
 	public abstract void doAction();
 
