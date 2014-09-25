@@ -52,11 +52,11 @@ public class SimulationLoop {
 	private KeyFrame frame;
 	private Timeline animation;
 	private int BUTTON_WIDTH = 70;
-	
+
 	private Map<Integer, Integer> populationCounts;
 
-	private LineChart<Number,Number> lineChart;
-	private Map<Integer, XYChart.Series> myLines;
+	private LineChart<Integer,Integer> lineChart;
+	private Map<Integer, XYChart.Series<Integer, Integer>> myLines;
 
 	public void start() {	
 		frame = makeFrame();
@@ -65,7 +65,7 @@ public class SimulationLoop {
 		animation.getKeyFrames().add(frame);
 		animation.play();
 	}
-	
+
 	public void initializePopulationMap(){
 		populationCounts = new HashMap<Integer, Integer>();
 		for(int i = 0; i < gridArrayOfCells[0][0].myNumPatchTypes; i++){
@@ -84,60 +84,64 @@ public class SimulationLoop {
 		@Override
 		public void handle(ActionEvent evt) {
 			if (shouldRun) {
-				updateCells();			
-				updateFPS();
-				
-				updateDataPoints();
-				updatePopulationGraph();
-				initializePopulationMap();
+				updateAll();
 			}
 		}
 	};
+
+	private void updateAll() {
+		updateCells();			
+		updateFPS();
+
+		updateDataPoints();
+		updatePopulationGraph();
+		initializePopulationMap();
+	}
 
 	public void initializePopulationGraph(){
 		final NumberAxis xAxis = new NumberAxis();
 		xAxis.setTickLabelsVisible(false);
 		xAxis.setLabel("Generation Number");
-		
-        final NumberAxis yAxis = new NumberAxis();
-        yAxis.setAutoRanging(false);
-        yAxis.setUpperBound(numRows*numCols);   
-        yAxis.setTickLabelsVisible(false);
-        
-        xAxis.setLabel("Generation Number");
-        //creating the chart
-        
-        lineChart = new LineChart<Number,Number>(xAxis,yAxis);
-        
-        lineChart.setTitle("Population Monitoring");
-        lineChart.setAnimated(false);
-        lineChart.setCreateSymbols(false);
-        lineChart.setMinHeight(250);
-        lineChart.setLegendVisible(false);
-        myLines = new HashMap<Integer, XYChart.Series>();
-        
-        gridNew.add(lineChart, numRows+10, 3);
+
+		final NumberAxis yAxis = new NumberAxis();
+		yAxis.setAutoRanging(false);
+		yAxis.setUpperBound(numRows*numCols);   
+		yAxis.setTickLabelsVisible(false);
+
+		xAxis.setLabel("Generation Number");
+		//creating the chart
+
+		lineChart = new LineChart(xAxis, yAxis);
+
+		lineChart.setTitle("Population Monitoring");
+		lineChart.setAnimated(false);
+		lineChart.setCreateSymbols(false);
+		lineChart.setMinHeight(250);
+		lineChart.setLegendVisible(false);
+		myLines = new HashMap<Integer, XYChart.Series<Integer, Integer>>();
+
+		gridNew.add(lineChart, numRows+10, 3);
 	}
-	
+
 	public void updatePopulationGraph(){
 		if(gridNew.getChildren().contains(lineChart)) gridNew.getChildren().remove(lineChart);
-        
+
 		lineChart.getData().clear();
-		
-        for(Integer i: populationCounts.keySet()){
-        	if(i != 0){
-//	        	XYChart.Series series = new XYChart.Series();      	
-//	        	
-//	            series.getData().add(new XYChart.Data(genNum, populationCounts.get(i)));
-	            lineChart.getData().add(myLines.get(i));
-        	}
-        }
-        
-        gridNew.add(lineChart, numRows+10, 3);
-		
+
+		for(Integer i: populationCounts.keySet()){
+			if(i != 0){
+				//	        	XYChart.Series series = new XYChart.Series();      	
+				//	        	
+				//	            series.getData().add(new XYChart.Data(genNum, populationCounts.get(i)));
+				lineChart.getData().add(myLines.get(i));
+			}
+		}
+
+		gridNew.add(lineChart, numRows+10, 3);
+
 	}
-	
-	
+
+
 	private void updateFPS() {
 		framesPerSecond = (int) Math.round(fpsSlider.getValue());		
 		animation.stop();
@@ -152,16 +156,16 @@ public class SimulationLoop {
 		doCellsAction();
 		updateGraphicalInterface();
 	}
-	
+
 	public void updateDataPoints(){
 		for(Integer i : populationCounts.keySet()){
 			if(!myLines.containsKey(i)){
-				myLines.put(i, new XYChart.Series());
+				myLines.put(i, new XYChart.Series<Integer, Integer>());
 			}
-			XYChart.Series curPoints = myLines.get(i);
-			curPoints.getData().add(new XYChart.Data(genNum, populationCounts.get(i)));
+			XYChart.Series<Integer, Integer> curPoints = myLines.get(i);
+			curPoints.getData().add(new XYChart.Data<Integer, Integer>(genNum, populationCounts.get(i)));
 			//System.out.println(curPoints);
-			
+
 			myLines.put(i, curPoints);
 		}
 	}
@@ -174,16 +178,16 @@ public class SimulationLoop {
 
 				final Cell curCell = gridArrayOfCells[i][j];
 				int cellState = curCell.getState();
-				
+
 				populationCounts.put(cellState, populationCounts.get(cellState)+1);
-				
+
 				Rectangle existingRectangle = (Rectangle) getNodeByRowColumnIndex(i, j, gridNew);
-				
+
 				gridNew.getChildren().remove(existingRectangle);
-				
+
 				final Rectangle rec = new Rectangle(0, 0, GRID_CELL_SIZE, GRID_CELL_SIZE); 
-				
-//				final Circle circ = new Circle(GRID_CELL_SIZE / 2);
+
+				//				final Circle circ = new Circle(GRID_CELL_SIZE / 2);
 
 				rec.setOnMouseClicked(new EventHandler<MouseEvent>(){
 
@@ -193,14 +197,14 @@ public class SimulationLoop {
 						curCell.setState(newState);
 						curCell.setNextState(newState);
 						rec.setFill(curCell.getCorrespondingColor()); //move this before calculateNeighbors() happens
-						
+
 					}
-					
+
 				});
-			
-				
+
+
 				rec.setFill(curCell.getCorrespondingColor());
-				
+
 				gridNew.add(rec, j, i); //GridPane uses reversed coordinates
 				curCell.updateCell();
 			}
@@ -208,18 +212,18 @@ public class SimulationLoop {
 	}
 
 	public Node getNodeByRowColumnIndex(final int row,final int column,GridPane gridPane) {
-        Node result = null;
-        ObservableList<Node> childrens = gridPane.getChildren();
-        for(Node node : childrens) {
-            if(gridPane.getRowIndex(node) == row && gridPane.getColumnIndex(node) == column) {
-                result = node;
-                break;
-            }
-        }
-        return result;
-    }
-	
-	
+		Node result = null;
+		ObservableList<Node> childrens = gridPane.getChildren();
+		for(Node node : childrens) {
+			if(GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
+				result = node;
+				break;
+			}
+		}
+		return result;
+	}
+
+
 	private void doCellsAction() {
 		for (int i = 0; i < gridArrayOfCells.length; i++) {
 			for (int j = 0; j < gridArrayOfCells[i].length; j++) {
@@ -303,7 +307,7 @@ public class SimulationLoop {
 				catch(Exception e) {
 					System.out.println("Need to enter an XML File");
 				}
-				
+
 				initializePopulationMap();
 				createGrid(stage);
 				shouldRun = true;
@@ -313,8 +317,8 @@ public class SimulationLoop {
 	}
 
 	private void createGrid(final Stage stage) {
-		
-		
+
+
 		gridNew = new GridPane(); 
 
 		gridNew.setMinSize(GUI_WIDTH, GUI_HEIGHT);
@@ -343,7 +347,7 @@ public class SimulationLoop {
 		for (int i = 0; i < numCols; i++) {
 			for (int j = 0; j < numRows; j++) {
 				Rectangle r = new Rectangle(0, 0, GRID_CELL_SIZE, GRID_CELL_SIZE);
-//				Circle r = new Circle(GRID_CELL_SIZE / 2);
+				//				Circle r = new Circle(GRID_CELL_SIZE / 2);
 				r.setFill(Color.WHITE);
 				gridNew.add(r, j, i);
 			}
@@ -385,6 +389,8 @@ public class SimulationLoop {
 				shouldRun = true; //keep
 				gridArrayOfCells = xmlReader.parseFile(); //keep
 				genNum = 0;
+				initializePopulationMap();
+				initializePopulationGraph();
 			}
 		});
 
@@ -453,8 +459,8 @@ public class SimulationLoop {
 		gridNew.add(quit, rightSide, numCols + 4);
 
 		initializePopulationGraph();
-		
-		
+
+
 		Scene s = new Scene(gridNew);
 
 		stage.setScene(s);

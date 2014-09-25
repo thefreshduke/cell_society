@@ -37,7 +37,6 @@ public abstract class Edge {
 		myYDelta = yDelta;
 	}
 
-	//	public Cell[] calculateNeighbors() {
 	public List<Cell> calculateNeighbors(int myX, int myY, Cell[][] listOfCells) {
 		//use List<Cell> instead of Cell[] //maybe Collection or Iterable down the line???
 		//higher up interfaces have fewer functions allowed, which protect the structure a little more
@@ -71,12 +70,4 @@ public abstract class Edge {
 	}
 
 	public abstract int calculateNewCoordinate(int delta, int length, int coordinate);
-
-	//	public Cell[][] updateGrid() {
-	//		return listOfCellsInGrid;
-	//	}
-	//	
-	//	public void setGrid(Cell[][] listOfCells) {
-	//		listOfCellsInGrid = listOfCells;
-	//	}
 }

@@ -9,7 +9,7 @@ public class TreeCell extends Cell {
 
 	protected static double PROBABILITY_OF_CATCHING_FIRE;
 
-	public TreeCell(int x, int y, int state, int nextState, Map<String, Double> parameterMap, Map<Integer, String> colorMap) {
+	public TreeCell(int x, int y, int state, int nextState, Map<String, Double> parameterMap, Map<Integer, Color> colorMap) {
 		super(x, y, state, nextState, parameterMap, colorMap);
 
 		myNumPatchTypes = 3;
@@ -50,7 +50,12 @@ public class TreeCell extends Cell {
 	}
 
 	@Override
-	public Cell createCell(int cellX, int cellY, int cellState, int cellNextState, Map<String, Double> cellParameterMap, Map<Integer, String> cellColorMap) {
+	public Cell createCell(int cellX, int cellY, int cellState, int cellNextState, Map<String, Double> cellParameterMap, Map<Integer, Color> cellColorMap) {
 		return new TreeCell(cellX, cellY, cellState, cellNextState, cellParameterMap, cellColorMap);
+	}
+	
+	@Override
+	public Color getCorrespondingColor() {
+		return colorMap.get(myState);
 	}
 }

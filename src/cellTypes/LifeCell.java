@@ -10,13 +10,9 @@ public class LifeCell extends Cell {
 	protected int[] myXDelta = {1,-1, 0, 0, 1,-1, 1,-1};
 	protected int[] myYDelta = {0, 0,-1, 1, 1,-1,-1, 1};
 
-	public LifeCell(int x, int y, int state, int nextState, Map<String, Double> parameterMap, Map<Integer, String> colorMap) {
+	public LifeCell(int x, int y, int state, int nextState, Map<String, Double> parameterMap, Map<Integer, Color> colorMap) {
 		super(x, y, state, nextState, parameterMap, colorMap);
-
-//		colorMap.put(0, Color.WHITE);
-
 		myNumPatchTypes = 2;
-//		colorMap.put(1, Color.GREEN);
 	}
 
 	public LifeCell() {
@@ -50,7 +46,12 @@ public class LifeCell extends Cell {
 	}
 
 	@Override
-	public Cell createCell(int cellX, int cellY, int cellState, int cellNextState, Map<String, Double> cellParameterMap, Map<Integer, String> cellColorMap) {
+	public Cell createCell(int cellX, int cellY, int cellState, int cellNextState, Map<String, Double> cellParameterMap, Map<Integer, Color> cellColorMap) {
 		return new LifeCell(cellX, cellY, cellState, cellNextState, cellParameterMap, cellColorMap);
+	}
+	
+	@Override
+	public Color getCorrespondingColor() {
+		return colorMap.get(myState);
 	}
 }

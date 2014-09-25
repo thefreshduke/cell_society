@@ -11,13 +11,13 @@ public class SegCell extends Cell {
 
 	protected static double THRESHOLD_OF_HAPPINESS;
 
-	public SegCell(int x, int y, int state, int nextState, Map<String, Double> parameterMap, Map<Integer, String> colorMap) {
+	public SegCell(int x, int y, int state, int nextState, Map<String, Double> parameterMap, Map<Integer, Color> colorMap) {
 		super(x, y, state, nextState, parameterMap, colorMap);
-//		colorMap.put(0, Color.WHITE);
-//		colorMap.put(1, Color.RED);
-//		colorMap.put(2, Color.BLUE);
-//		colorMap.put(3, Color.GREEN);
-//		colorMap.put(4, Color.YELLOW);
+		colorMap.put(0, Color.WHITE);
+		colorMap.put(1, Color.RED);
+		colorMap.put(2, Color.BLUE);
+		colorMap.put(3, Color.GREEN);
+		colorMap.put(4, Color.YELLOW);
 
 		 
 		myNumPatchTypes = 5;
@@ -113,7 +113,12 @@ public class SegCell extends Cell {
 
 
 	@Override
-	public Cell createCell(int cellX, int cellY, int cellState, int cellNextState, Map<String, Double> cellParameterMap, Map<Integer, String> cellColorMap) {
+	public Cell createCell(int cellX, int cellY, int cellState, int cellNextState, Map<String, Double> cellParameterMap, Map<Integer, Color> cellColorMap) {
 		return new SegCell(cellX, cellY, cellState, cellNextState, cellParameterMap, cellColorMap);
+	}
+	
+	@Override
+	public Color getCorrespondingColor() {
+		return colorMap.get(myState);
 	}
 }

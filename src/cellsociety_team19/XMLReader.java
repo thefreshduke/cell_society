@@ -43,8 +43,7 @@ public class XMLReader {
 
 	public Map<String, Double> parameterMapForCells;
 
-//	private Map<Integer, Color> colorMapForCells;
-	private Map<Integer, String> colorMapForCells;
+	private Map<Integer, Color> colorMapForCells;
 
 	private String gameType;
 
@@ -76,9 +75,9 @@ public class XMLReader {
 	 * 
 	 * @return Map<Integer,Color> for subcells to use as their mapping b/t state and color
 	 */
-	private Map<Integer, String> colorMapSetup() {
+	private Map<Integer, Color> colorMapSetup() {
 		/*map to return */
-		Map<Integer, String> colorMap = new HashMap<Integer, String>();
+		Map<Integer,Color> colorMap = new HashMap<Integer,Color>();
 
 		/*Get the list of <color> tags */
 		NodeList colorList = doc.getElementsByTagName("color");
@@ -89,7 +88,7 @@ public class XMLReader {
 			Element eElement = (Element) nNode;
 
 			/* get the state value and corresponding Color --> populate map */
-			colorMap.put(Integer.parseInt(eElement.getAttribute("state")), eElement.getAttribute("color"));
+			colorMap.put(Integer.parseInt(eElement.getAttribute("state")), Color.valueOf(eElement.getAttribute("color")));
 		}
 		return colorMap;
 	}

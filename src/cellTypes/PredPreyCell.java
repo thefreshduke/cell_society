@@ -18,17 +18,13 @@ public class PredPreyCell extends Cell {
 
 	private boolean imminentSharkAttack = false; //just for fish
 
-	public PredPreyCell(int x, int y, int state, int nextState, Map<String, Double> parameterMap, Map<Integer, String> colorMap) {
+	public PredPreyCell(int x, int y, int state, int nextState, Map<String, Double> parameterMap, Map<Integer, Color> colorMap) {
 		super(x, y, state, nextState, parameterMap, colorMap);
 		
 		SHARK_BREED_TIME = super.myParameterMap.get("SHARK_BREED_TIME");
 		FISH_BREED_TIME = super.myParameterMap.get("FISH_BREED_TIME");
 		SHARK_INITIAL_ENERGY = super.myParameterMap.get("SHARK_INITIAL_ENERGY");
 		FISH_ENERGY = super.myParameterMap.get("FISH_ENERGY");
-
-//		colorMap.put(0, Color.BLUE);
-//		colorMap.put(1, Color.SALMON);
-//		colorMap.put(2, Color.GRAY);
 		sharkEnergy = SHARK_INITIAL_ENERGY;
 		chronons = 0;
 
@@ -196,7 +192,7 @@ public class PredPreyCell extends Cell {
 	}
 
 	@Override
-	public Cell createCell(int cellX, int cellY, int cellState, int cellNextState, Map<String, Double> cellParameterMap, Map<Integer, String> cellColorMap) {
+	public Cell createCell(int cellX, int cellY, int cellState, int cellNextState, Map<String, Double> cellParameterMap, Map<Integer, Color> cellColorMap) {
 		return new PredPreyCell(cellX, cellY, cellState, cellNextState, cellParameterMap, cellColorMap);
 	}
 
@@ -209,5 +205,10 @@ public class PredPreyCell extends Cell {
 			}
 		}
 		return returnListOfNeighbors;
+	}
+	
+	@Override
+	public Color getCorrespondingColor() {
+		return colorMap.get(myState);
 	}
 }
