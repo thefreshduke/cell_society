@@ -1,7 +1,6 @@
 package cellTypes;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -19,17 +18,17 @@ public class PredPreyCell extends Cell {
 
 	private boolean imminentSharkAttack = false; //just for fish
 
-	public PredPreyCell(int x, int y, int state, Map<String,Double> paramMap) {
-		super(x, y, state, paramMap);
+	public PredPreyCell(int x, int y, int state, int nextState, Map<String, Double> parameterMap, Map<Integer, String> colorMap) {
+		super(x, y, state, nextState, parameterMap, colorMap);
 		
-		SHARK_BREED_TIME = super.parameterMap.get("SHARK_BREED_TIME");
-		FISH_BREED_TIME = super.parameterMap.get("FISH_BREED_TIME");
-		SHARK_INITIAL_ENERGY = super.parameterMap.get("SHARK_INITIAL_ENERGY");
-		FISH_ENERGY = super.parameterMap.get("FISH_ENERGY");
+		SHARK_BREED_TIME = super.myParameterMap.get("SHARK_BREED_TIME");
+		FISH_BREED_TIME = super.myParameterMap.get("FISH_BREED_TIME");
+		SHARK_INITIAL_ENERGY = super.myParameterMap.get("SHARK_INITIAL_ENERGY");
+		FISH_ENERGY = super.myParameterMap.get("FISH_ENERGY");
 
-		colorMap.put(0, Color.BLUE);
-		colorMap.put(1, Color.SALMON);
-		colorMap.put(2, Color.GRAY);
+//		colorMap.put(0, Color.BLUE);
+//		colorMap.put(1, Color.SALMON);
+//		colorMap.put(2, Color.GRAY);
 		sharkEnergy = SHARK_INITIAL_ENERGY;
 		chronons = 0;
 
@@ -197,8 +196,8 @@ public class PredPreyCell extends Cell {
 	}
 
 	@Override
-	public PredPreyCell makeNewCell(int cellX, int cellY, int cellState, Map<String,Double> paramMap) {
-		return new PredPreyCell(cellX, cellY, cellState, paramMap);
+	public Cell createCell(int cellX, int cellY, int cellState, int cellNextState, Map<String, Double> cellParameterMap, Map<Integer, String> cellColorMap) {
+		return new PredPreyCell(cellX, cellY, cellState, cellNextState, cellParameterMap, cellColorMap);
 	}
 
 	public List<Cell> calculateNeighbors() {

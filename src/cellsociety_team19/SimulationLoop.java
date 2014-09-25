@@ -1,9 +1,7 @@
 package cellsociety_team19;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import cellTypes.Cell;
@@ -23,7 +21,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.ConstraintsBase;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
@@ -178,9 +175,7 @@ public class SimulationLoop {
 				final Cell curCell = gridArrayOfCells[i][j];
 				int cellState = curCell.getState();
 				
-				
 				populationCounts.put(cellState, populationCounts.get(cellState)+1);
-				
 				
 				Rectangle existingRectangle = (Rectangle) getNodeByRowColumnIndex(i, j, gridNew);
 				

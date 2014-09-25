@@ -1,7 +1,6 @@
 package cellTypes;
 
 import java.util.List;
-import java.util.HashMap;
 import java.util.Map;
 
 import javafx.scene.paint.Color;
@@ -10,16 +9,16 @@ public class TreeCell extends Cell {
 
 	protected static double PROBABILITY_OF_CATCHING_FIRE;
 
-	public TreeCell(int x, int y, int state, Map<String, Double> map) {
-		super(x, y, state, map);
+	public TreeCell(int x, int y, int state, int nextState, Map<String, Double> parameterMap, Map<Integer, String> colorMap) {
+		super(x, y, state, nextState, parameterMap, colorMap);
 
 		myNumPatchTypes = 3;
 
-		colorMap.put(0, Color.LIGHTGRAY);
-		colorMap.put(1, Color.GREEN);
-		colorMap.put(2, Color.RED);
+//		colorMap.put(0, Color.LIGHTGRAY);
+//		colorMap.put(1, Color.GREEN);
+//		colorMap.put(2, Color.RED);
 
-		PROBABILITY_OF_CATCHING_FIRE = super.parameterMap.get("PROBABILITY_OF_CATCHING_FIRE");
+		PROBABILITY_OF_CATCHING_FIRE = super.myParameterMap.get("PROBABILITY_OF_CATCHING_FIRE");
 	}
 
 	public TreeCell() {
@@ -51,7 +50,7 @@ public class TreeCell extends Cell {
 	}
 
 	@Override
-	public TreeCell makeNewCell(int cellX, int cellY, int cellState, Map<String, Double> map) {
-		return new TreeCell(cellX, cellY, cellState, map);
+	public Cell createCell(int cellX, int cellY, int cellState, int cellNextState, Map<String, Double> cellParameterMap, Map<Integer, String> cellColorMap) {
+		return new TreeCell(cellX, cellY, cellState, cellNextState, cellParameterMap, cellColorMap);
 	}
 }

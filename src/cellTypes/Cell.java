@@ -16,28 +16,39 @@ public abstract class Cell {
 	protected int myY;
 	protected int myState;
 	protected int myNextState;
+	protected double myEdgeType;
+	protected Color myColor;
 
 	protected int[] myXDelta = {1,-1, 0, 0};
 	protected int[] myYDelta = {0, 0,-1, 1};
-	protected double myEdgeType;
 
 	public int myNumPatchTypes;
-	protected Map<String, Double> parameterMap;
+	protected Map<String, Double> myParameterMap;
+	protected Map<Integer, String> myColorMap;
 
 	//protected int myPatch; ?
 
-	protected Map<Integer, Color> colorMap = new HashMap<Integer, Color>();
+//	protected Map<Integer, Color> colorMap = new HashMap<Integer, Color>();
+	protected Map<Integer, String> colorMap = new HashMap<Integer, String>();
 
 	protected Cell[][] listOfCellsInGrid;
 
 	//superclass constructor
 
-	public Cell(int x, int y, int state, Map<String,Double> map) {
+	public Cell(int x, int y, int state, int nextState, Map<String, Double> parameterMap, Map<Integer, String> colorMap) {
 		myX = x;
 		myY = y;
 		myState = state;
-		parameterMap = map;
-		myEdgeType = parameterMap.get("EDGE_TYPE");
+		myNextState = nextState;
+		myParameterMap = parameterMap;
+		myEdgeType = myParameterMap.get("EDGE_TYPE");
+		myColorMap = colorMap;
+		myColor = Color.web(myColorMap.get(state));
+//		if (myColor instanceof Color) {
+			System.out.println(myColor);
+//		}
+//		System.out.println(myColorMap);
+		System.out.println();
 	}
 
 	//Creates a null Cell, allows us to make a parameterless cell before we know what its states are
@@ -89,16 +100,16 @@ public abstract class Cell {
 
 	public abstract void doAction();
 
-	public abstract Cell makeNewCell(int cellX, int cellY, int cellState, Map<String, Double> map);
+	public abstract Cell createCell(int cellX, int cellY, int cellState, int cellNextState, Map<String, Double> cellParameterMap, Map<Integer, String> cellColorMap);
 
 	public void updateCell() {
 		myState = myNextState;
 	}
-	
+
 	//getters and setters
 
 	public Color getCorrespondingColor() {
-		return colorMap.get(myState);
+		return Color.web(colorMap.get(myState));
 	}
 
 	public void setGrid(Cell[][] listOfCells) {
