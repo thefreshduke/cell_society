@@ -10,13 +10,10 @@ public class LifeCell extends Cell {
 	protected int[] myXDelta = {1,-1, 0, 0, 1,-1, 1,-1};
 	protected int[] myYDelta = {0, 0,-1, 1, 1,-1,-1, 1};
 
-	public LifeCell(int x, int y, int state, Map<String,Double> map) {
-		super(x, y, state, map);
-
-		colorMap.put(0, Color.WHITE);
+	public LifeCell(int x, int y, int state, Map<String,Double> map, Map<Integer, Color> m) {
+		super(x, y, state, map,m);
 
 		myNumPatchTypes = 2;
-		colorMap.put(1, Color.GREEN);
 	}
 
 	public LifeCell() {
@@ -50,7 +47,7 @@ public class LifeCell extends Cell {
 	}
 
 	@Override
-	public Cell makeNewCell(int cellX, int cellY, int cellState, Map<String,Double> map) {
-		return new LifeCell(cellX, cellY, cellState, map);
+	public Cell makeNewCell(int cellX, int cellY, int cellState, Map<String,Double> map, Map<Integer, Color> m) {
+		return new LifeCell(cellX, cellY, cellState, map, m);
 	}
 }

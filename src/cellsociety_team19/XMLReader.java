@@ -130,6 +130,9 @@ public class XMLReader {
 			
 			paramMap.put(eElement.getAttribute("name"), Double.parseDouble(eElement.getAttribute("value")));
 		}
+		
+		
+		
 		return paramMap;
 	}
 
@@ -141,11 +144,14 @@ public class XMLReader {
 		
 		/* get the simulation type --> Loop through <simulation>tags and get the attrittrube 'gametype' */
 		NodeList gameTypeList = doc.getElementsByTagName("simulation");
+		
+		
 		for (int i = 0; i < gameTypeList.getLength(); i++) {
 			Node nNode = gameTypeList.item(i);
 			Element eElement = (Element) nNode;
 			/* set CellType from gametype */
 			gameType = eElement.getAttribute("gametype");
+			
 			choice = simulationMap.get(gameType);
 		}
 		
@@ -164,8 +170,9 @@ public class XMLReader {
 			
 			/* Make 2d grid array that tracks the cells in the grid */
 			for (int j = 0; j < colStates.length; j++) {
-				gridArrayOfCells[i][j] = choice.makeNewCell(i, j, Integer.parseInt(colStates[j]), parameterMapForCells); //also pass in paramMap
+				gridArrayOfCells[i][j] = choice.makeNewCell(i, j, Integer.parseInt(colStates[j]), parameterMapForCells, colorMapForCells); //also pass in paramMap
 			}
+		
 		}
 		
 		return gridArrayOfCells;

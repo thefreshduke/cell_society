@@ -58,8 +58,8 @@ public class SimulationLoop {
 	
 	private Map<Integer, Integer> populationCounts;
 
-	private LineChart<Number,Number> lineChart;
-	private Map<Integer, XYChart.Series> myLines;
+	private LineChart<Integer,Integer> lineChart;
+	private Map<Integer, XYChart.Series<Integer, Integer>> myLines;
 
 	public void start() {	
 		frame = makeFrame();
@@ -87,16 +87,21 @@ public class SimulationLoop {
 		@Override
 		public void handle(ActionEvent evt) {
 			if (shouldRun) {
-				updateCells();			
-				updateFPS();
-				
-				updateDataPoints();
-				updatePopulationGraph();
-				initializePopulationMap();
+				updateAll();
 			}
+		}
+
+		private void updateAll() {
+			updateCells();			
+			updateFPS();
+			
+			updateDataPoints();
+			updatePopulationGraph();
+			initializePopulationMap();
 		}
 	};
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void initializePopulationGraph(){
 		final NumberAxis xAxis = new NumberAxis();
 		xAxis.setTickLabelsVisible(false);
@@ -110,14 +115,14 @@ public class SimulationLoop {
         xAxis.setLabel("Generation Number");
         //creating the chart
         
-        lineChart = new LineChart<Number,Number>(xAxis,yAxis);
+        lineChart = new LineChart(xAxis,yAxis);
         
         lineChart.setTitle("Population Monitoring");
         lineChart.setAnimated(false);
         lineChart.setCreateSymbols(false);
         lineChart.setMinHeight(250);
         lineChart.setLegendVisible(false);
-        myLines = new HashMap<Integer, XYChart.Series>();
+        myLines = new HashMap<Integer, XYChart.Series<Integer, Integer>>();
         
         gridNew.add(lineChart, numRows+10, 3);
 	}
@@ -159,10 +164,10 @@ public class SimulationLoop {
 	public void updateDataPoints(){
 		for(Integer i : populationCounts.keySet()){
 			if(!myLines.containsKey(i)){
-				myLines.put(i, new XYChart.Series());
+				myLines.put(i, new XYChart.Series<Integer, Integer>());
 			}
-			XYChart.Series curPoints = myLines.get(i);
-			curPoints.getData().add(new XYChart.Data(genNum, populationCounts.get(i)));
+			XYChart.Series<Integer, Integer> curPoints = myLines.get(i);
+			curPoints.getData().add(new XYChart.Data<Integer, Integer>(genNum, populationCounts.get(i)));
 			//System.out.println(curPoints);
 			
 			myLines.put(i, curPoints);
@@ -216,7 +221,7 @@ public class SimulationLoop {
         Node result = null;
         ObservableList<Node> childrens = gridPane.getChildren();
         for(Node node : childrens) {
-            if(gridPane.getRowIndex(node) == row && gridPane.getColumnIndex(node) == column) {
+            if(GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
                 result = node;
                 break;
             }
@@ -390,6 +395,8 @@ public class SimulationLoop {
 				shouldRun = true; //keep
 				gridArrayOfCells = xmlReader.parseFile(); //keep
 				genNum = 0;
+				initializePopulationMap();
+				initializePopulationGraph();
 			}
 		});
 

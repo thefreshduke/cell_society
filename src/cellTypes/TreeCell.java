@@ -10,14 +10,11 @@ public class TreeCell extends Cell {
 
 	protected static double PROBABILITY_OF_CATCHING_FIRE;
 
-	public TreeCell(int x, int y, int state, Map<String, Double> map) {
-		super(x, y, state, map);
+	public TreeCell(int x, int y, int state, Map<String, Double> map, Map<Integer, Color> m) {
+		super(x, y, state, map, m);
 
 		myNumPatchTypes = 3;
 
-		colorMap.put(0, Color.LIGHTGRAY);
-		colorMap.put(1, Color.GREEN);
-		colorMap.put(2, Color.RED);
 
 		PROBABILITY_OF_CATCHING_FIRE = super.parameterMap.get("PROBABILITY_OF_CATCHING_FIRE");
 	}
@@ -51,7 +48,7 @@ public class TreeCell extends Cell {
 	}
 
 	@Override
-	public TreeCell makeNewCell(int cellX, int cellY, int cellState, Map<String, Double> map) {
-		return new TreeCell(cellX, cellY, cellState, map);
+	public TreeCell makeNewCell(int cellX, int cellY, int cellState, Map<String, Double> map, Map<Integer, Color> m) {
+		return new TreeCell(cellX, cellY, cellState, map, m);
 	}
 }

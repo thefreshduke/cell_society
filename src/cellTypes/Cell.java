@@ -23,26 +23,28 @@ public abstract class Cell {
 
 	public int myNumPatchTypes;
 	protected Map<String, Double> parameterMap;
+	protected Map<Integer, Color> colorMap;
 
 	//protected int myPatch; ?
-
-	protected Map<Integer, Color> colorMap = new HashMap<Integer, Color>();
 
 	protected Cell[][] listOfCellsInGrid;
 
 	//superclass constructor
 
-	public Cell(int x, int y, int state, Map<String,Double> map) {
+	public Cell(int x, int y, int state, Map<String,Double> map, Map<Integer, Color> colourMap) {
 		myX = x;
 		myY = y;
 		myState = state;
 		parameterMap = map;
 		myEdgeType = parameterMap.get("EDGE_TYPE");
+		colorMap = colourMap;
 	}
 
 	//Creates a null Cell, allows us to make a parameterless cell before we know what its states are
 	public Cell() {
-
+		myState = 0;
+		myX = 0;
+		myY = 0;
 	}
 
 	//superclass abstract methods
@@ -89,7 +91,7 @@ public abstract class Cell {
 
 	public abstract void doAction();
 
-	public abstract Cell makeNewCell(int cellX, int cellY, int cellState, Map<String, Double> map);
+	public abstract Cell makeNewCell(int cellX, int cellY, int cellState, Map<String, Double> map, Map<Integer, Color> m);
 
 	public void updateCell() {
 		myState = myNextState;
