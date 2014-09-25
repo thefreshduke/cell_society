@@ -1,24 +1,26 @@
 package cellTypes;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import edgeTypes.Edge;
 import javafx.scene.paint.Color;
 
 public class SegCell extends Cell {
+	
+	protected int[] myXDelta = {1,-1, 0, 0, 1,-1, 1,-1};
+	protected int[] myYDelta = {0, 0,-1, 1, 1,-1,-1, 1};
 
 	protected static double THRESHOLD_OF_HAPPINESS;
 
-	public SegCell(int x, int y, int state, Map<String,Double> paramMap, Map<Integer, Color> m) {
-		super(x, y, state, paramMap, m);
+	public SegCell(int x, int y, int state, Edge edgeType, Map<String, Double> parameterMap, Map<Integer, Color> colorMap) {
+		super(x, y, state, edgeType, parameterMap, colorMap);
 
 		myNumPatchTypes = 5;
 
-
-		THRESHOLD_OF_HAPPINESS = super.parameterMap.get("THRESHOLD_OF_HAPPINESS");
+		THRESHOLD_OF_HAPPINESS = super.myParameterMap.get("THRESHOLD_OF_HAPPINESS");
 	}
 
 	public SegCell() {
@@ -43,7 +45,8 @@ public class SegCell extends Cell {
 		 */
 
 		/* calculate neighbors */
-		List<Cell> myNeighbors = calculateNeighbors(listOfCellsInGrid, myXDelta, myYDelta);
+		List<Cell> myNeighbors = super.calculateNeighbors(listOfCellsInGrid, myXDelta, myYDelta);
+//		System.out.println(myNeighbors.size());
 
 		/*determine if neighbor is satisfied*/
 		if (isSatisfied(myNeighbors)) {
@@ -58,7 +61,7 @@ public class SegCell extends Cell {
 				int randChoice = rand.nextInt(openCells.size());
 				Cell newCell = openCells.get(randChoice);
 				if (myState != 0) {
-					SegCell moveCell = new SegCell(newCell.myX, newCell.myY, 0, super.parameterMap, colorMap);
+					SegCell moveCell = new SegCell(newCell.myX, newCell.myY, 0, super.myEdgeType, super.myParameterMap, super.myColorMap);
 					moveCell.myNextState = myState;
 
 					listOfCellsInGrid[newCell.myX] [newCell.myY] = moveCell;
@@ -107,7 +110,7 @@ public class SegCell extends Cell {
 
 
 	@Override
-	public SegCell makeNewCell(int cellX, int cellY, int cellState, Map<String,Double> paramMap, Map<Integer, Color> m) {
-		return new SegCell(cellX, cellY, cellState,paramMap,m);
+	public SegCell makeNewCell(int cellX, int cellY, int cellState, Edge cellEdgeType, Map<String, Double> cellParameterMap, Map<Integer, Color> cellColorMap) {
+		return new SegCell(cellX, cellY, cellState, cellEdgeType, cellParameterMap, cellColorMap);
 	}
 }

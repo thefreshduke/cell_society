@@ -1,11 +1,11 @@
 package cellTypes;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import edgeTypes.Edge;
 import javafx.scene.paint.Color;
 
 public class PredPreyCell extends Cell {
@@ -19,13 +19,13 @@ public class PredPreyCell extends Cell {
 
 	private boolean imminentSharkAttack = false; //just for fish
 
-	public PredPreyCell(int x, int y, int state, Map<String,Double> paramMap, Map<Integer, Color> m) {
-		super(x, y, state, paramMap, m);
+	public PredPreyCell(int x, int y, int state, Edge edgeType, Map<String, Double> parameterMap, Map<Integer, Color> colorMap) {
+		super(x, y, state, edgeType, parameterMap, colorMap);
 		
-		SHARK_BREED_TIME = super.parameterMap.get("SHARK_BREED_TIME");
-		FISH_BREED_TIME = super.parameterMap.get("FISH_BREED_TIME");
-		SHARK_INITIAL_ENERGY = super.parameterMap.get("SHARK_INITIAL_ENERGY");
-		FISH_ENERGY = super.parameterMap.get("FISH_ENERGY");
+		SHARK_BREED_TIME = super.myParameterMap.get("SHARK_BREED_TIME");
+		FISH_BREED_TIME = super.myParameterMap.get("FISH_BREED_TIME");
+		SHARK_INITIAL_ENERGY = super.myParameterMap.get("SHARK_INITIAL_ENERGY");
+		FISH_ENERGY = super.myParameterMap.get("FISH_ENERGY");
 
 		sharkEnergy = SHARK_INITIAL_ENERGY;
 		chronons = 0;
@@ -194,8 +194,8 @@ public class PredPreyCell extends Cell {
 	}
 
 	@Override
-	public PredPreyCell makeNewCell(int cellX, int cellY, int cellState, Map<String,Double> paramMap, Map<Integer, Color> m) {
-		return new PredPreyCell(cellX, cellY, cellState, paramMap, m);
+	public PredPreyCell makeNewCell(int cellX, int cellY, int cellState, Edge cellEdgeType, Map<String,Double> cellParameterMap, Map<Integer, Color> cellColorMap) {
+		return new PredPreyCell(cellX, cellY, cellState, cellEdgeType, cellParameterMap, cellColorMap);
 	}
 
 	public List<Cell> calculateNeighbors() {

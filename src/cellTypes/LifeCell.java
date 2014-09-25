@@ -3,6 +3,7 @@ package cellTypes;
 import java.util.List;
 import java.util.Map;
 
+import edgeTypes.Edge;
 import javafx.scene.paint.Color;
 
 public class LifeCell extends Cell {
@@ -10,8 +11,8 @@ public class LifeCell extends Cell {
 	protected int[] myXDelta = {1,-1, 0, 0, 1,-1, 1,-1};
 	protected int[] myYDelta = {0, 0,-1, 1, 1,-1,-1, 1};
 
-	public LifeCell(int x, int y, int state, Map<String,Double> map, Map<Integer, Color> m) {
-		super(x, y, state, map,m);
+	public LifeCell(int x, int y, int state, Edge edgeType, Map<String, Double> parameterMap, Map<Integer, Color> colorMap) {
+		super(x, y, state, edgeType, parameterMap,colorMap);
 
 		myNumPatchTypes = 2;
 	}
@@ -47,7 +48,7 @@ public class LifeCell extends Cell {
 	}
 
 	@Override
-	public Cell makeNewCell(int cellX, int cellY, int cellState, Map<String,Double> map, Map<Integer, Color> m) {
-		return new LifeCell(cellX, cellY, cellState, map, m);
+	public Cell makeNewCell(int cellX, int cellY, int cellState, Edge cellEdgeType, Map<String, Double> cellParameterMap, Map<Integer, Color> cellColorMap) {
+		return new LifeCell(cellX, cellY, cellState, cellEdgeType, cellParameterMap, cellColorMap);
 	}
 }

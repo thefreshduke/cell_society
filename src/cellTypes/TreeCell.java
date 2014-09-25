@@ -1,22 +1,21 @@
 package cellTypes;
 
 import java.util.List;
-import java.util.HashMap;
 import java.util.Map;
 
+import edgeTypes.Edge;
 import javafx.scene.paint.Color;
 
 public class TreeCell extends Cell {
 
 	protected static double PROBABILITY_OF_CATCHING_FIRE;
 
-	public TreeCell(int x, int y, int state, Map<String, Double> map, Map<Integer, Color> m) {
-		super(x, y, state, map, m);
+	public TreeCell(int x, int y, int state, Edge edgeType, Map<String, Double> parameterMap, Map<Integer, Color> colorMap) {
+		super(x, y, state, edgeType, parameterMap, colorMap);
 
 		myNumPatchTypes = 3;
 
-
-		PROBABILITY_OF_CATCHING_FIRE = super.parameterMap.get("PROBABILITY_OF_CATCHING_FIRE");
+		PROBABILITY_OF_CATCHING_FIRE = super.myParameterMap.get("PROBABILITY_OF_CATCHING_FIRE");
 	}
 
 	public TreeCell() {
@@ -48,7 +47,7 @@ public class TreeCell extends Cell {
 	}
 
 	@Override
-	public TreeCell makeNewCell(int cellX, int cellY, int cellState, Map<String, Double> map, Map<Integer, Color> m) {
-		return new TreeCell(cellX, cellY, cellState, map, m);
+	public TreeCell makeNewCell(int cellX, int cellY, int cellState, Edge cellEdgeType, Map<String, Double> cellparamterMap, Map<Integer, Color> cellColorMap) {
+		return new TreeCell(cellX, cellY, cellState, cellEdgeType, cellparamterMap, cellColorMap);
 	}
 }

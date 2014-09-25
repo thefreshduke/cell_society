@@ -1,10 +1,12 @@
 package cellTypes;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import edgeTypes.Edge;
+import edgeTypes.FiniteEdge;
+import edgeTypes.ToroidalEdge;
 import javafx.scene.paint.Color;
 
 public abstract class Cell {
@@ -19,11 +21,13 @@ public abstract class Cell {
 
 	protected int[] myXDelta = {1,-1, 0, 0};
 	protected int[] myYDelta = {0, 0,-1, 1};
-	protected double myEdgeType;
+	protected Edge myEdgeType;
 
 	public int myNumPatchTypes;
-	protected Map<String, Double> parameterMap;
-	protected Map<Integer, Color> colorMap;
+	protected Map<String, Double> myParameterMap;
+	protected Map<Integer, Color> myColorMap;
+	
+	Edge[] edges = {new FiniteEdge(), new ToroidalEdge()};
 
 	//protected int myPatch; ?
 
@@ -31,23 +35,19 @@ public abstract class Cell {
 
 	//superclass constructor
 
-	public Cell(int x, int y, int state, Map<String,Double> map, Map<Integer, Color> colourMap) {
+	public Cell(int x, int y, int state, Edge edgeType, Map<String, Double> parameterMap, Map<Integer, Color> colorMap) {
 		myX = x;
 		myY = y;
 		myState = state;
-		parameterMap = map;
-		myEdgeType = parameterMap.get("EDGE_TYPE");
-		colorMap = colourMap;
+		myParameterMap = parameterMap;
+		myEdgeType = edgeType;
+		myColorMap = colorMap;
 	}
 
 	//Creates a null Cell, allows us to make a parameterless cell before we know what its states are
 	public Cell() {
-		myState = 0;
-		myX = 0;
-		myY = 0;
-	}
 
-	//superclass abstract methods
+	}
 
 	public List<Cell> calculateNeighbors(Cell[][] listOfCells, int[] xDelta, int[] yDelta) {
 		List<Cell> listOfNeighbors = new ArrayList<Cell>();
@@ -62,23 +62,19 @@ public abstract class Cell {
 			//we can eliminate this following if statement by using finite edges as the default
 			//toroidal edges (wrap-around) is edge type 1
 			//infinite edges is edge type 2
-
-			if (myEdgeType == 0) {
-				if (myX + xDelta[i] >= 0 && myX + xDelta[i] < xLength) {
-					newX = myX + xDelta[i];
-				}
-				if (myY + yDelta[i] >= 0 && myY + yDelta[i] < yLength) {
-					newY = myY + yDelta[i];
-				}
-			}
-
-			if (myEdgeType == 1) {
-				newX = (myX + xDelta[i] + xLength) % xLength;
-				newY = (myY + yDelta[i] + yLength) % yLength;
-			}
-
-			//			newX = calculateNewCoordinate(myXDelta[i], xLength, myX);
-			//			newY = calculateNewCoordinate(myYDelta[i], yLength, myY);
+			
+			newX = myEdgeType.calculateNewCoordinate(myX, xDelta[i], xLength);
+			newY = myEdgeType.calculateNewCoordinate(myY, yDelta[i], yLength);
+			
+//			if (myEdgeType == 0) {
+//				newX = calculateFiniteNewCoordinate(myX, xDelta[i], xLength);
+//				newY = calculateFiniteNewCoordinate(myY, yDelta[i], yLength);
+//			}
+//
+//			if (myEdgeType == 1) {
+//				newX = calculateToroidalNewCoordinate(myX, xDelta[i], xLength);
+//				newY = calculateToroidalNewCoordinate(myY, yDelta[i], yLength);
+//			}
 
 			if (newX != -1 && newY != -1) {
 				listOfNeighbors.add(listOfCells[newX] [newY]);
@@ -87,20 +83,30 @@ public abstract class Cell {
 		return listOfNeighbors;
 	}
 
-	//	public abstract int calculateNewCoordinate(int delta, int length, int coordinate);//myXDelta[i], xLength, myX);
+//	public int calculateFiniteNewCoordinate(int coordinate, int delta, int length) {
+//		if (coordinate + delta >= 0 && coordinate + delta < length) {
+//			System.out.println("finite");
+//			return -1;
+//		}
+//		return (coordinate + delta);
+//	}
+//	
+//	public int calculateToroidalNewCoordinate(int coordinate, int delta, int length) {
+//		return (coordinate + delta + length) % length;
+//	}
 
 	public abstract void doAction();
 
-	public abstract Cell makeNewCell(int cellX, int cellY, int cellState, Map<String, Double> map, Map<Integer, Color> m);
+	public abstract Cell makeNewCell(int cellX, int cellY, int cellState, Edge edgeType, Map<String, Double> cellParameterMap, Map<Integer, Color> cellColorMap);
 
 	public void updateCell() {
 		myState = myNextState;
 	}
-	
+
 	//getters and setters
 
 	public Color getCorrespondingColor() {
-		return colorMap.get(myState);
+		return myColorMap.get(myState);
 	}
 
 	public void setGrid(Cell[][] listOfCells) {

@@ -19,6 +19,9 @@ import cellTypes.LifeCell;
 import cellTypes.PredPreyCell;
 import cellTypes.SegCell;
 import cellTypes.TreeCell;
+import edgeTypes.Edge;
+import edgeTypes.FiniteEdge;
+import edgeTypes.ToroidalEdge;
 
 /**
  * MARCUS'S XML READER, KEEP ALL
@@ -38,13 +41,16 @@ public class XMLReader {
 	private Cell[][] gridArrayOfCells;
 
 	private Cell choice;
+	private Edge edgeChoice;
 
 	private Map<String, Cell> simulationMap;
+	private Map<String, Edge> edgeMap;
 
 	public Map<String, Double> parameterMapForCells;
 
 	private Map<Integer,Color> colorMapForCells;
 	private String gameType;
+	private String edgeType;
 
 	
 	/***
@@ -70,7 +76,10 @@ public class XMLReader {
 		simulationMap.put("Tree", new TreeCell());
 		simulationMap.put("Life", new LifeCell());
 		
-		
+		/* initialize edgeMap */
+		edgeMap = new HashMap<String, Edge>();
+		edgeMap.put("Finite", new FiniteEdge());
+		edgeMap.put("Toroidal", new ToroidalEdge());
 	}
 
 	/***
@@ -155,6 +164,18 @@ public class XMLReader {
 			choice = simulationMap.get(gameType);
 		}
 		
+		NodeList edgeTypeList = doc.getElementsByTagName("edge");
+		
+		
+		for (int i = 0; i < edgeTypeList.getLength(); i++) {
+			Node nNode = edgeTypeList.item(i);
+			Element eElement = (Element) nNode;
+			/* set edgeType from edgetype */
+			edgeType = eElement.getAttribute("edgeType");
+			
+			edgeChoice = edgeMap.get(edgeType);
+		}
+		
 		/* get list of <row> tags and set numRows & numCols */
 		NodeList rowList = doc.getElementsByTagName("row");
 		numRows = rowList.getLength();
@@ -170,7 +191,7 @@ public class XMLReader {
 			
 			/* Make 2d grid array that tracks the cells in the grid */
 			for (int j = 0; j < colStates.length; j++) {
-				gridArrayOfCells[i][j] = choice.makeNewCell(i, j, Integer.parseInt(colStates[j]), parameterMapForCells, colorMapForCells); //also pass in paramMap
+				gridArrayOfCells[i][j] = choice.makeNewCell(i, j, Integer.parseInt(colStates[j]), edgeChoice, parameterMapForCells, colorMapForCells); //also pass in paramMap
 			}
 		
 		}
