@@ -17,11 +17,11 @@ public class CellFactory {
 	private Map<String, int[]> xDeltas;
 	private Map<String, int[]> yDeltas;
 	
-	private static int[] cardinalXDelta = new int[] {1, -1, 0, 0};
-	private static int[] cardinalYDelta = new int[] {0, 0, 1, -1};
+	private static int[] cardinalXDelta = new int[] {1,-1, 0, 0};
+	private static int[] cardinalYDelta = new int[] {0, 0, 1,-1};
 	
-	private static int[] surroundXDelta = new int[] {1, -1, 0, 0, 1, 1, -1, -1};
-	private static int[] surroundYDelta = new int[] {0, 0, 1, -1, 1, -1, 1, -1};
+	private static int[] surroundXDelta = new int[] {1,-1, 0, 0, 1, 1,-1,-1};
+	private static int[] surroundYDelta = new int[] {0, 0, 1,-1, 1,-1, 1,-1};
 	
 
 	public CellFactory(){
@@ -44,7 +44,6 @@ public class CellFactory {
 		setUpDeltas(cardinalXDelta, cardinalYDelta, "Fish");
 		setUpDeltas(surroundXDelta, surroundYDelta, "Life");
 		setUpDeltas(surroundXDelta, surroundYDelta, "Seg");
-		
 	}
 
 	/**
@@ -52,7 +51,7 @@ public class CellFactory {
 	 * @param y
 	 * @param state
 	 * @param cellType
-	 * @param edgeType
+	 * @param edgeStrategy
 	 * @param parameterMap
 	 * @param colorMap
 	 * @return new Cell subclass instance
@@ -64,7 +63,7 @@ public class CellFactory {
 	 * it all into this class. We followed the java documentation for newInstance and
 	 * later realized this technique was called reflection.
 	 */
-	public Cell createCell(int x, int y, int state, String cellType, String edgeType, Map<String, Double> parameterMap, Map<Integer, Color> colorMap){		
+	public Cell createCell(int x, int y, int state, String cellType, String edgeStrategy, Map<String, Double> parameterMap, Map<Integer, Color> colorMap){		
 		Class c = simulationMap.get(cellType);
 		Constructor construct = null;
 		try {
@@ -75,7 +74,7 @@ public class CellFactory {
 			e.printStackTrace();
 		}
 		try {
-			return (Cell) construct.newInstance(x, y, state, edgeMap.get(edgeType), parameterMap, colorMap, xDeltas.get(cellType), yDeltas.get(cellType));
+			return (Cell) construct.newInstance(x, y, state, edgeMap.get(edgeStrategy), parameterMap, colorMap, xDeltas.get(cellType), yDeltas.get(cellType));
 		} catch (InstantiationException e) {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
