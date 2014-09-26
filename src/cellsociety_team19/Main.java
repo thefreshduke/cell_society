@@ -7,13 +7,13 @@ package cellsociety_team19;
  *
  */
 public class Main {
-    
-	/**
-	 * @param args
-	 * Runs the simulation.
-	 */
-	public static void main(final String[] args) {
-		final Initializer init = new Initializer();
-		init.beginSimulation(args);
-	}
+
+    /**
+     * @param args
+     * Runs the simulation.
+     */
+    public static void main(final String[] args) {
+        final Initializer init = new Initializer();
+        init.beginSimulation(args);
+    }
 }

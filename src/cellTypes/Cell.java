@@ -25,126 +25,128 @@ import javafx.scene.paint.Color;
  */
 public abstract class Cell {
 
-	//manually setting cells is still a turn behind for some reason...
-	//maybe recalculate for specified cell and neighbors when clicked???
+    //manually setting cells is still a turn behind for some reason...
+    //maybe recalculate for specified cell and neighbors when clicked???
 
-	protected int myX;
-	protected int myY;
-	protected int myNumberOfPatchTypes;
-	protected int myState;
-	protected int myNextState;
+    protected int myX;
+    protected int myY;
+    protected int myNumberOfPatchTypes;
+    protected int myState;
+    protected int myNextState;
 
-	protected int[] myXDelta;
-	protected int[] myYDelta;
-	protected IEdgeStrategy myEdgeType;
+    protected int[] myXDelta;
+    protected int[] myYDelta;
+    protected IEdgeStrategy myEdgeType;
 
-	protected Map<String, Double> myParameterMap;
-	protected Map<Integer, Color> myColorMap;
-	
-	protected Random r;
+    protected Map<String, Double> myParameterMap;
+    protected Map<Integer, Color> myColorMap;
 
-	//protected int myPatch; ?
+    protected Random r;
 
-	protected Cell[][] listOfCellsInGrid;
+    //protected int myPatch; ?
 
-	//superclass constructor
+    protected Cell[][] listOfCellsInGrid;
 
-	public Cell(int x, int y, int state, IEdgeStrategy edgeStrategy, Map<String, Double> parameterMap, Map<Integer, Color> colorMap, int[] xDelta, int[] yDelta) {
-		myX = x;
-		myY = y;
-		myNumberOfPatchTypes = colorMap.size();
-		myState = state;
-		myParameterMap = parameterMap;
-		myEdgeType = edgeStrategy;
-		myColorMap = colorMap;
-		myXDelta = xDelta;
-		myYDelta = yDelta;
-		r = new Random();
-	}
+    //superclass constructor
 
-	/**
-	 * This constructor simply creates an empty version of a Cell. 
-	 * This was necessary for us since in the CellFactory class
-	 * we populate a Map with new, empty instances of all
-	 * subclasses, so we can later use those classes to
-	 * create objects of the same type with specified parameters.
-	 * 
-	 */
-	public Cell() {
+    public Cell(int x, int y, int state, IEdgeStrategy edgeStrategy,
+            Map<String, Double> parameterMap,
+            Map<Integer, Color> colorMap, int[] xDelta, int[] yDelta) {
+        myX = x;
+        myY = y;
+        myNumberOfPatchTypes = colorMap.size();
+        myState = state;
+        myParameterMap = parameterMap;
+        myEdgeType = edgeStrategy;
+        myColorMap = colorMap;
+        myXDelta = xDelta;
+        myYDelta = yDelta;
+        r = new Random();
+    }
 
-	}
+    /**
+     * This constructor simply creates an empty version of a Cell. 
+     * This was necessary for us since in the CellFactory class
+     * we populate a Map with new, empty instances of all
+     * subclasses, so we can later use those classes to
+     * create objects of the same type with specified parameters.
+     * 
+     */
+    public Cell() {
 
-	
-	/**
-	 * @param listOfCells The Cell grid.
-	 * @param xDelta List of X coordinate changes regarding where a cell's neighbors are.
-	 * @param yDelta List of Y coordinate changes regarding where a cell's neighbors are.
-	 * @return List of Cells representing a Cell's neighborhood.
-	 * 
-	 * Every subclass in some manner needs to consider its neighbors
-	 * in order to make a decision about what it should do. We therefore
-	 * put this general method in the superclass since every subclass uses it
-	 * in exactly the same way.
-	 */
-	public List<Cell> calculateNeighbors(Cell[][] listOfCells, int[] xDelta, int[] yDelta) {
-		List<Cell> listOfNeighbors = new ArrayList<Cell>();
+    }
 
-		for (int i = 0; i < xDelta.length; i++) {
-			int xLength = listOfCells[0].length;
-			int yLength = listOfCells.length;
 
-			int newX = myEdgeType.calculateNewCoordinate(myX, xDelta[i], xLength);
-			int newY = myEdgeType.calculateNewCoordinate(myY, yDelta[i], yLength);
+    /**
+     * @param listOfCells The Cell grid.
+     * @param xDelta List of X coordinate changes regarding where a cell's neighbors are.
+     * @param yDelta List of Y coordinate changes regarding where a cell's neighbors are.
+     * @return List of Cells representing a Cell's neighborhood.
+     * 
+     * Every subclass in some manner needs to consider its neighbors
+     * in order to make a decision about what it should do. We therefore
+     * put this general method in the superclass since every subclass uses it
+     * in exactly the same way.
+     */
+    public List<Cell> calculateNeighbors(Cell[][] listOfCells, int[] xDelta, int[] yDelta) {
+        List<Cell> listOfNeighbors = new ArrayList<Cell>();
 
-			if (newX != -1 && newY != -1) {
-				listOfNeighbors.add(listOfCells[newX] [newY]);
-			}
-		}
-		return listOfNeighbors;
-	}
+        for (int i = 0; i < xDelta.length; i++) {
+            int xLength = listOfCells[0].length;
+            int yLength = listOfCells.length;
 
-	
-	/**
-	 * The key to the whole simulation process. Every subclass
-	 * must do an action every time step in some way, but in 
-	 * different ways, hence why this method is abstract.
-	 */
-	public abstract void doAction();
+            int newX = myEdgeType.calculateNewCoordinate(myX, xDelta[i], xLength);
+            int newY = myEdgeType.calculateNewCoordinate(myY, yDelta[i], yLength);
 
-	
-	/**
-	 * A cell updates its current state
-	 * to be what its next state used to be.
-	 * Same for all subclasses.
-	 */
-	public void updateCell() {
-		myState = myNextState;
-	}
+            if (newX != -1 && newY != -1) {
+                listOfNeighbors.add(listOfCells[newX] [newY]);
+            }
+        }
+        return listOfNeighbors;
+    }
 
-	/*getters and setters*/
 
-	
-	public Color getCorrespondingColor() {
-		return myColorMap.get(myState);
-	}
+    /**
+     * The key to the whole simulation process. Every subclass
+     * must do an action every time step in some way, but in 
+     * different ways, hence why this method is abstract.
+     */
+    public abstract void doAction();
 
-	public void setGrid(Cell[][] listOfCells) {
-		listOfCellsInGrid = listOfCells;
-	}
 
-	public void setState(int s) {
-		myState = s;
-	}
+    /**
+     * A cell updates its current state
+     * to be what its next state used to be.
+     * Same for all subclasses.
+     */
+    public final void updateCell() {
+        myState = myNextState;
+    }
 
-	public int getState() {
-		return myState;
-	}
+    /**
+     * Get a cell's color
+     */
+    public final Color getCorrespondingColor() {
+        return myColorMap.get(myState);
+    }
 
-	public int getMyNumPatchTypes() {
-		return myNumberOfPatchTypes;
-	}
+    public final void setGrid(Cell[][] listOfCells) {
+        listOfCellsInGrid = listOfCells;
+    }
 
-	protected void setMyNumberOfPatchTypes(int numberOfPatchTypes) {
-		myNumberOfPatchTypes = numberOfPatchTypes;
-	}
+    public final void setState(int s) {
+        myState = s;
+    }
+
+    public final int getState() {
+        return myState;
+    }
+
+    public final int getMyNumPatchTypes() {
+        return myNumberOfPatchTypes;
+    }
+
+    protected final void setMyNumberOfPatchTypes(int numberOfPatchTypes) {
+        myNumberOfPatchTypes = numberOfPatchTypes;
+    }
 }

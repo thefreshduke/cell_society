@@ -13,22 +13,22 @@ import javafx.scene.shape.Shape;
  *
  */
 public interface Grid {	
-	/**
-	 * @param x
-	 * @param y
-	 * @return the xDelta array for finding a cell's neighbors
-	 */
-	public abstract int[] calculateXDelta(int x, int y);
-	
-	/**
-	 * @param x
-	 * @param y
-	 * @return the yDelta array for finding a cell's neighbors
-	 */
-	public abstract int[] calculateYDelta(int x, int y);
-	
-	/**
-	 * @return the Shape object representing a grid tile.
-	 */
-	public abstract Shape calculateShape();
+    /**
+     * @param x
+     * @param y
+     * @return the xDelta array for finding a cell's neighbors
+     */
+    public abstract int[] calculateXDelta(int x, int y);
+
+    /**
+     * @param x
+     * @param y
+     * @return the yDelta array for finding a cell's neighbors
+     */
+    public abstract int[] calculateYDelta(int x, int y);
+
+    /**
+     * @return the Shape object representing a grid tile.
+     */
+    public abstract Shape calculateShape();
 }
