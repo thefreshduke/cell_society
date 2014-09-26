@@ -24,7 +24,7 @@ public class CellFactory {
 	private static int[] surroundYDelta = new int[] {0, 0, 1,-1, 1,-1, 1,-1};
 	
 
-	public CellFactory(){
+	public CellFactory() {
 		/* initialize simulationMap */
 		simulationMap = new HashMap<String, Class>();
 		simulationMap.put("Seg", new SegCell().getClass());
@@ -87,7 +87,7 @@ public class CellFactory {
 		return null;
 }
 	
-	private void setUpDeltas(int[] xDelta, int[] yDelta, String cellType){
+	private void setUpDeltas(int[] xDelta, int[] yDelta, String cellType) {
 		xDeltas.put(cellType, xDelta);
 		yDeltas.put(cellType, yDelta);
 	}

@@ -1,23 +1,20 @@
 package cellTypes;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import edgeTypes.IEdgeStrategy;
 import javafx.scene.paint.Color;
 
 public class PredPreyCell extends Cell {
 
-	private static double SHARK_BREED_TIME;
-	private static double FISH_BREED_TIME;
-	private static double SHARK_INITIAL_ENERGY;
-	private static double FISH_ENERGY;
-	private double sharkEnergy;
-	private static int chronons = 0;
+	protected double SHARK_BREED_TIME;
+	protected double FISH_BREED_TIME;
+	protected double SHARK_INITIAL_ENERGY;
+	protected double FISH_ENERGY;
+	protected double sharkEnergy;
+	protected int chronons = 0;
 
-	private boolean imminentSharkAttack = false; //just for fish
+	protected boolean imminentSharkAttack = false; //just for fish
 
 	public PredPreyCell(int x, int y, int state, IEdgeStrategy edgeStrategy, Map<String, Double> parameterMap, Map<Integer, Color> colorMap, int[] xDelta, int[] yDelta) {
 		super(x, y, state, edgeStrategy, parameterMap, colorMap, xDelta, yDelta);
@@ -35,11 +32,6 @@ public class PredPreyCell extends Cell {
 
 	public PredPreyCell() {
 		super();
-	}
-
-	@Override
-	public String toString() {
-		return "Pred/Prey Simulation";
 	}
 
 	public String getFirstAnimalCoords() {
@@ -60,126 +52,124 @@ public class PredPreyCell extends Cell {
 		if ((myX + " " + myY).equals(firstAnimalCoords)) {
 			chronons++;
 		}
-		if (myState == 1) {
-			doFishAction();
-		}
-		if (myState == 2) {
-			doSharkAction();
-		}
+		
+		PredPreyCell[] rules = new PredPreyCell[] {new FishRules(), new SharkRules()};
+		
+		rules[myState-1].doAction();
 	}
 
-	private void doFishAction() {
-		if (imminentSharkAttack) {
-			imminentSharkAttack = false;
-			return;
-		}
+//	private void doFishAction() {
+//		if (imminentSharkAttack) {
+//			imminentSharkAttack = false;
+//			return;
+//		}
+//
+//		List<Cell> myNeighbors = calculateNeighbors();
+//
+//		if (hasAdjacentEmptySpaces()) {
+//			Random rand = new Random();
+//			int randChoice = rand.nextInt(myNeighbors.size());
+//			Cell newCell = myNeighbors.get(randChoice);
+//
+//			PredPreyCell destinationCell = (PredPreyCell) listOfCellsInGrid[newCell.myX] [newCell.myY];
+//			destinationCell.myNextState = myState;
+//
+//			if (chronons % FISH_BREED_TIME == 0) {
+//				myNextState = myState;
+//			}
+//			else {
+//				myNextState = 0;
+//			}
+//		}
+//		else {
+//			myNextState = myState;
+//		}
+//	}
 
-		List<Cell> myNeighbors = calculateNeighbors();
+//	private void doSharkAction() {
+//		if (sharkEnergy == 0) {
+//			myNextState = 0;
+//			return;
+//		}
+//		sharkEnergy--;
+//
+//		ArrayList<Cell> neighbors = calculateSharkNeighbors();
+//		if (neighbors.size() > 0) {
+//			Random r = new Random();
+//			int choice = r.nextInt(neighbors.size());
+//			Cell newCell = neighbors.get(choice);
+//			PredPreyCell destinationCell = (PredPreyCell) listOfCellsInGrid[newCell.myX] [newCell.myY];
+//			if (newCell.myState == 2 || newCell.myNextState == 2) {
+//				return;
+//			}
+//			if (newCell.myState == 1) { //fish are food, not friends
+//				sharkEnergy += FISH_ENERGY;			
+//				destinationCell.imminentSharkAttack = true;
+//			} 
+//			destinationCell.myNextState = myState;
+//			destinationCell.sharkEnergy = sharkEnergy;
+//
+//			if (chronons % SHARK_BREED_TIME == 0) {
+//				myNextState = myState;
+//				sharkEnergy = SHARK_INITIAL_ENERGY;
+//			}
+//			else {
+//				myNextState = 0;
+//			}
+//		}
+//		else {
+//			myNextState = myState;
+//		}
+//	}
 
-		if (hasAdjacentEmptySpaces()) {
-			Random rand = new Random();
-			int randChoice = rand.nextInt(myNeighbors.size());
-			Cell newCell = myNeighbors.get(randChoice);
+//	private ArrayList<Cell> calculateSharkNeighbors() {
+//		List<Cell> superNeighbors = super.calculateNeighbors(listOfCellsInGrid, myXDelta, myYDelta);
+//		List<Cell> returnListOfNeighbors = new ArrayList<Cell>();
+//		for(Cell c : superNeighbors){
+//			if (c.myState != 2 && c.myNextState != 2) {
+//				returnListOfNeighbors.add(c);
+//			}
+//		}
+//		//create generic neighbors method that creates an arraylist of neighbors, modify it for otherneighbors (specific cases)
+//		ArrayList<Cell> fishNeighbors = new ArrayList<Cell>();
+//		for (Cell c : returnListOfNeighbors) {
+//			if (c != null && c.myState == 1) {
+//				fishNeighbors.add(c);
+//			}
+//		}
+//
+//		if (fishNeighbors.size() > 0) {
+//			return fishNeighbors;
+//		}
+//
+//		ArrayList<Cell> otherNeighbors = new ArrayList<Cell>();
+//		for (Cell c : returnListOfNeighbors) {
+//			if (c != null && c.myState == 0 && c.myNextState == 0) {
+//				otherNeighbors.add(c);
+//			}
+//		}
+//		return otherNeighbors;
+//	}
 
-			PredPreyCell destinationCell = (PredPreyCell) listOfCellsInGrid[newCell.myX] [newCell.myY];
-			destinationCell.myNextState = myState;
+//	private boolean hasAdjacentEmptySpaces() {
+//		List<Cell> adjacentNeighbors = calculateNeighbors();
+//		int space = 0;
+//		for (int i = 0; i < adjacentNeighbors.size(); i++) {
+//			if (adjacentNeighbors.get(i).myState == 0 && adjacentNeighbors.get(i).myNextState == 0) {
+//				space++;
+//			}
+//		}
+//		return (space > 0);
+//	}
 
-			if (chronons % FISH_BREED_TIME == 0) {
-				myNextState = myState;
-			}
-			else {
-				myNextState = 0;
-			}
-		}
-		else {
-			myNextState = myState;
-		}
-	}
-
-	private void doSharkAction() {
-		if (sharkEnergy == 0) {
-			myNextState = 0;
-			return;
-		}
-		sharkEnergy--;
-
-		ArrayList<Cell> neighbors = calculateSharkNeighbors();
-		if (neighbors.size() > 0) {
-			Random r = new Random();
-			int choice = r.nextInt(neighbors.size());
-			Cell newCell = neighbors.get(choice);
-			PredPreyCell destinationCell = (PredPreyCell) listOfCellsInGrid[newCell.myX] [newCell.myY];
-			if (newCell.myState == 2 || newCell.myNextState == 2) {
-				return;
-			}
-			if (newCell.myState == 1) { //fish are food, not friends
-				sharkEnergy += FISH_ENERGY;			
-				destinationCell.imminentSharkAttack = true;
-			} 
-			destinationCell.myNextState = myState;
-			destinationCell.sharkEnergy = sharkEnergy;
-
-			if (chronons % SHARK_BREED_TIME == 0) {
-				myNextState = myState;
-				sharkEnergy = SHARK_INITIAL_ENERGY;
-			}
-			else {
-				myNextState = 0;
-			}
-		}
-		else {
-			myNextState = myState;
-		}
-	}
-
-	private ArrayList<Cell> calculateSharkNeighbors() {
-		List<Cell> superNeighbors = super.calculateNeighbors(listOfCellsInGrid, myXDelta, myYDelta);
-		List<Cell> returnListOfNeighbors = new ArrayList<Cell>();
-		for(Cell c : superNeighbors){
-			if (c.myState != 2 && c.myNextState != 2) {
-				returnListOfNeighbors.add(c);
-			}
-		}
-		//create generic neighbors method that creates an arraylist of neighbors, modify it for otherneighbors (specific cases)
-		ArrayList<Cell> fishNeighbors = new ArrayList<Cell>();
-		for (Cell c : returnListOfNeighbors) {
-			if (c != null && c.myState == 1) {
-				fishNeighbors.add(c);
-			}
-		}
-
-		if (fishNeighbors.size() > 0) {
-			return fishNeighbors;
-		}
-
-		ArrayList<Cell> otherNeighbors = new ArrayList<Cell>();
-		for (Cell c : returnListOfNeighbors) {
-			if (c != null && c.myState == 0 && c.myNextState == 0) {
-				otherNeighbors.add(c);
-			}
-		}
-		return otherNeighbors;
-	}
-
-	private boolean hasAdjacentEmptySpaces() {
-		List<Cell> adjacentNeighbors = calculateNeighbors();
-		int space = 0;
-		for (int i = 0; i < adjacentNeighbors.size(); i++) {
-			if (adjacentNeighbors.get(i).myState == 0 && adjacentNeighbors.get(i).myNextState == 0) {
-				space++;
-			}
-		}
-		return (space > 0);
-	}
-
-	public List<Cell> calculateNeighbors() {
-		List<Cell> superNeighbors = super.calculateNeighbors(listOfCellsInGrid, myXDelta, myYDelta);
-		List<Cell> returnListOfNeighbors = new ArrayList<Cell>();
-		for(Cell c : superNeighbors){
-			if (c.myState == 0 && c.myNextState == 0) {
-				returnListOfNeighbors.add(c);
-			}
-		}
-		return returnListOfNeighbors;
-	}
+//	public List<Cell> calculateNeighbors() {
+//		List<Cell> superNeighbors = super.calculateNeighbors(listOfCellsInGrid, myXDelta, myYDelta);
+//		List<Cell> returnListOfNeighbors = new ArrayList<Cell>();
+//		for(Cell c : superNeighbors){
+//			if (c.myState == 0 && c.myNextState == 0) {
+//				returnListOfNeighbors.add(c);
+//			}
+//		}
+//		return returnListOfNeighbors;
+//	}
 }

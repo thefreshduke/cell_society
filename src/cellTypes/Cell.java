@@ -7,7 +7,7 @@ import java.util.Map;
 import edgeTypes.IEdgeStrategy;
 import javafx.scene.paint.Color;
 
-public abstract class Cell {
+public abstract class Cell implements Rules {
 
 	//manually setting cells is still a turn behind for some reason...
 	//maybe recalculate for specified cell and neighbors when clicked???
@@ -48,6 +48,7 @@ public abstract class Cell {
 
 	}
 
+	@Override
 	public List<Cell> calculateNeighbors(Cell[][] listOfCells, int[] xDelta, int[] yDelta) {
 		List<Cell> listOfNeighbors = new ArrayList<Cell>();
 
