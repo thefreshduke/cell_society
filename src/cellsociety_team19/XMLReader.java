@@ -166,6 +166,7 @@ public class XMLReader {
 			gameType = eElement.getAttribute("gametype");
 
 			choice = simulationMap.get(gameType);
+		System.out.println(choice.getClass().getName());
 		}
 
 		NodeList edgeTypeList = doc.getElementsByTagName("edge");

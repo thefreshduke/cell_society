@@ -81,7 +81,9 @@ public class SegCell extends Cell {
 		}
 	}
 
-	/*method used to determine what cells are currently empty*/
+	/***
+	 * method used to determine what cells are currently empty
+	 */
 	private ArrayList<Cell> emptyCellsAvailable() {
 		//assuming 0 is nobody there
 		ArrayList<Cell> returnListOfAvailableCells = new ArrayList<Cell>();
@@ -97,6 +99,11 @@ public class SegCell extends Cell {
 		return returnListOfAvailableCells;
 	}
 
+	/***
+	 * 
+	 * @param neighbors - Collection<Cell> calculated by calculateNeighbors method ; defines the neighbors cells of this current cell
+	 * @return boolean whether the current cell is satified with its location ; based on the THRESHOLD_OF_HAPPINESS
+	 */
 	private boolean isSatisfied(List<Cell> neighbors) {
 		int counter = 0;
 		for (int i = 0; i < neighbors.size(); i++) {

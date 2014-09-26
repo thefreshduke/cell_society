@@ -195,6 +195,7 @@ public class PredPreyCell extends Cell {
 
 	@Override
 	public PredPreyCell makeNewCell(int cellX, int cellY, int cellState, IEdgeStrategy cellEdgeType, Map<String,Double> cellParameterMap, Map<Integer, Color> cellColorMap) {
+		
 		return new PredPreyCell(cellX, cellY, cellState, cellEdgeType, cellParameterMap, cellColorMap);
 	}
 
