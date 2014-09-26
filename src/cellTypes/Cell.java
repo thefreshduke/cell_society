@@ -41,7 +41,10 @@ public abstract class Cell {
 		myColorMap = colorMap;
 	}
 
-	//Creates a null Cell, allows us to make a parameterless cell before we know what its states are
+	/**
+	 * Creates a null Cell, allows us to make a parameterless cell before we know what its states are.
+	 * Used as a place holder: Whenever parameters are known; a cell calls makeNewCell(parameters) 
+	 */
 	public Cell() {
 
 	}

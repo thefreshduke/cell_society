@@ -24,8 +24,12 @@ import edgeTypes.FiniteEdgeStrategy;
 import edgeTypes.ToroidalEdgeStrategy;
 
 /**
- * MARCUS'S XML READER, KEEP ALL
- * @author Marcus Cain
+ * XMLReader: Class purpose is to take in an XML file and DOM parser through it. This class parses through the xml file 
+ * looking for specific tags and attributes.
+ * This class has two purposes 
+ * 1) Parse Parameter Tags, Colors Tags, and determine the x/y deltas a specific cell type.
+ * 2) Parse Grid Tags and return to SimulationLoop.java a Collection of cell types with corresponding parameters from (1)
+ * @author Marcus Cain, Chris Bernt, Scotty Shaw
  *
  */
 
@@ -54,7 +58,8 @@ public class XMLReader {
 
 
 	/***
-	 * One Constructor: Initialize parameterMap, SimulaitonMap, and DOMParser
+	 * One Constructor: Get corresponding x/y deltas,
+	 * Initialize parameterMap, colorMap, SimulationMap, and DOMParser
 	 */
 	public XMLReader(File xml){
 
@@ -105,7 +110,7 @@ public class XMLReader {
 	}
 
 	/***
-	 * creates Document and DocumentBuilder to parse the actual XMLFIle
+	 * creates Document and DocumentBuilder to parse the actual XMLFIle: Setup to allow programmer to search for tags/attributs
 	 */
 	private void setupDOMParser() { 
 		try {
@@ -146,7 +151,7 @@ public class XMLReader {
 
 	/***
 	 * 
-	 * @return the two-dimensional array of GridCells (used in simulationLoop)
+	 * @return the Collection of Cell objects (used in simulationLoop for back-end tracking)
 	 */
 	public Cell[][] parseFile() { //changeName to setupGridArrayOfCellTypes
 
