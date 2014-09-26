@@ -22,7 +22,7 @@ public class TreeCell extends Cell {
 	 * 
 	 * Read in from XML file and parsed by XMLReader
 	 */
-	final protected double PROBABILITY_OF_CATCHING_FIRE = super.myParameterMap.get("PROBABILITY_OF_CATCHING_FIRE");
+	protected double PROBABILITY_OF_CATCHING_FIRE;
 
 	final protected static int NO_TREE = 0;
 	final protected static int ALIVE = 1;
@@ -42,6 +42,7 @@ public class TreeCell extends Cell {
 	public TreeCell(int x, int y, int state, IEdgeStrategy edgeStrategy, Map<String, Double> parameterMap, Map<Integer, Color> colorMap, int[] xDelta, int[] yDelta) {
 		super(x, y, state, edgeStrategy, parameterMap, colorMap, xDelta, yDelta);
 		setMyNumberOfPatchTypes(3);
+		PROBABILITY_OF_CATCHING_FIRE = super.myParameterMap.get("PROBABILITY_OF_CATCHING_FIRE");
 	}
 
 	public TreeCell() {

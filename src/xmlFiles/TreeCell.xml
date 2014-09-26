@@ -3,7 +3,7 @@
 <edge edgeType = "Toroidal"></edge>
 
 	<parameters>
-		<parameter game ="Tree" name="PROBABILITY_OF_CATCHING_FIRE" value ="1"></parameter>
+		<parameter game ="Tree" name="PROBABILITY_OF_CATCHING_FIRE" value ="0.6"></parameter>
 	</parameters>
 	
 	<colormap>
