@@ -2,7 +2,10 @@ package gridTypes;
 
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
-
+/**
+ * @author Chris Bernt, Marcus Cain, Scotty Shaw
+ * Square Grid class that implements Grid.
+ */
 public class SquareGrid implements Grid {
 
 	@Override

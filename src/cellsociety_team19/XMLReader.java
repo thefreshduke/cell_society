@@ -3,30 +3,23 @@ package cellsociety_team19;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-
 import javafx.scene.paint.Color;
-
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
-
 import cellTypes.Cell;
 import cellTypes.CellFactory;
-import cellTypes.LifeCell;
-import cellTypes.PredPreyCell;
-import cellTypes.SegCell;
-import cellTypes.TreeCell;
-import edgeTypes.IEdgeStrategy;
-import edgeTypes.FiniteEdgeStrategy;
-import edgeTypes.ToroidalEdgeStrategy;
 
 /**
- * MARCUS'S XML READER, KEEP ALL
- * @author Marcus Cain
+ * XMLReader: Class purpose is to take in an XML file and DOM parser through it. This class parses through the xml file 
+ * looking for specific tags and attributes.
+ * This class has two purposes 
+ * 1) Parse Parameter Tags, Colors Tags, and determine the x/y deltas a specific cell type.
+ * 2) Parse Grid Tags and return to SimulationLoop.java a Collection of cell types with corresponding parameters from (1)
+ * @author Marcus Cain, Chris Bernt, Scotty Shaw
  *
  */
 
@@ -48,7 +41,8 @@ public class XMLReader {
 	private String edgeType;
 
 	/***
-	 * One Constructor: Initialize parameterMap, SimulaitonMap, and DOMParser
+	 * One Constructor: Get corresponding x/y deltas,
+	 * Initialize parameterMap, colorMap, SimulationMap, and DOMParser
 	 */
 	public XMLReader(File xml) {
 
@@ -67,7 +61,6 @@ public class XMLReader {
 	}
 
 	/***
-	 * 
 	 * @return Map<Integer,Color> for subcells to use as their mapping b/t state and color
 	 */
 	private Map<Integer, Color> colorMapSetup() {
@@ -89,7 +82,8 @@ public class XMLReader {
 	}
 
 	/***
-	 * creates Document and DocumentBuilder to parse the actual XMLFIle
+	 * creates Document and DocumentBuilder to parse the actual XMLFIle: 
+	 * Setup to allow programmer to search for tags/attributes
 	 */
 	private void setupDOMParser() { 
 		try {
@@ -106,8 +100,7 @@ public class XMLReader {
 	}
 
 	/***
-	 * 
-	 * @return Map<String,Double> of parameterList from XML File
+	 * @return Map<String,Double> of parameterList from XML File.
 	 */
 	private Map<String, Double> parameterSetup() {
 		Map<String, Double> parameterMap = new HashMap<String, Double>();
@@ -127,7 +120,7 @@ public class XMLReader {
 
 	/***
 	 * 
-	 * @return the two-dimensional array of GridCells (used in simulationLoop)
+	 * @return the grid of Cell objects (used in simulationLoop for back-end tracking).
 	 */
 	public Cell[][] parseFile() { //changeName to setupGridArrayOfCellTypes
 

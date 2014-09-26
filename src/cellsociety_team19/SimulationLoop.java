@@ -1,11 +1,8 @@
 package cellsociety_team19;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
 import cellTypes.Cell;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -23,21 +20,33 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.ConstraintsBase;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class SimulationLoop {
 
-	/*2d arraylist of cell(gametype) to keep track of grid*/
+/**
+ * @author Chris Bernt, Marcus Cain, Scotty Shaw
+ * 
+ * The class that actually runs the loop and 
+ * logic based on the doAction of each Cell. Also creates
+ * and updates the GUI each time step, as well as
+ * keeping track of what that value is.
+ * 
+ * Given more time, a large change to this class
+ * would have been to extract the GUI creation and 
+ * updating into its own class. Since so many GUI
+ * features interact with the loop, however, it would 
+ * have required a significant passing of data,
+ * which we did not know how to handle. 
+ *
+ */
+public class SimulationLoop {
 
 	private int framesPerSecond = 1;
 	private int numRows;
@@ -61,6 +70,10 @@ public class SimulationLoop {
 	private LineChart<Integer,Integer> lineChart;
 	private Map<Integer, XYChart.Series<Integer, Integer>> myLines;
 
+	/**
+	 * Creates the Frame and Timeline 
+	 * and runs the animation.
+	 */
 	public void start() {	
 		frame = makeFrame();
 		animation = new Timeline();
@@ -69,6 +82,11 @@ public class SimulationLoop {
 		animation.play();
 	}
 
+	
+	/**
+	 * Resets the population map used
+	 * for updating the population graph.
+	 */
 	public void initializePopulationMap(){
 		populationCounts = new HashMap<Integer, Integer>();
 		for(int i = 0; i < gridArrayOfCells[0][0].getMyNumPatchTypes(); i++){
@@ -91,6 +109,9 @@ public class SimulationLoop {
 			}
 		}
 
+		/**
+		 * Calls all necessary methods to run the simulation.
+		 */
 		private void updateAll() {
 			updateCells();			
 			updateFPS();
@@ -101,6 +122,12 @@ public class SimulationLoop {
 		}
 	};
 
+	/**
+	 * Initializes the GUI graph for population. 
+	 * Requires the suppression of warning since the
+	 * LineChart wants type parameterization, but adding
+	 * them is not defined for LineChart somehow.
+	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void initializePopulationGraph(){
 		final NumberAxis xAxis = new NumberAxis();
@@ -127,6 +154,12 @@ public class SimulationLoop {
 		addLineChart();
 	}
 
+	
+	/**
+	 * Updates the population graph by clearing
+	 * old data, adding new data to a Series,
+	 * then adding it to the chart and displaying it.
+	 */
 	public void updatePopulationGraph(){
 		if(gridNew.getChildren().contains(lineChart)) gridNew.getChildren().remove(lineChart);
 
@@ -140,11 +173,18 @@ public class SimulationLoop {
 		addLineChart();
 	}
 
+	/**
+	 * Adds the LineChart to the GUI.
+	 */
 	private void addLineChart() {
 		gridNew.add(lineChart, numRows+10, 3);
 	}
 
 
+	/**
+	 * Method to check the value of the 
+	 * fps slider and update the animation speed.
+	 */
 	private void updateFPS() {
 		framesPerSecond = (int) Math.round(fpsSlider.getValue());		
 		animation.stop();
@@ -154,12 +194,19 @@ public class SimulationLoop {
 		animation.play();
 	}
 
+	/**
+	 * Calls the appropriate methods 
+	 * to update the cells.
+	 */
 	public void updateCells() {
 		updateGenerationNumber();
 		doCellsAction();
 		updateGraphicalInterface();
 	}
 
+	/**
+	 * Updates the data points for the LineChart.
+	 */
 	public void updateDataPoints(){
 		for(Integer i : populationCounts.keySet()){
 			if(!myLines.containsKey(i)){
@@ -173,6 +220,11 @@ public class SimulationLoop {
 		}
 	}
 
+	/**
+	 * Updates the color of the cells in the GUI.
+	 * Also allows the user to click on tiles to 
+	 * change their state. 
+	 */
 	private void updateGraphicalInterface() {
 		for (int i = 0; i < gridArrayOfCells.length; i++) {
 			for (int j = 0; j < gridArrayOfCells[i].length; j++) {
@@ -191,8 +243,6 @@ public class SimulationLoop {
 				gridNew.getChildren().remove(existingTile);
 
 				final Rectangle tile = new Rectangle(0, 0, GRID_CELL_SIZE, GRID_CELL_SIZE); 
-
-				//				final Circle circ = new Circle(GRID_CELL_SIZE / 2);
 
 				tile.setOnMouseClicked(new EventHandler<MouseEvent>(){
 
@@ -213,6 +263,14 @@ public class SimulationLoop {
 		}
 	}
 
+	/**
+	 * @param row
+	 * @param column
+	 * @param gridPane
+	 * @return Node at the row/column index of the GridPane
+	 * 
+	 * Grabs the Node at a specified row and column in a grid pane.
+	 */
 	public Node getNodeByRowColumnIndex(final int row,final int column,GridPane gridPane) {
 		Node result = null;
 		ObservableList<Node> childrens = gridPane.getChildren();
@@ -226,6 +284,10 @@ public class SimulationLoop {
 	}
 
 
+	/**
+	 * Method that calls doAction on all 
+	 * cells in the grid.
+	 */
 	private void doCellsAction() {
 		for (int i = 0; i < gridArrayOfCells.length; i++) {
 			for (int j = 0; j < gridArrayOfCells[i].length; j++) {
@@ -236,6 +298,10 @@ public class SimulationLoop {
 		}
 	}
 
+	/**
+	 * Updates the numerical value of the Generation
+	 * Number and adds it to the GUI.
+	 */
 	private void updateGenerationNumber() {
 		genNum++;
 		gridNew.getChildren().remove(generationNumber);
@@ -244,14 +310,35 @@ public class SimulationLoop {
 		addGenerationNumber();
 	}
 
+	
+	/**
+	 * Adds generation number to GUI.
+	 */
 	private void addGenerationNumber() {
 		gridNew.add(generationNumber, 0, numCols + 1);
 	}
 
+	/**
+	 * @param s
+	 * @param width
+	 * @param height
+	 * @return Scene representing the visible GUI.
+	 * 
+	 * One of the first methods called, it asks the user
+	 * for an XML file input and creates the subsequent GUI
+	 * based on that XML.
+	 */
 	public Scene init (Stage s, int width, int height) {
 		return askUserForInput(s);
 	}
 
+	/**
+	 * @param stage
+	 * @return chosen File
+	 * 
+	 * Allows the user to choose a .XML file, with
+	 * the default directory as the xmlFiles folder.
+	 */
 	private File chooseFile(final Stage stage) {
 		final FileChooser fileChooser = new FileChooser();
 		fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("XML File", "*.xml"));
@@ -260,6 +347,14 @@ public class SimulationLoop {
 		return file;
 	}
 
+	
+	/**
+	 * @param stage
+	 * @return Scene representing new GUI view.
+	 * 
+	 * Sets up the first GUI that requests an XML file from the user.
+	 * Creates the new Grid based on that information.
+	 */
 	private Scene askUserForInput(final Stage stage) {
 		Scene scene = new Scene(new Group(), GUI_WIDTH, GUI_HEIGHT);
 
@@ -322,6 +417,12 @@ public class SimulationLoop {
 		return scene;
 	}
 
+	
+	/**
+	 * @param stage
+	 * Creates the grid to represent the cells as well as the 
+	 * buttons as their functionality on the GUI.
+	 */
 	private void createGrid(final Stage stage) {
 
 
@@ -448,7 +549,7 @@ public class SimulationLoop {
 		fpsSlider.setMinWidth(BUTTON_WIDTH);
 		fpsSlider.setMaxWidth(BUTTON_WIDTH);
 		fpsSlider.setMajorTickUnit(1.0);
-		fpsSlider.setShowTickMarks(true);
+		fpsSlider.setShowTickMarks(false);
 		fpsSlider.setSnapToTicks(true);
 
 		int rightSide = numRows - (BUTTON_WIDTH / GRID_CELL_SIZE) - 1;

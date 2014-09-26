@@ -3,11 +3,17 @@ package cellTypes;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import edgeTypes.IEdgeStrategy;
 import javafx.scene.paint.Color;
 
+/**
+ * @author Chris Bernt, Marcus Cain, Scotty Shaw
+ * 
+ * Subclass of Cell, used when implementing
+ * the WaTor World Simulation.
+ *
+ */
 public class PredPreyCell extends Cell {
 
 	private static double SHARK_BREED_TIME;
@@ -77,8 +83,7 @@ public class PredPreyCell extends Cell {
 		List<Cell> myNeighbors = calculateNeighbors();
 
 		if (hasAdjacentEmptySpaces()) {
-			Random rand = new Random();
-			int randChoice = rand.nextInt(myNeighbors.size());
+			int randChoice = r.nextInt(myNeighbors.size());
 			Cell newCell = myNeighbors.get(randChoice);
 
 			PredPreyCell destinationCell = (PredPreyCell) listOfCellsInGrid[newCell.myX] [newCell.myY];
@@ -105,7 +110,6 @@ public class PredPreyCell extends Cell {
 
 		ArrayList<Cell> neighbors = calculateSharkNeighbors();
 		if (neighbors.size() > 0) {
-			Random r = new Random();
 			int choice = r.nextInt(neighbors.size());
 			Cell newCell = neighbors.get(choice);
 			PredPreyCell destinationCell = (PredPreyCell) listOfCellsInGrid[newCell.myX] [newCell.myY];

@@ -10,6 +10,19 @@ import edgeTypes.FiniteEdgeStrategy;
 import edgeTypes.IEdgeStrategy;
 import edgeTypes.ToroidalEdgeStrategy;
 
+/**
+ * @author Chris Bernt, Marcus Cain, Scotty Shaw
+ * 
+ * The class that handles all the creation of 
+ * new types of Cells. The most important method
+ * is the createCell() method. The instance 
+ * variables map string inputs from the XML file
+ * to the structures those strings represent, and 
+ * the Arrays of ints help set up the neighbor
+ * map.
+ *
+ */
+@SuppressWarnings("rawtypes")
 public class CellFactory {
 
 	private Map<String, Class> simulationMap;
@@ -55,15 +68,17 @@ public class CellFactory {
 	 * @param edgeType
 	 * @param parameterMap
 	 * @param colorMap
-	 * @return new Cell subclass instance
+	 * @return New Cell subclass instance.
 	 * 
-	 * We used reflection here accidentally. We originally had each subclass of Cell
+	 * We accidentally stumbled upon reflection in this class.
+	 * We originally had each subclass of Cell
 	 * contain a nullary constructor which we instantiate in the Map like we did here, 
 	 * and an additional method that created a new instance of their class with
 	 * the given parameters. This resulted in some ugly repeated code, so we went online to
 	 * figure out how we might be able to move it all into this class. We followed the java 
 	 * documentation for newInstance and later realized this technique was called reflection.
 	 */
+	@SuppressWarnings("unchecked")
 	public Cell createCell(int x, int y, int state, String cellType, String edgeType, Map<String, Double> parameterMap, Map<Integer, Color> colorMap){		
 		Class c = simulationMap.get(cellType);
 		Constructor construct = null;
@@ -88,6 +103,14 @@ public class CellFactory {
 		return null;
 }
 	
+	/**
+	 * @param xDelta
+	 * @param yDelta
+	 * @param cellType
+	 * 
+	 * Sets up the maps for xDelta and yDelta, which represent
+	 * the transformations to get a given cell's neighbors.
+	 */
 	private void setUpDeltas(int[] xDelta, int[] yDelta, String cellType){
 		xDeltas.put(cellType, xDelta);
 		yDeltas.put(cellType, yDelta);
