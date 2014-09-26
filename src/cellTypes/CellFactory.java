@@ -36,7 +36,7 @@ public class CellFactory {
     private static int[] surroundXDelta = new int[] {1,-1, 0, 0, 1, 1,-1,-1};
     private static int[] surroundYDelta = new int[] {0, 0, 1,-1, 1,-1, 1,-1};
 
-
+    // Set up CellFactory
     public CellFactory() {
         /* initialize simulationMap */
         simulationMap = new HashMap<String, Class>();
@@ -71,13 +71,13 @@ public class CellFactory {
      * 
 
      /**
-     * We accidentally stumbled upon reflection in this class.
-     * We originally had each subclass of Cell
-     * contain a nullary constructor which we instantiate in the Map like we did here, 
-     * and an additional method that created a new instance of their class with
-     * the given parameters. This resulted in some ugly repeated code, so we went online to
-     * figure out how we might be able to move it all into this class. We followed the java 
-     * documentation for newInstance and later realized this technique was called reflection.
+     * We originally had each subclass of Cell contain a nullary constructor
+     * which we instantiate in the Map like we did here, and an additional
+     * method that created a new instance of their class with the given
+     * parameters. This resulted in some ugly repeated code, so we went online
+     * to figure out how we might be able to move it all into this class. We
+     * followed the java documentation for newInstance and later realized this
+     * technique was called reflection.
      */
     @SuppressWarnings("unchecked")
     public Cell createCell(int x, int y, int state, String cellType,

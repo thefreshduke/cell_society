@@ -61,7 +61,7 @@ public class XMLReader {
     }
 
     /***
-     * @return Map<Integer,Color> for subcells to use as their mapping b/t state and color
+     * @return Map<Integer, Color> for subcells to use as their mapping b/t state and color
      */
     private Map<Integer, Color> colorMapSetup() {
         /*map to return */

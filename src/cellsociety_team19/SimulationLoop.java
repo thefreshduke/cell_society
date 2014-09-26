@@ -161,7 +161,6 @@ public class SimulationLoop {
         addLineChart();
     }
 
-
     /**
      * Updates the population graph by clearing
      * old data, adding new data to a Series,
@@ -188,7 +187,6 @@ public class SimulationLoop {
     private void addLineChart() {
         gridNew.add(lineChart, numRows + xShift, 3);
     }
-
 
     /**
      * Method to check the value of the 
@@ -237,8 +235,6 @@ public class SimulationLoop {
     private void updateGraphicalInterface() {
         for (int i = 0; i < gridArrayOfCells.length; i++) {
             for (int j = 0; j < gridArrayOfCells[i].length; j++) {
-
-                //System.out.println(gridArrayOfCells[i][j].getDesc());
 
                 final Cell curCell = gridArrayOfCells[i][j];
                 int cellState = curCell.getState();
@@ -353,7 +349,6 @@ public class SimulationLoop {
         return file;
     }
 
-
     /**
      * @param stage
      * @return Scene representing new GUI view.
@@ -430,7 +425,6 @@ public class SimulationLoop {
      * buttons as their functionality on the GUI.
      */
     private void createGrid(final Stage stage) {
-
 
         gridNew = new GridPane(); 
 
