@@ -1,8 +1,12 @@
 package gridTypes;
 
 import javafx.scene.shape.Polygon;
-import javafx.scene.shape.Shape;
 
+import javafx.scene.shape.Shape;
+/**
+ * @author Chris Bernt, Marcus Cain, Scotty Shaw
+ * Hexagon Grid class that implements Grid.
+ */
 public class TriangleGrid implements Grid {
 
 	@Override
