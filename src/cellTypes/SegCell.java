@@ -30,11 +30,9 @@ public class SegCell extends Cell {
 
 		/* calculate neighbors */
 		List<Cell> myNeighbors = super.calculateNeighbors(listOfCellsInGrid, myXDelta, myYDelta);
-		//		System.out.println(myNeighbors.size());
 
 		/*determine if neighbor is satisfied*/
 		if (isSatisfied(myNeighbors)) {
-			//System.out.println("This cell was satisfied " + this.getDesc());
 			myNextState = myState;
 		}
 		else {
