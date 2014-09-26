@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import edgeTypes.Edge;
+import edgeTypes.IEdgeStrategy;
 import javafx.scene.paint.Color;
 
 public class PredPreyCell extends Cell {
@@ -19,9 +19,9 @@ public class PredPreyCell extends Cell {
 
 	private boolean imminentSharkAttack = false; //just for fish
 
-	public PredPreyCell(int x, int y, int state, Edge edgeType, Map<String, Double> parameterMap, Map<Integer, Color> colorMap) {
+	public PredPreyCell(int x, int y, int state, IEdgeStrategy edgeType, Map<String, Double> parameterMap, Map<Integer, Color> colorMap) {
 		super(x, y, state, edgeType, parameterMap, colorMap);
-		
+
 		SHARK_BREED_TIME = super.myParameterMap.get("SHARK_BREED_TIME");
 		FISH_BREED_TIME = super.myParameterMap.get("FISH_BREED_TIME");
 		SHARK_INITIAL_ENERGY = super.myParameterMap.get("SHARK_INITIAL_ENERGY");
@@ -30,7 +30,7 @@ public class PredPreyCell extends Cell {
 		sharkEnergy = SHARK_INITIAL_ENERGY;
 		chronons = 0;
 
-		myNumPatchTypes = 3;
+		setMyNumberOfPatchTypes(3);
 	}
 
 	public PredPreyCell() {
@@ -194,7 +194,7 @@ public class PredPreyCell extends Cell {
 	}
 
 	@Override
-	public PredPreyCell makeNewCell(int cellX, int cellY, int cellState, Edge cellEdgeType, Map<String,Double> cellParameterMap, Map<Integer, Color> cellColorMap) {
+	public PredPreyCell makeNewCell(int cellX, int cellY, int cellState, IEdgeStrategy cellEdgeType, Map<String,Double> cellParameterMap, Map<Integer, Color> cellColorMap) {
 		return new PredPreyCell(cellX, cellY, cellState, cellEdgeType, cellParameterMap, cellColorMap);
 	}
 

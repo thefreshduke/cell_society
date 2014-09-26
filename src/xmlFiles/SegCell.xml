@@ -12,13 +12,11 @@
 	</parameters>
 	
 	<colormap>
-	
 		<color state = "0" color = "White"></color>
 		<color state = "1" color = "Red"></color>
 		<color state = "2" color = "Blue"></color>
 		<color state = "3" color = "Green"></color>
 		<color state = "4" color = "Yellow"></color>
-	
 	</colormap>
 	
 	<grid>

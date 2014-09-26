@@ -5,21 +5,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import edgeTypes.Edge;
+import edgeTypes.IEdgeStrategy;
 import javafx.scene.paint.Color;
 
 public class SegCell extends Cell {
-	
-	protected int[] myXDelta = {1,-1, 0, 0, 1,-1, 1,-1};
+
+	private int[] myXDelta = {1,-1, 0, 0, 1,-1, 1,-1};
 	protected int[] myYDelta = {0, 0,-1, 1, 1,-1,-1, 1};
 
 	protected static double THRESHOLD_OF_HAPPINESS;
 
-	public SegCell(int x, int y, int state, Edge edgeType, Map<String, Double> parameterMap, Map<Integer, Color> colorMap) {
+	public SegCell(int x, int y, int state, IEdgeStrategy edgeType, Map<String, Double> parameterMap, Map<Integer, Color> colorMap) {
 		super(x, y, state, edgeType, parameterMap, colorMap);
-
-		myNumPatchTypes = 5;
-
+		setMyNumberOfPatchTypes(5);
 		THRESHOLD_OF_HAPPINESS = super.myParameterMap.get("THRESHOLD_OF_HAPPINESS");
 	}
 
@@ -33,20 +31,10 @@ public class SegCell extends Cell {
 		if (myState == 0) {
 			return;
 		}
-		//state 0 is no one there
-		//states 1-limit is type of agent
-
-		/*for(int i = 0; i < listOfCellsInGrid.length; i++){
-			for(int j = 0; j < listOfCellsInGrid[i].length; j++){
-				System.out.println(listOfCellsInGrid[i][j].getDesc());
-			}
-		}
-		System.out.println("==========");
-		 */
-
+		
 		/* calculate neighbors */
 		List<Cell> myNeighbors = super.calculateNeighbors(listOfCellsInGrid, myXDelta, myYDelta);
-//		System.out.println(myNeighbors.size());
+		//		System.out.println(myNeighbors.size());
 
 		/*determine if neighbor is satisfied*/
 		if (isSatisfied(myNeighbors)) {
@@ -108,9 +96,8 @@ public class SegCell extends Cell {
 		return (numNeighborsWithSameState >= (THRESHOLD_OF_HAPPINESS * counter));
 	}
 
-
 	@Override
-	public SegCell makeNewCell(int cellX, int cellY, int cellState, Edge cellEdgeType, Map<String, Double> cellParameterMap, Map<Integer, Color> cellColorMap) {
+	public SegCell makeNewCell(int cellX, int cellY, int cellState, IEdgeStrategy cellEdgeType, Map<String, Double> cellParameterMap, Map<Integer, Color> cellColorMap) {
 		return new SegCell(cellX, cellY, cellState, cellEdgeType, cellParameterMap, cellColorMap);
 	}
 }

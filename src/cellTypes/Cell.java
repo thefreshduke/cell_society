@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import edgeTypes.Edge;
-import edgeTypes.FiniteEdge;
-import edgeTypes.ToroidalEdge;
+import edgeTypes.IEdgeStrategy;
 import javafx.scene.paint.Color;
 
 public abstract class Cell {
@@ -16,18 +14,16 @@ public abstract class Cell {
 
 	protected int myX;
 	protected int myY;
+	protected int myNumberOfPatchTypes;
 	protected int myState;
 	protected int myNextState;
 
 	protected int[] myXDelta = {1,-1, 0, 0};
 	protected int[] myYDelta = {0, 0,-1, 1};
-	protected Edge myEdgeType;
+	protected IEdgeStrategy myEdgeType;
 
-	public int myNumPatchTypes;
 	protected Map<String, Double> myParameterMap;
 	protected Map<Integer, Color> myColorMap;
-	
-	Edge[] edges = {new FiniteEdge(), new ToroidalEdge()};
 
 	//protected int myPatch; ?
 
@@ -35,9 +31,10 @@ public abstract class Cell {
 
 	//superclass constructor
 
-	public Cell(int x, int y, int state, Edge edgeType, Map<String, Double> parameterMap, Map<Integer, Color> colorMap) {
+	public Cell(int x, int y, int state, IEdgeStrategy edgeType, Map<String, Double> parameterMap, Map<Integer, Color> colorMap) {
 		myX = x;
 		myY = y;
+		myNumberOfPatchTypes = colorMap.size();
 		myState = state;
 		myParameterMap = parameterMap;
 		myEdgeType = edgeType;
@@ -53,28 +50,11 @@ public abstract class Cell {
 		List<Cell> listOfNeighbors = new ArrayList<Cell>();
 
 		for (int i = 0; i < xDelta.length; i++) {
-			int newX = -1;
-			int newY = -1;
-
 			int xLength = listOfCells[0].length;
 			int yLength = listOfCells.length;
 
-			//we can eliminate this following if statement by using finite edges as the default
-			//toroidal edges (wrap-around) is edge type 1
-			//infinite edges is edge type 2
-			
-			newX = myEdgeType.calculateNewCoordinate(myX, xDelta[i], xLength);
-			newY = myEdgeType.calculateNewCoordinate(myY, yDelta[i], yLength);
-			
-//			if (myEdgeType == 0) {
-//				newX = calculateFiniteNewCoordinate(myX, xDelta[i], xLength);
-//				newY = calculateFiniteNewCoordinate(myY, yDelta[i], yLength);
-//			}
-//
-//			if (myEdgeType == 1) {
-//				newX = calculateToroidalNewCoordinate(myX, xDelta[i], xLength);
-//				newY = calculateToroidalNewCoordinate(myY, yDelta[i], yLength);
-//			}
+			int newX = myEdgeType.calculateNewCoordinate(myX, xDelta[i], xLength);
+			int newY = myEdgeType.calculateNewCoordinate(myY, yDelta[i], yLength);
 
 			if (newX != -1 && newY != -1) {
 				listOfNeighbors.add(listOfCells[newX] [newY]);
@@ -83,21 +63,10 @@ public abstract class Cell {
 		return listOfNeighbors;
 	}
 
-//	public int calculateFiniteNewCoordinate(int coordinate, int delta, int length) {
-//		if (coordinate + delta >= 0 && coordinate + delta < length) {
-//			System.out.println("finite");
-//			return -1;
-//		}
-//		return (coordinate + delta);
-//	}
-//	
-//	public int calculateToroidalNewCoordinate(int coordinate, int delta, int length) {
-//		return (coordinate + delta + length) % length;
-//	}
-
 	public abstract void doAction();
 
-	public abstract Cell makeNewCell(int cellX, int cellY, int cellState, Edge edgeType, Map<String, Double> cellParameterMap, Map<Integer, Color> cellColorMap);
+	public abstract Cell makeNewCell(int cellX, int cellY, int cellState, IEdgeStrategy edgeType, Map<String, Double> cellParameterMap, Map<Integer, Color> cellColorMap);
+	//factory class will let us make this a superclass method instead of an abstract method for subclasses
 
 	public void updateCell() {
 		myState = myNextState;
@@ -117,11 +86,15 @@ public abstract class Cell {
 		myState = s;
 	}
 
-	public void setNextState(int s) {
-		myNextState = s;
-	}
-
 	public int getState() {
 		return myState;
+	}
+
+	public int getMyNumPatchTypes() {
+		return myNumberOfPatchTypes;
+	}
+
+	protected void setMyNumberOfPatchTypes(int numberOfPatchTypes) {
+		myNumberOfPatchTypes = numberOfPatchTypes;
 	}
 }

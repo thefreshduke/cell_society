@@ -1,6 +1,6 @@
 package edgeTypes;
 
-public class FiniteEdge extends Edge {
+public class FiniteEdgeStrategy implements IEdgeStrategy {
 	@Override
 	public int calculateNewCoordinate(int coordinate, int delta, int length) {
 		if (coordinate + delta >= 0 && coordinate + delta < length) {

@@ -6,10 +6,8 @@
  	</parameters>
  	
  	<colormap>
-	
 		<color state = "0" color = "White"></color>
 		<color state = "1" color = "red"></color>
-		
 	</colormap>
 
   	<grid>

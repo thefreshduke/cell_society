@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <simulation gametype = "Tree">
-<edge edgeType = "Finite"></edge>
+<edge edgeType = "Toroidal"></edge>
 
 	<parameters>
 		<parameter game ="Seg" name="THRESHOLD_OF_HAPPINESS" value = "0.35"></parameter>
@@ -12,12 +12,9 @@
 	</parameters>
 	
 	<colormap>
-	
 		<color state = "0" color = "Gray"></color>
 		<color state = "1" color = "Green"></color>
 		<color state = "2" color = "Red"></color>
-		
-	
 	</colormap>
 
   	<grid>
