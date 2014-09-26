@@ -10,6 +10,7 @@ public class TreeCell extends Cell {
 
 	protected double PROBABILITY_OF_CATCHING_FIRE;
 
+
 	/***
 	 * 
 	 * @param x - xLocation to describe location of cell on grid. Parsed and passed in my XMLReader.java
@@ -22,11 +23,10 @@ public class TreeCell extends Cell {
 	 * @param ydel - yLocation deltas to define the neighbors of this cell
 	 * @param PROBABILITY_OF_CATCHING_FIRE - Each Sub Cell Type gets their parameters from the Super Class Cell (XMLReader.java parses these parameters and passes them in)
 	 */
-	public TreeCell(int x, int y, int state, IEdgeStrategy edgeType, Map<String, Double> parameterMap, Map<Integer, Color> colorMap) {
-		super(x, y, state, edgeType, parameterMap, colorMap);
-
+	
+	public TreeCell(int x, int y, int state, IEdgeStrategy edgeStrategy, Map<String, Double> parameterMap, Map<Integer, Color> colorMap, int[] xDelta, int[] yDelta) {
+		super(x, y, state, edgeStrategy, parameterMap, colorMap, xDelta, yDelta);
 		setMyNumberOfPatchTypes(3);
-
 		PROBABILITY_OF_CATCHING_FIRE = super.myParameterMap.get("PROBABILITY_OF_CATCHING_FIRE");
 	}
 
@@ -56,10 +56,5 @@ public class TreeCell extends Cell {
 				myNextState = myState;
 			}
 		}
-	}
-
-	@Override
-	public TreeCell makeNewCell(int cellX, int cellY, int cellState, IEdgeStrategy cellEdgeType, Map<String, Double> cellparamterMap, Map<Integer, Color> cellColorMap) {
-		return new TreeCell(cellX, cellY, cellState, cellEdgeType, cellparamterMap, cellColorMap);
 	}
 }

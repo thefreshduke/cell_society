@@ -18,8 +18,8 @@ public abstract class Cell {
 	protected int myState;
 	protected int myNextState;
 
-	protected int[] myXDelta = {1,-1, 0, 0};
-	protected int[] myYDelta = {0, 0,-1, 1};
+	protected int[] myXDelta;
+	protected int[] myYDelta;
 	protected IEdgeStrategy myEdgeType;
 
 	protected Map<String, Double> myParameterMap;
@@ -31,14 +31,16 @@ public abstract class Cell {
 
 	//superclass constructor
 
-	public Cell(int x, int y, int state, IEdgeStrategy edgeType, Map<String, Double> parameterMap, Map<Integer, Color> colorMap) {
+	public Cell(int x, int y, int state, IEdgeStrategy edgeStrategy, Map<String, Double> parameterMap, Map<Integer, Color> colorMap, int[] xDelta, int[] yDelta) {
 		myX = x;
 		myY = y;
 		myNumberOfPatchTypes = colorMap.size();
 		myState = state;
 		myParameterMap = parameterMap;
-		myEdgeType = edgeType;
+		myEdgeType = edgeStrategy;
 		myColorMap = colorMap;
+		myXDelta = xDelta;
+		myYDelta = yDelta;
 	}
 
 	/**
@@ -67,9 +69,6 @@ public abstract class Cell {
 	}
 
 	public abstract void doAction();
-
-	public abstract Cell makeNewCell(int cellX, int cellY, int cellState, IEdgeStrategy edgeType, Map<String, Double> cellParameterMap, Map<Integer, Color> cellColorMap);
-	//factory class will let us make this a superclass method instead of an abstract method for subclasses
 
 	public void updateCell() {
 		myState = myNextState;

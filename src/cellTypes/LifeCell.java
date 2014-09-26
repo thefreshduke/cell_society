@@ -8,8 +8,7 @@ import javafx.scene.paint.Color;
 
 public class LifeCell extends Cell {
 
-	protected int[] myXDelta = {1,-1, 0, 0, 1,-1, 1,-1};
-	protected int[] myYDelta = {0, 0,-1, 1, 1,-1,-1, 1};
+
 
 	/***
 	 * 
@@ -22,9 +21,9 @@ public class LifeCell extends Cell {
 	 * @param xdel - xLocation deltas to define the neighbors of this cell
 	 * @param ydel - yLocation deltas to define the neighbors of this cell
 	 */
-	public LifeCell(int x, int y, int state, IEdgeStrategy edgeType, Map<String, Double> parameterMap, Map<Integer, Color> colorMap) {
-		super(x, y, state, edgeType, parameterMap,colorMap);
-
+	
+	public LifeCell(int x, int y, int state, IEdgeStrategy edgeStrategy, Map<String, Double> parameterMap, Map<Integer, Color> colorMap, int[] xDelta, int[] yDelta) {
+		super(x, y, state, edgeStrategy, parameterMap,colorMap, xDelta, yDelta);
 		setMyNumberOfPatchTypes(2);
 	}
 
@@ -64,10 +63,5 @@ public class LifeCell extends Cell {
 		else {
 			myNextState = 0;
 		}
-	}
-
-	@Override
-	public Cell makeNewCell(int cellX, int cellY, int cellState, IEdgeStrategy cellEdgeType, Map<String, Double> cellParameterMap, Map<Integer, Color> cellColorMap) {
-		return new LifeCell(cellX, cellY, cellState, cellEdgeType, cellParameterMap, cellColorMap);
 	}
 }
