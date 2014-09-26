@@ -12,6 +12,15 @@ public class CellFactory {
 
 	private Map<String, Cell> simulationMap;
 	private Map<String, IEdgeStrategy> edgeMap;
+	private Map<String, int[]> xDeltas;
+	private Map<String, int[]> yDeltas;
+	
+	private static int[] cardinalXDelta = new int[] {1, -1, 0, 0};
+	private static int[] cardinalYDelta = new int[] {0, 0, 1, -1};
+	
+	private static int[] surroundXDelta = new int[] {1, -1, 0, 0, 1, 1, -1, -1};
+	private static int[] surroundYDelta = new int[] {0, 0, 1, -1, 1, -1, 1, -1};
+	
 
 	public CellFactory(){
 		/* initialize simulationMap */
@@ -25,9 +34,23 @@ public class CellFactory {
 		edgeMap = new HashMap<String, IEdgeStrategy>();
 		edgeMap.put("Finite", new FiniteEdgeStrategy());
 		edgeMap.put("Toroidal", new ToroidalEdgeStrategy());
+		
+		xDeltas = new HashMap<String, int[]>();
+		yDeltas = new HashMap<String, int[]>();
+		
+		setUpDeltas(cardinalXDelta, cardinalYDelta, "Tree");
+		setUpDeltas(cardinalXDelta, cardinalYDelta, "Fish");
+		setUpDeltas(surroundXDelta, surroundYDelta, "Life");
+		setUpDeltas(surroundXDelta, surroundYDelta, "Seg");
+		
 	}
 
 	public Cell createCell(int x, int y, int state, String cellType, String edgeType, Map<String, Double> parameterMap, Map<Integer, Color> colorMap){
-		return simulationMap.get(cellType).makeNewCell(x, y, state, edgeMap.get(edgeType), parameterMap, colorMap);
+		return simulationMap.get(cellType).makeNewCell(x, y, state, edgeMap.get(edgeType), parameterMap, colorMap, xDeltas.get(cellType), yDeltas.get(cellType));
+	}
+	
+	private void setUpDeltas(int[] xDelta, int[] yDelta, String cellType){
+		xDeltas.put(cellType, xDelta);
+		yDeltas.put(cellType, yDelta);
 	}
 }

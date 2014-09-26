@@ -10,8 +10,8 @@ public class TreeCell extends Cell {
 
 	protected double PROBABILITY_OF_CATCHING_FIRE;
 
-	public TreeCell(int x, int y, int state, IEdgeStrategy edgeType, Map<String, Double> parameterMap, Map<Integer, Color> colorMap) {
-		super(x, y, state, edgeType, parameterMap, colorMap);
+	public TreeCell(int x, int y, int state, IEdgeStrategy edgeType, Map<String, Double> parameterMap, Map<Integer, Color> colorMap, int[] xDelta, int[] yDelta) {
+		super(x, y, state, edgeType, parameterMap, colorMap, xDelta, yDelta);
 
 		setMyNumberOfPatchTypes(3);
 
@@ -47,7 +47,7 @@ public class TreeCell extends Cell {
 	}
 
 	@Override
-	public TreeCell makeNewCell(int cellX, int cellY, int cellState, IEdgeStrategy cellEdgeType, Map<String, Double> cellparamterMap, Map<Integer, Color> cellColorMap) {
-		return new TreeCell(cellX, cellY, cellState, cellEdgeType, cellparamterMap, cellColorMap);
+	public TreeCell makeNewCell(int cellX, int cellY, int cellState, IEdgeStrategy cellEdgeType, Map<String, Double> cellparamterMap, Map<Integer, Color> cellColorMap, int[] xDelta, int[] yDelta) {
+		return new TreeCell(cellX, cellY, cellState, cellEdgeType, cellparamterMap, cellColorMap, xDelta, yDelta);
 	}
 }

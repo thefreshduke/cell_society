@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <simulation gametype = "Tree">
-<edge edgeType = "Toroidal"></edge>
+<edge edgeType = "Finite"></edge>
 
 	<parameters>
 		<parameter game ="Seg" name="THRESHOLD_OF_HAPPINESS" value = "0.35"></parameter>

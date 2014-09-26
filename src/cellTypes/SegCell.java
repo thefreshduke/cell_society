@@ -15,8 +15,8 @@ public class SegCell extends Cell {
 
 	protected static double THRESHOLD_OF_HAPPINESS;
 
-	public SegCell(int x, int y, int state, IEdgeStrategy edgeType, Map<String, Double> parameterMap, Map<Integer, Color> colorMap) {
-		super(x, y, state, edgeType, parameterMap, colorMap);
+	public SegCell(int x, int y, int state, IEdgeStrategy edgeType, Map<String, Double> parameterMap, Map<Integer, Color> colorMap, int[] xDelta, int[] yDelta) {
+		super(x, y, state, edgeType, parameterMap, colorMap, xDelta, yDelta);
 		setMyNumberOfPatchTypes(5);
 		THRESHOLD_OF_HAPPINESS = super.myParameterMap.get("THRESHOLD_OF_HAPPINESS");
 	}
@@ -49,7 +49,7 @@ public class SegCell extends Cell {
 				int randChoice = rand.nextInt(openCells.size());
 				Cell newCell = openCells.get(randChoice);
 				if (myState != 0) {
-					SegCell moveCell = new SegCell(newCell.myX, newCell.myY, 0, super.myEdgeType, super.myParameterMap, super.myColorMap);
+					SegCell moveCell = new SegCell(newCell.myX, newCell.myY, 0, super.myEdgeType, super.myParameterMap, super.myColorMap, super.myXDelta, super.myYDelta);
 					moveCell.myNextState = myState;
 
 					listOfCellsInGrid[newCell.myX] [newCell.myY] = moveCell;
@@ -97,7 +97,7 @@ public class SegCell extends Cell {
 	}
 
 	@Override
-	public SegCell makeNewCell(int cellX, int cellY, int cellState, IEdgeStrategy cellEdgeType, Map<String, Double> cellParameterMap, Map<Integer, Color> cellColorMap) {
-		return new SegCell(cellX, cellY, cellState, cellEdgeType, cellParameterMap, cellColorMap);
+	public SegCell makeNewCell(int cellX, int cellY, int cellState, IEdgeStrategy cellEdgeType, Map<String, Double> cellParameterMap, Map<Integer, Color> cellColorMap, int[] xDelta, int[] yDelta) {
+		return new SegCell(cellX, cellY, cellState, cellEdgeType, cellParameterMap, cellColorMap, xDelta, yDelta);
 	}
 }
