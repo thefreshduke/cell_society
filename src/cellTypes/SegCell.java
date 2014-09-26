@@ -15,8 +15,8 @@ public class SegCell extends Cell {
 
 	protected static double THRESHOLD_OF_HAPPINESS;
 
-	public SegCell(int x, int y, int state, IEdgeStrategy edgeType, Map<String, Double> parameterMap, Map<Integer, Color> colorMap) {
-		super(x, y, state, edgeType, parameterMap, colorMap);
+	public SegCell(int x, int y, int state, IEdgeStrategy edgeStrategy, Map<String, Double> parameterMap, Map<Integer, Color> colorMap) {
+		super(x, y, state, edgeStrategy, parameterMap, colorMap);
 		setMyNumberOfPatchTypes(5);
 		THRESHOLD_OF_HAPPINESS = super.myParameterMap.get("THRESHOLD_OF_HAPPINESS");
 	}
@@ -97,7 +97,7 @@ public class SegCell extends Cell {
 	}
 
 	@Override
-	public SegCell makeNewCell(int cellX, int cellY, int cellState, IEdgeStrategy cellEdgeType, Map<String, Double> cellParameterMap, Map<Integer, Color> cellColorMap) {
-		return new SegCell(cellX, cellY, cellState, cellEdgeType, cellParameterMap, cellColorMap);
+	public SegCell makeNewCell(int cellX, int cellY, int cellState, IEdgeStrategy cellEdgeStrategy, Map<String, Double> cellParameterMap, Map<Integer, Color> cellColorMap) {
+		return new SegCell(cellX, cellY, cellState, cellEdgeStrategy, cellParameterMap, cellColorMap);
 	}
 }

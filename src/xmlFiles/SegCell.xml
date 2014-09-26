@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<simulation gametype = "Seg">
+<simulation gameType = "Seg">
 <edge edgeType = "Finite"></edge>
 
 	<parameters>
-		<parameter game ="Seg" name="THRESHOLD_OF_HAPPINESS" value = ".5"></parameter>
-		<parameter game ="Tree" name="PROBABILITY_OF_CATCHING_FIRE" value ="0.5"></parameter>
-		<parameter game ="Fish" name="SHARK_BREED_TIME" value ="10"></parameter>
-		<parameter game ="Fish" name="FISH_BREED_TIME" value ="3"></parameter>
-		<parameter game ="Fish" name="SHARK_INITIAL_ENERGY" value ="7"></parameter>
-		<parameter game ="Fish" name="FISH_ENERGY" value ="1"></parameter>
+		<parameter game ="Seg" name="THRESHOLD_OF_HAPPINESS" value = "0.5"></parameter>
 	</parameters>
 	
 	<colormap>

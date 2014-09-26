@@ -40,15 +40,14 @@ public class XMLReader {
 
 	private Cell[][] gridArrayOfCells;
 
-	private Cell choice;
+	private Cell gameChoice;
 	private IEdgeStrategy edgeChoice;
 
 	private Map<String, Cell> simulationMap;
 	private Map<String, IEdgeStrategy> edgeMap;
 
 	public Map<String, Double> parameterMapForCells;
-
-	private Map<Integer,Color> colorMapForCells;
+	private Map<Integer, Color> colorMapForCells;
 	private String gameType;
 	private String edgeType;
 
@@ -56,7 +55,7 @@ public class XMLReader {
 	/***
 	 * One Constructor: Initialize parameterMap, SimulaitonMap, and DOMParser
 	 */
-	public XMLReader(File xml){
+	public XMLReader(File xml) {
 
 		/* point to xmlFile that the user opened up */
 		xmlFile = xml;
@@ -138,9 +137,6 @@ public class XMLReader {
 
 			paramMap.put(eElement.getAttribute("name"), Double.parseDouble(eElement.getAttribute("value")));
 		}
-
-
-
 		return paramMap;
 	}
 
@@ -153,25 +149,21 @@ public class XMLReader {
 		/* get the simulation type --> Loop through <simulation>tags and get the attrittrube 'gametype' */
 		NodeList gameTypeList = doc.getElementsByTagName("simulation");
 
-
 		for (int i = 0; i < gameTypeList.getLength(); i++) {
 			Node nNode = gameTypeList.item(i);
 			Element eElement = (Element) nNode;
 			/* set CellType from gametype */
-			gameType = eElement.getAttribute("gametype");
-
-			choice = simulationMap.get(gameType);
+			gameType = eElement.getAttribute("gameType");
+			gameChoice = simulationMap.get(gameType);
 		}
 
 		NodeList edgeTypeList = doc.getElementsByTagName("edge");
-
 
 		for (int i = 0; i < edgeTypeList.getLength(); i++) {
 			Node nNode = edgeTypeList.item(i);
 			Element eElement = (Element) nNode;
 			/* set edgeType from edgetype */
 			edgeType = eElement.getAttribute("edgeType");
-
 			edgeChoice = edgeMap.get(edgeType);
 		}
 
@@ -190,7 +182,7 @@ public class XMLReader {
 
 			/* Make 2d grid array that tracks the cells in the grid */
 			for (int j = 0; j < colStates.length; j++) {
-				gridArrayOfCells[i][j] = choice.makeNewCell(i, j, Integer.parseInt(colStates[j]), edgeChoice, parameterMapForCells, colorMapForCells); //also pass in paramMap
+				gridArrayOfCells[i][j] = gameChoice.makeNewCell(i, j, Integer.parseInt(colStates[j]), edgeChoice, parameterMapForCells, colorMapForCells); //also pass in paramMap
 				//factory class
 			}
 		}

@@ -2,7 +2,7 @@ package gridTypes;
 
 import javafx.scene.shape.Shape;
 
-public abstract class GeneralGrid {
+public abstract class Grid {
 	
 	public abstract int[] calculateXDelta(int x, int y);
 	

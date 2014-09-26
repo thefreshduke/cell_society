@@ -10,11 +10,9 @@ public class TreeCell extends Cell {
 
 	protected double PROBABILITY_OF_CATCHING_FIRE;
 
-	public TreeCell(int x, int y, int state, IEdgeStrategy edgeType, Map<String, Double> parameterMap, Map<Integer, Color> colorMap) {
-		super(x, y, state, edgeType, parameterMap, colorMap);
-
+	public TreeCell(int x, int y, int state, IEdgeStrategy edgeStrategy, Map<String, Double> parameterMap, Map<Integer, Color> colorMap) {
+		super(x, y, state, edgeStrategy, parameterMap, colorMap);
 		setMyNumberOfPatchTypes(3);
-
 		PROBABILITY_OF_CATCHING_FIRE = super.myParameterMap.get("PROBABILITY_OF_CATCHING_FIRE");
 	}
 
@@ -47,7 +45,7 @@ public class TreeCell extends Cell {
 	}
 
 	@Override
-	public TreeCell makeNewCell(int cellX, int cellY, int cellState, IEdgeStrategy cellEdgeType, Map<String, Double> cellparamterMap, Map<Integer, Color> cellColorMap) {
-		return new TreeCell(cellX, cellY, cellState, cellEdgeType, cellparamterMap, cellColorMap);
+	public TreeCell makeNewCell(int cellX, int cellY, int cellState, IEdgeStrategy cellEdgeStrategy, Map<String, Double> cellParameterMap, Map<Integer, Color> cellColorMap) {
+		return new TreeCell(cellX, cellY, cellState, cellEdgeStrategy, cellParameterMap, cellColorMap);
 	}
 }

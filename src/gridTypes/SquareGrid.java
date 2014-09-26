@@ -3,7 +3,7 @@ package gridTypes;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
-public class SquareGrid extends GeneralGrid {
+public class SquareGrid extends Grid {
 
 	@Override
 	public int[] calculateXDelta(int x, int y) {
@@ -19,5 +19,4 @@ public class SquareGrid extends GeneralGrid {
 	public Shape calculateShape() {
 		return new Rectangle();
 	}
-	
 }
