@@ -8,7 +8,7 @@ Start Date: September 8
 
 Finish Date: September 26
 
-Estimated Work Hours: 75
+Estimated Work Hours: 100
 
 Responsibilities
 =======
