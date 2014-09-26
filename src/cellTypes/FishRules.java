@@ -12,7 +12,7 @@ import java.util.Random;
 public class FishRules extends PredPreyCell implements Rules {
 
     /*
-     * Calculate neighbors for each Fish
+     * Calculate neighbors for each fish
      */
     @Override
     public List<Cell> calculateNeighbors(Cell[][] listOfCells, int[] xDelta, int[] yDelta) {

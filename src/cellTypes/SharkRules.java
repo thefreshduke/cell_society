@@ -12,7 +12,7 @@ import java.util.Random;
 public class SharkRules extends PredPreyCell implements Rules {
 
     /*
-     * Calculate neighbors for each Fish
+     * Calculate neighbors for each Shark
      */
     @Override
     public List<Cell> calculateNeighbors(Cell[][] listOfCells, int[] xDelta, int[] yDelta) {
@@ -64,7 +64,9 @@ public class SharkRules extends PredPreyCell implements Rules {
             if (newCell.myState == 2 || newCell.myNextState == 2) {
                 return;
             }
-            if (newCell.myState == 1) { //fish are food, not friends
+
+            // fish are food, not friends
+            if (newCell.myState == 1) {
                 super.sharkEnergy += super.FISH_ENERGY;         
                 destinationCell.imminentSharkAttack = true;
             } 
