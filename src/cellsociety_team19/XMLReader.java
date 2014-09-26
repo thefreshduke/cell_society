@@ -16,13 +16,6 @@ import org.w3c.dom.Element;
 
 import cellTypes.Cell;
 import cellTypes.CellFactory;
-import cellTypes.LifeCell;
-import cellTypes.PredPreyCell;
-import cellTypes.SegCell;
-import cellTypes.TreeCell;
-import edgeTypes.IEdgeStrategy;
-import edgeTypes.FiniteEdgeStrategy;
-import edgeTypes.ToroidalEdgeStrategy;
 
 /**
  * MARCUS'S XML READER, KEEP ALL
