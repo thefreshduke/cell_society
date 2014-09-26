@@ -7,7 +7,7 @@ public class SquareGrid implements Grid {
 
 	@Override
 	public int[] calculateXDelta(int x, int y) {
-		return new int[] {1,-1,0,0};
+		return new int[] {1,-1, 0, 0};
 	}
 	
 	@Override
