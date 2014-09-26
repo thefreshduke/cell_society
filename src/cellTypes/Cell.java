@@ -115,7 +115,9 @@ public abstract class Cell implements Rules {
         myState = myNextState;
     }
 
-    //getters and setters
+    /*
+     * Getters and setters 
+     */
 
     // Gets the cell's color
     public Color getCorrespondingColor() {
