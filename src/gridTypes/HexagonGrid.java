@@ -3,7 +3,7 @@ package gridTypes;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Shape;
 
-public class HexagonGrid extends Grid {
+public class HexagonGrid implements Grid {
 
 	@Override
 	public int[] calculateXDelta(int x, int y) {
