@@ -19,8 +19,8 @@ public class PredPreyCell extends Cell {
 
 	private boolean imminentSharkAttack = false; //just for fish
 
-	public PredPreyCell(int x, int y, int state, IEdgeStrategy edgeType, Map<String, Double> parameterMap, Map<Integer, Color> colorMap, int[] xDelta, int[] yDelta) {
-		super(x, y, state, edgeType, parameterMap, colorMap, xDelta, yDelta);
+	public PredPreyCell(int x, int y, int state, IEdgeStrategy edgeStrategy, Map<String, Double> parameterMap, Map<Integer, Color> colorMap, int[] xDelta, int[] yDelta) {
+		super(x, y, state, edgeStrategy, parameterMap, colorMap, xDelta, yDelta);
 
 		SHARK_BREED_TIME = super.myParameterMap.get("SHARK_BREED_TIME");
 		FISH_BREED_TIME = super.myParameterMap.get("FISH_BREED_TIME");
@@ -56,17 +56,10 @@ public class PredPreyCell extends Cell {
 
 	@Override
 	public void doAction() {
-
 		String firstAnimalCoords = getFirstAnimalCoords();
-
 		if ((myX + " " + myY).equals(firstAnimalCoords)) {
 			chronons++;
 		}
-
-		/*if(myState == 0) {
-			myNextState = 0;
-		}*/
-
 		if (myState == 1) {
 			doFishAction();
 		}
@@ -76,14 +69,12 @@ public class PredPreyCell extends Cell {
 	}
 
 	private void doFishAction() {
-
 		if (imminentSharkAttack) {
 			imminentSharkAttack = false;
 			return;
 		}
 
 		List<Cell> myNeighbors = calculateNeighbors();
-		// Cell[] myNeighbors = calculateNeighbors();
 
 		if (hasAdjacentEmptySpaces()) {
 			Random rand = new Random();
@@ -93,7 +84,6 @@ public class PredPreyCell extends Cell {
 			PredPreyCell destinationCell = (PredPreyCell) listOfCellsInGrid[newCell.myX] [newCell.myY];
 			destinationCell.myNextState = myState;
 
-			// System.out.println(chronons);
 			if (chronons % FISH_BREED_TIME == 0) {
 				myNextState = myState;
 			}
@@ -107,15 +97,10 @@ public class PredPreyCell extends Cell {
 	}
 
 	private void doSharkAction() {
-
-		//works except for when a shark is surrounded by 4 other sharks
-
 		if (sharkEnergy == 0) {
 			myNextState = 0;
 			return;
 		}
-
-		//System.out.println(sharkEnergy);
 		sharkEnergy--;
 
 		ArrayList<Cell> neighbors = calculateSharkNeighbors();
@@ -155,9 +140,6 @@ public class PredPreyCell extends Cell {
 				returnListOfNeighbors.add(c);
 			}
 		}
-
-		//System.out.println(Arrays.toString(neighbors));
-
 		//create generic neighbors method that creates an arraylist of neighbors, modify it for otherneighbors (specific cases)
 		ArrayList<Cell> fishNeighbors = new ArrayList<Cell>();
 		for (Cell c : returnListOfNeighbors) {
@@ -172,10 +154,7 @@ public class PredPreyCell extends Cell {
 
 		ArrayList<Cell> otherNeighbors = new ArrayList<Cell>();
 		for (Cell c : returnListOfNeighbors) {
-			if (c != null && c.myState == 0 && c.myNextState == 0) { // Assuming sharks can
-				// only move where no
-				// other animal is
-				// planning to move to
+			if (c != null && c.myState == 0 && c.myNextState == 0) {
 				otherNeighbors.add(c);
 			}
 		}

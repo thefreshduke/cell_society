@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<simulation gametype = "Fish">
+<simulation gameType = "Fish">
 <edge edgeType = "Finite"></edge>
 
 	<parameters>

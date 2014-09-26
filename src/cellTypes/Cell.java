@@ -31,13 +31,13 @@ public abstract class Cell {
 
 	//superclass constructor
 
-	public Cell(int x, int y, int state, IEdgeStrategy edgeType, Map<String, Double> parameterMap, Map<Integer, Color> colorMap, int[] xDelta, int[] yDelta) {
+	public Cell(int x, int y, int state, IEdgeStrategy edgeStrategy, Map<String, Double> parameterMap, Map<Integer, Color> colorMap, int[] xDelta, int[] yDelta) {
 		myX = x;
 		myY = y;
 		myNumberOfPatchTypes = colorMap.size();
 		myState = state;
 		myParameterMap = parameterMap;
-		myEdgeType = edgeType;
+		myEdgeType = edgeStrategy;
 		myColorMap = colorMap;
 		myXDelta = xDelta;
 		myYDelta = yDelta;

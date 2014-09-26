@@ -42,17 +42,15 @@ public class XMLReader {
 	public int numCols;
 
 	private Cell[][] gridArrayOfCells;
-
 	public Map<String, Double> parameterMapForCells;
-
-	private Map<Integer,Color> colorMapForCells;
+	private Map<Integer, Color> colorMapForCells;
 	private String gameType;
 	private String edgeType;
 
 	/***
 	 * One Constructor: Initialize parameterMap, SimulaitonMap, and DOMParser
 	 */
-	public XMLReader(File xml){
+	public XMLReader(File xml) {
 
 		myFactory = new CellFactory();
 
@@ -79,7 +77,7 @@ public class XMLReader {
 		/*Get the list of <color> tags */
 		NodeList colorList = doc.getElementsByTagName("color");
 
-		/*Loop through the <color> tags and populate colourMap */
+		/*Loop through the <color> tags and populate colorMap */
 		for (int i = 0; i < colorList.getLength(); i++) {
 			Node nNode = colorList.item(i);
 			Element eElement = (Element) nNode;
@@ -140,7 +138,7 @@ public class XMLReader {
 			Node nNode = gameTypeList.item(i);
 			Element eElement = (Element) nNode;
 			/* set CellType from gametype */
-			gameType = eElement.getAttribute("gametype");
+			gameType = eElement.getAttribute("gameType");
 		}
 
 		NodeList edgeTypeList = doc.getElementsByTagName("edge");

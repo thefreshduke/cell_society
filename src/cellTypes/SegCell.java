@@ -9,11 +9,10 @@ import edgeTypes.IEdgeStrategy;
 import javafx.scene.paint.Color;
 
 public class SegCell extends Cell {
-	
 	protected static double THRESHOLD_OF_HAPPINESS;
 
-	public SegCell(int x, int y, int state, IEdgeStrategy edgeType, Map<String, Double> parameterMap, Map<Integer, Color> colorMap, int[] xDelta, int[] yDelta) {
-		super(x, y, state, edgeType, parameterMap, colorMap, xDelta, yDelta);
+	public SegCell(int x, int y, int state, IEdgeStrategy edgeStrategy, Map<String, Double> parameterMap, Map<Integer, Color> colorMap, int[] xDelta, int[] yDelta) {
+		super(x, y, state, edgeStrategy, parameterMap, colorMap, xDelta, yDelta);
 		setMyNumberOfPatchTypes(5);
 		THRESHOLD_OF_HAPPINESS = super.myParameterMap.get("THRESHOLD_OF_HAPPINESS");
 	}
@@ -28,7 +27,7 @@ public class SegCell extends Cell {
 		if (myState == 0) {
 			return;
 		}
-		
+
 		/* calculate neighbors */
 		List<Cell> myNeighbors = super.calculateNeighbors(listOfCellsInGrid, myXDelta, myYDelta);
 		//		System.out.println(myNeighbors.size());
@@ -92,5 +91,4 @@ public class SegCell extends Cell {
 		}
 		return (numNeighborsWithSameState >= (THRESHOLD_OF_HAPPINESS * counter));
 	}
-
 }
