@@ -438,7 +438,7 @@ public class SimulationLoop {
 			}
 		});
 
-		fpsSlider = new Slider(1, 5, 1);
+		fpsSlider = new Slider(1, 10, 1);
 		fpsSlider.setValue(framesPerSecond);
 		fpsSlider.setMajorTickUnit(1);
 		fpsSlider.setSnapToTicks(true);

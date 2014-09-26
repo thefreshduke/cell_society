@@ -19,8 +19,8 @@ public class PredPreyCell extends Cell {
 
 	private boolean imminentSharkAttack = false; //just for fish
 
-	public PredPreyCell(int x, int y, int state, IEdgeStrategy edgeStrategy, Map<String, Double> parameterMap, Map<Integer, Color> colorMap) {
-		super(x, y, state, edgeStrategy, parameterMap, colorMap);
+	public PredPreyCell(int x, int y, int state, IEdgeStrategy edgeStrategy, Map<String, Double> parameterMap, Map<Integer, Color> colorMap, int[] xDelta, int[] yDelta) {
+		super(x, y, state, edgeStrategy, parameterMap, colorMap, xDelta, yDelta);
 
 		SHARK_BREED_TIME = super.myParameterMap.get("SHARK_BREED_TIME");
 		FISH_BREED_TIME = super.myParameterMap.get("FISH_BREED_TIME");
@@ -173,8 +173,8 @@ public class PredPreyCell extends Cell {
 	}
 
 	@Override
-	public PredPreyCell makeNewCell(int cellX, int cellY, int cellState, IEdgeStrategy cellEdgeStrategy, Map<String,Double> cellParameterMap, Map<Integer, Color> cellColorMap) {
-		return new PredPreyCell(cellX, cellY, cellState, cellEdgeStrategy, cellParameterMap, cellColorMap);
+	public PredPreyCell makeNewCell(int cellX, int cellY, int cellState, IEdgeStrategy cellEdgeStrategy, Map<String,Double> cellParameterMap, Map<Integer, Color> cellColorMap, int[] xDelta, int[] yDelta) {
+		return new PredPreyCell(cellX, cellY, cellState, cellEdgeStrategy, cellParameterMap, cellColorMap, xDelta, yDelta);
 	}
 
 	public List<Cell> calculateNeighbors() {

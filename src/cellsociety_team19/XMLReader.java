@@ -138,7 +138,7 @@ public class XMLReader {
 			Node nNode = gameTypeList.item(i);
 			Element eElement = (Element) nNode;
 			/* set CellType from gametype */
-			gameType = eElement.getAttribute("gametype");
+			gameType = eElement.getAttribute("gameType");
 		}
 
 		NodeList edgeTypeList = doc.getElementsByTagName("edge");
