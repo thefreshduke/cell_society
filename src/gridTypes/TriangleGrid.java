@@ -3,7 +3,7 @@ package gridTypes;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Shape;
 
-public class TriangleGrid extends GeneralGrid{
+public class TriangleGrid implements GeneralGrid{
 
 	@Override
 	public int[] calculateXDelta(int x, int y) {

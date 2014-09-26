@@ -50,7 +50,7 @@ public class SimulationLoop {
 	private boolean shouldRun = false;
 	private int genNum = 0;
 	private Text generationNumber;
-	private XMLReader xmlReader; //keep
+	private XMLReader xmlReader; 
 	private Slider fpsSlider;
 	private KeyFrame frame;
 	private Timeline animation;
