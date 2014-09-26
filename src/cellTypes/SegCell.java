@@ -9,10 +9,7 @@ import edgeTypes.IEdgeStrategy;
 import javafx.scene.paint.Color;
 
 public class SegCell extends Cell {
-
-	private int[] myXDelta = {1,-1, 0, 0, 1,-1, 1,-1};
-	protected int[] myYDelta = {0, 0,-1, 1, 1,-1,-1, 1};
-
+	
 	protected static double THRESHOLD_OF_HAPPINESS;
 
 	public SegCell(int x, int y, int state, IEdgeStrategy edgeType, Map<String, Double> parameterMap, Map<Integer, Color> colorMap, int[] xDelta, int[] yDelta) {
@@ -42,7 +39,7 @@ public class SegCell extends Cell {
 			myNextState = myState;
 		}
 		else {
-			List<Cell> openCells = emptyCellsAvailable();
+			List<Cell> openCells = findEmptyGridCells();
 
 			if (openCells.size() > 0) {
 				Random rand = new Random();
@@ -63,7 +60,7 @@ public class SegCell extends Cell {
 	}
 
 	/*method used to determine what cells are currently empty*/
-	private ArrayList<Cell> emptyCellsAvailable() {
+	private ArrayList<Cell> findEmptyGridCells() {
 		//assuming 0 is nobody there
 		ArrayList<Cell> returnListOfAvailableCells = new ArrayList<Cell>();
 
@@ -96,8 +93,4 @@ public class SegCell extends Cell {
 		return (numNeighborsWithSameState >= (THRESHOLD_OF_HAPPINESS * counter));
 	}
 
-	@Override
-	public SegCell makeNewCell(int cellX, int cellY, int cellState, IEdgeStrategy cellEdgeType, Map<String, Double> cellParameterMap, Map<Integer, Color> cellColorMap, int[] xDelta, int[] yDelta) {
-		return new SegCell(cellX, cellY, cellState, cellEdgeType, cellParameterMap, cellColorMap, xDelta, yDelta);
-	}
 }

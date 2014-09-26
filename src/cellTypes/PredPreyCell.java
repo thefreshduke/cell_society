@@ -193,11 +193,6 @@ public class PredPreyCell extends Cell {
 		return (space > 0);
 	}
 
-	@Override
-	public PredPreyCell makeNewCell(int cellX, int cellY, int cellState, IEdgeStrategy cellEdgeType, Map<String,Double> cellParameterMap, Map<Integer, Color> cellColorMap, int[] xDelta, int[] yDelta) {
-		return new PredPreyCell(cellX, cellY, cellState, cellEdgeType, cellParameterMap, cellColorMap, xDelta, yDelta);
-	}
-
 	public List<Cell> calculateNeighbors() {
 		List<Cell> superNeighbors = super.calculateNeighbors(listOfCellsInGrid, myXDelta, myYDelta);
 		List<Cell> returnListOfNeighbors = new ArrayList<Cell>();

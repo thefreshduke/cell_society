@@ -1,5 +1,7 @@
 package cellTypes;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,7 +12,7 @@ import edgeTypes.ToroidalEdgeStrategy;
 
 public class CellFactory {
 
-	private Map<String, Cell> simulationMap;
+	private Map<String, Class> simulationMap;
 	private Map<String, IEdgeStrategy> edgeMap;
 	private Map<String, int[]> xDeltas;
 	private Map<String, int[]> yDeltas;
@@ -24,11 +26,11 @@ public class CellFactory {
 
 	public CellFactory(){
 		/* initialize simulationMap */
-		simulationMap = new HashMap<String, Cell>();
-		simulationMap.put("Seg", new SegCell());
-		simulationMap.put("Fish", new PredPreyCell());
-		simulationMap.put("Tree", new TreeCell());
-		simulationMap.put("Life", new LifeCell());
+		simulationMap = new HashMap<String, Class>();
+		simulationMap.put("Seg", new SegCell().getClass());
+		simulationMap.put("Fish", new PredPreyCell().getClass());
+		simulationMap.put("Tree", new TreeCell().getClass());
+		simulationMap.put("Life", new LifeCell().getClass());
 
 		/* initialize edgeMap */
 		edgeMap = new HashMap<String, IEdgeStrategy>();
@@ -45,9 +47,46 @@ public class CellFactory {
 		
 	}
 
-	public Cell createCell(int x, int y, int state, String cellType, String edgeType, Map<String, Double> parameterMap, Map<Integer, Color> colorMap){
-		return simulationMap.get(cellType).makeNewCell(x, y, state, edgeMap.get(edgeType), parameterMap, colorMap, xDeltas.get(cellType), yDeltas.get(cellType));
-	}
+	/**
+	 * @param x
+	 * @param y
+	 * @param state
+	 * @param cellType
+	 * @param edgeType
+	 * @param parameterMap
+	 * @param colorMap
+	 * @return new Cell subclass instance
+	 * 
+	 * We used reflection here accidentally. We originally had each subclass of Cell
+	 * contain a nullary constructor which we instantiate in the Map like we did here, 
+	 * and an additional method that created a new instance of their class with
+	 * the given parameters. This resulted in some ugly repeated code, so we went online to
+	 * figure out how we might be able to move it all into this class. We followed the java 
+	 * documentation for newInstance and later realized this technique was called reflection.
+	 */
+	public Cell createCell(int x, int y, int state, String cellType, String edgeType, Map<String, Double> parameterMap, Map<Integer, Color> colorMap){		
+		Class c = simulationMap.get(cellType);
+		Constructor construct = null;
+		try {
+			construct = c.getConstructor(int.class, int.class, int.class, IEdgeStrategy.class, Map.class, Map.class, int[].class, int[].class);
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		}
+		try {
+			return (Cell) construct.newInstance(x, y, state, edgeMap.get(edgeType), parameterMap, colorMap, xDeltas.get(cellType), yDeltas.get(cellType));
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
+		return null;
+}
 	
 	private void setUpDeltas(int[] xDelta, int[] yDelta, String cellType){
 		xDeltas.put(cellType, xDelta);

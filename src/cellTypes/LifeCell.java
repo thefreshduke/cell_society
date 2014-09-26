@@ -8,9 +8,6 @@ import javafx.scene.paint.Color;
 
 public class LifeCell extends Cell {
 
-	protected int[] myXDelta = {1,-1, 0, 0, 1,-1, 1,-1};
-	protected int[] myYDelta = {0, 0,-1, 1, 1,-1,-1, 1};
-
 	public LifeCell(int x, int y, int state, IEdgeStrategy edgeType, Map<String, Double> parameterMap, Map<Integer, Color> colorMap, int[] xDelta, int[] yDelta) {
 		super(x, y, state, edgeType, parameterMap,colorMap, xDelta, yDelta);
 
@@ -47,8 +44,4 @@ public class LifeCell extends Cell {
 		}
 	}
 
-	@Override
-	public Cell makeNewCell(int cellX, int cellY, int cellState, IEdgeStrategy cellEdgeType, Map<String, Double> cellParameterMap, Map<Integer, Color> cellColorMap, int[] xDelta, int[] yDelta) {
-		return new LifeCell(cellX, cellY, cellState, cellEdgeType, cellParameterMap, cellColorMap, xDelta, yDelta);
-	}
 }

@@ -124,7 +124,7 @@ public class SimulationLoop {
 		lineChart.setLegendVisible(false);
 		myLines = new HashMap<Integer, XYChart.Series<Integer, Integer>>();
 
-		gridNew.add(lineChart, numRows+10, 3);
+		addLineChart();
 	}
 
 	public void updatePopulationGraph(){
@@ -134,15 +134,14 @@ public class SimulationLoop {
 
 		for(Integer i: populationCounts.keySet()){
 			if(i != 0){
-				//	        	XYChart.Series series = new XYChart.Series();      	
-				//	        	
-				//	            series.getData().add(new XYChart.Data(genNum, populationCounts.get(i)));
 				lineChart.getData().add(myLines.get(i));
 			}
 		}
+		addLineChart();
+	}
 
+	private void addLineChart() {
 		gridNew.add(lineChart, numRows+10, 3);
-
 	}
 
 
@@ -187,28 +186,28 @@ public class SimulationLoop {
 				populationCounts.put(cellState, populationCounts.get(cellState)+1);
 
 
-				Rectangle existingRectangle = (Rectangle) getNodeByRowColumnIndex(i, j, gridNew);
+				Rectangle existingTile = (Rectangle) getNodeByRowColumnIndex(i, j, gridNew);
 
-				gridNew.getChildren().remove(existingRectangle);
+				gridNew.getChildren().remove(existingTile);
 
-				final Rectangle rec = new Rectangle(0, 0, GRID_CELL_SIZE, GRID_CELL_SIZE); 
+				final Rectangle tile = new Rectangle(0, 0, GRID_CELL_SIZE, GRID_CELL_SIZE); 
 
 				//				final Circle circ = new Circle(GRID_CELL_SIZE / 2);
 
-				rec.setOnMouseClicked(new EventHandler<MouseEvent>(){
+				tile.setOnMouseClicked(new EventHandler<MouseEvent>(){
 
 					@Override
 					public void handle(MouseEvent event) {
 						int newState = (curCell.getState() + 1) % curCell.getMyNumPatchTypes();
 						curCell.setState(newState);
-						rec.setFill(curCell.getCorrespondingColor()); //move this before calculateNeighbors() happens
+						tile.setFill(curCell.getCorrespondingColor()); //move this before calculateNeighbors() happens
 					}
 				});
 
 
-				rec.setFill(curCell.getCorrespondingColor());
+				tile.setFill(curCell.getCorrespondingColor());
 
-				gridNew.add(rec, j, i); //GridPane uses reversed coordinates
+				gridNew.add(tile, j, i); //GridPane uses reversed coordinates
 				curCell.updateCell();
 			}
 		}
@@ -242,6 +241,10 @@ public class SimulationLoop {
 		gridNew.getChildren().remove(generationNumber);
 		generationNumber = new Text("Generation number: " + genNum);
 		generationNumber.setFill(Color.WHITE);
+		addGenerationNumber();
+	}
+
+	private void addGenerationNumber() {
 		gridNew.add(generationNumber, 0, numCols + 1);
 	}
 
@@ -451,7 +454,7 @@ public class SimulationLoop {
 		int rightSide = numRows - (BUTTON_WIDTH / GRID_CELL_SIZE) - 1;
 		int leftSide = 0;
 
-		gridNew.add(generationNumber, leftSide, numCols + 1);
+		addGenerationNumber();
 		gridNew.add(pause, leftSide, numCols+2);
 		gridNew.add(resume, leftSide, numCols + 3);
 		gridNew.add(step, leftSide, numCols + 4);
@@ -462,7 +465,6 @@ public class SimulationLoop {
 		gridNew.add(quit, rightSide, numCols + 4);
 
 		initializePopulationGraph();
-
 
 		Scene s = new Scene(gridNew);
 

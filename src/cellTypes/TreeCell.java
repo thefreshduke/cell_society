@@ -46,8 +46,4 @@ public class TreeCell extends Cell {
 		}
 	}
 
-	@Override
-	public TreeCell makeNewCell(int cellX, int cellY, int cellState, IEdgeStrategy cellEdgeType, Map<String, Double> cellparamterMap, Map<Integer, Color> cellColorMap, int[] xDelta, int[] yDelta) {
-		return new TreeCell(cellX, cellY, cellState, cellEdgeType, cellparamterMap, cellColorMap, xDelta, yDelta);
-	}
 }

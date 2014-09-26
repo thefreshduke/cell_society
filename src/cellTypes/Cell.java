@@ -67,9 +67,6 @@ public abstract class Cell {
 
 	public abstract void doAction();
 
-	public abstract Cell makeNewCell(int cellX, int cellY, int cellState, IEdgeStrategy edgeType, Map<String, Double> cellParameterMap, Map<Integer, Color> cellColorMap, int[] xDelta, int[] yDelta);
-	//factory class will let us make this a superclass method instead of an abstract method for subclasses
-
 	public void updateCell() {
 		myState = myNextState;
 	}
