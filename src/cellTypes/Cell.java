@@ -1,3 +1,6 @@
+//This entire file is part of my masterpiece
+//CHRIS BERNT
+
 package cellTypes;
 
 import java.util.ArrayList;
@@ -23,28 +26,35 @@ import javafx.scene.paint.Color;
  * etc. 
  *
  */
-public abstract class Cell implements Rules {
-
+public abstract class Cell {
+    
     protected int myX;
     protected int myY;
     protected int myNumberOfPatchTypes;
     protected int myState;
     protected int myNextState;
-
     protected int[] myXDelta;
     protected int[] myYDelta;
     protected IEdgeStrategy myEdgeType;
-
     protected Map<String, Double> myParameterMap;
     protected Map<Integer, Color> myColorMap;
-
     protected Random r;
-
-    //protected int myPatch; ?
-
     protected Cell[][] listOfCellsInGrid;
 
-    //superclass constructor
+    
+    /**
+     * @param x
+     * @param y
+     * @param state
+     * @param edgeStrategy
+     * @param parameterMap
+     * @param colorMap
+     * @param xDelta
+     * @param yDelta
+     * 
+     * Superclass constructor, with all the information for 
+     * a Cell to calculate its next state.
+     */
     public Cell(int x, int y, int state, IEdgeStrategy edgeStrategy, Map<String, Double> parameterMap, Map<Integer, Color> colorMap, int[] xDelta, int[] yDelta) {
         myX = x;
         myY = y;
@@ -81,7 +91,6 @@ public abstract class Cell implements Rules {
      * put this general method in the superclass since every subclass uses it
      * in exactly the same way.
      */
-    @Override
     public List<Cell> calculateNeighbors(Cell[][] listOfCells, int[] xDelta, int[] yDelta) {
         List<Cell> listOfNeighbors = new ArrayList<Cell>();
 

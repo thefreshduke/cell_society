@@ -9,7 +9,7 @@ import java.util.Random;
  *  Extension of PredPreyCell and implementation of Rules for WaTor World fish
  *
  */
-public class FishRules extends PredPreyCell implements Rules {
+public class FishRules extends PredPreyCell {
 
     /*
      * Calculate neighbors for each fish

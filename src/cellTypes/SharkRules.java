@@ -9,7 +9,7 @@ import java.util.Random;
  *  Extension of PredPreyCell and implementation of Rules for WaTor World shark
  *
  */
-public class SharkRules extends PredPreyCell implements Rules {
+public class SharkRules extends PredPreyCell {
 
     /*
      * Calculate neighbors for each Shark
