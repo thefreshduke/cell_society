@@ -1,15 +1,23 @@
+// This entire file is part of my masterpiece.
+// Marcus Cain
+
+
 package cellsociety_team19;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+
 import javafx.scene.paint.Color;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
+
 import cellTypes.Cell;
 import cellTypes.CellFactory;
 
@@ -35,7 +43,7 @@ public class XMLReader {
     public int numCols;
 
     private Cell[][] gridArrayOfCells;
-    public Map<String, Double> parameterMapForCells;
+    private Map<String, Double> parameterMapForCells;
     private Map<Integer, Color> colorMapForCells;
     private String gameType;
     private String edgeType;
@@ -126,23 +134,9 @@ public class XMLReader {
     public Cell[][] parseFile() { //changeName to setupGridArrayOfCellTypes
 
         /* get the simulation type --> Loop through <simulation>tags and get the attribute 'gameType' */
-        NodeList gameTypeList = doc.getElementsByTagName("simulation");
-
-        for (int i = 0; i < gameTypeList.getLength(); i++) {
-            Node nNode = gameTypeList.item(i);
-            Element eElement = (Element) nNode;
-            /* set CellType from gametype */
-            gameType = eElement.getAttribute("gameType");
-        }
-
-        NodeList edgeTypeList = doc.getElementsByTagName("edge");
-
-        for (int i = 0; i < edgeTypeList.getLength(); i++) {
-            Node nNode = edgeTypeList.item(i);
-            Element eElement = (Element) nNode;
-            /* set edgeType from edgetype */
-            edgeType = eElement.getAttribute("edgeType");
-        }
+        gameType = (String) loopThroughTagsAndGetAttribute(gameType,"simulation","gameType");
+       /* get the edge type --> Loop through <edge> tags and get the attribute "edgeType" */
+        edgeType = (String) loopThroughTagsAndGetAttribute(edgeType,"edge","edgeType");
 
         /* get list of <row> tags and set numRows & numCols */
         NodeList rowList = doc.getElementsByTagName("row");
@@ -165,5 +159,19 @@ public class XMLReader {
             }
         }
         return gridArrayOfCells;
+    }
+    
+    private Object loopThroughTagsAndGetAttribute(Object obj, String tag, String attribute){
+        NodeList objTypeList =doc.getElementsByTagName(tag);
+
+        for (int i = 0; i < objTypeList.getLength(); i++) {
+            Node nNode = objTypeList.item(i);
+            Element eElement = (Element) nNode;
+            /* set edgeType from edgetype */
+            return obj = eElement.getAttribute(attribute);
+
+        }
+        return null;
+        
     }
 }

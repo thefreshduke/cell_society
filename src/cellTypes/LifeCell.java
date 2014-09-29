@@ -1,3 +1,5 @@
+// This entire file is part of my masterpiece.
+// Marcus Cain
 package cellTypes;
 
 import java.util.List;
