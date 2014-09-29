@@ -35,15 +35,14 @@ public class SegCell extends Cell {
      * @param xdel - xLocation deltas to define the neighbors of this cell
      * @param ydel - yLocation deltas to define the neighbors of this cell
      */
-    public SegCell(int x, int y, int state, IEdgeStrategy edgeStrategy,
+    protected SegCell(int x, int y, int state, IEdgeStrategy edgeStrategy,
             Map<String, Double> parameterMap, Map<Integer, Color> colorMap,
             int[] xDelta, int[] yDelta) {
         super(x, y, state, edgeStrategy, parameterMap, colorMap, xDelta, yDelta);
-        setMyNumberOfPatchTypes(5);
         THRESHOLD_OF_HAPPINESS = super.myParameterMap.get("THRESHOLD_OF_HAPPINESS");
     }
 
-    public SegCell() {
+    protected SegCell() {
         super();
     }
 
@@ -86,7 +85,6 @@ public class SegCell extends Cell {
         }
     }
 
-
     /**
      * Finds all of the empty cells in the grid.
      * This encompasses not having a cell there now
@@ -127,7 +125,6 @@ public class SegCell extends Cell {
                 numNeighborsWithSameState++;
             }
         }
-
         return (numNeighborsWithSameState >= (THRESHOLD_OF_HAPPINESS * counter));
     }
 }

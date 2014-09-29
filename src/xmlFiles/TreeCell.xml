@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<simulation gameType = "Tree">
+<game gameType = "Tree">
 <edge edgeType = "Toroidal"></edge>
 
 	<parameters>
@@ -26,4 +26,4 @@
 		<row states = "1,1,1,1,1,1,1,1,1,1,1,1"></row>
 		<row states = "1,1,1,1,1,1,1,1,1,1,1,2"></row>
 	</grid>
-</simulation>
+</game>

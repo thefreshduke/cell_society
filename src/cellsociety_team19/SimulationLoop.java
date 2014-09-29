@@ -404,7 +404,7 @@ public class SimulationLoop {
             public void handle(MouseEvent event) {
 
                 try{
-                    gridArrayOfCells = xmlReader.parseFile();					
+                    gridArrayOfCells = xmlReader.setupGridArrayOfCellTypes();					
                 }
                 catch(Exception e) {
                     System.out.println("Need to enter an XML File");
@@ -494,7 +494,7 @@ public class SimulationLoop {
             @Override
             public void handle(MouseEvent event) {
                 shouldRun = true; //keep
-                gridArrayOfCells = xmlReader.parseFile(); //keep
+                gridArrayOfCells = xmlReader.setupGridArrayOfCellTypes(); //keep
                 genNum = 0;
                 initializePopulationMap();
                 initializePopulationGraph();
@@ -532,7 +532,7 @@ public class SimulationLoop {
 
                 if (file != null) {
                     xmlReader = new XMLReader(file);
-                    gridArrayOfCells = xmlReader.parseFile();
+                    gridArrayOfCells = xmlReader.setupGridArrayOfCellTypes();
                     genNum = 0;
                 }
                 createGrid(stage);

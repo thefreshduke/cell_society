@@ -1,15 +1,22 @@
 package cellsociety_team19;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
 import javafx.scene.paint.Color;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
+
 import cellTypes.Cell;
 import cellTypes.CellFactory;
 
@@ -27,16 +34,16 @@ public class XMLReader {
     private CellFactory myFactory;
 
     private File xmlFile;
-    private DocumentBuilderFactory dbFactory;
-    private DocumentBuilder dBuilder;
+    private DocumentBuilderFactory docBuilderFactory;
+    private DocumentBuilder docBuilder;
     private Document doc;
 
-    public int numRows;
-    public int numCols;
+    int numRows;
+    int numCols;
 
     private Cell[][] gridArrayOfCells;
-    public Map<String, Double> parameterMapForCells;
-    private Map<Integer, Color> colorMapForCells;
+    private Map<String, Double> parameterMapForCells;
+    private Map<String, Double> colorMapForCells;
     private String gameType;
     private String edgeType;
 
@@ -50,99 +57,63 @@ public class XMLReader {
 
         /* point to xmlFile that the user opened up */
         xmlFile = xml;
-        /* Setup Document and DOMParser */
-        setupDOMParser();
 
-        /* iniltialize parameterMap */
-        parameterMapForCells = parameterSetup();
-
-        /* initialize colorMap */
-        colorMapForCells = colorMapSetup();
-    }
-
-    /***
-     * @return Map<Integer, Color> for subcells to use as their mapping b/t state and color
-     */
-    private Map<Integer, Color> colorMapSetup() {
-        /*map to return */
-        Map<Integer, Color> colorMap = new HashMap<Integer, Color>();
-
-        /*Get the list of <color> tags */
-        NodeList colorList = doc.getElementsByTagName("color");
-
-        /*Loop through the <color> tags and populate colorMap */
-        for (int i = 0; i < colorList.getLength(); i++) {
-            Node nNode = colorList.item(i);
-            Element eElement = (Element) nNode;
-
-            /* get the state value and corresponding Color --> populate map */
-            colorMap.put(Integer.parseInt(eElement.getAttribute("state")),
-                    Color.valueOf(eElement.getAttribute("color")));
-        }
-        return colorMap;
+        setupDocumentObjectModelParser();
+        parameterMapForCells = createMapForCells("parameter");
+        colorMapForCells = createMapForCells("color");
     }
 
     /***
      * creates Document and DocumentBuilder to parse the actual XMLFIle: 
      * Setup to allow programmer to search for tags/attributes
      */
-    private void setupDOMParser() {
+    private void setupDocumentObjectModelParser() {
+        docBuilderFactory = DocumentBuilderFactory.newInstance();
         try {
-            dbFactory = DocumentBuilderFactory.newInstance();
-            dBuilder = dbFactory.newDocumentBuilder();
-            doc = dBuilder.parse(xmlFile);
+            docBuilder = docBuilderFactory.newDocumentBuilder();
+            doc = docBuilder.parse(xmlFile);
             doc.getDocumentElement().normalize();
-        } catch (Exception e) {
+        }
+        catch (ParserConfigurationException e) {
             e.printStackTrace();
-            System.out.println("Unable to parse: Fix XML file");
-            System.exit(0);
+            System.out.println("ParserConfigurationException detected");
+        }
+        catch (SAXException e) {
+            e.printStackTrace();
+            System.out.println("SAXException detected");
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("IOException detected");
         }
     }
 
-    /***
-     * @return Map<String,Double> of parameterList from XML File.
-     */
-    private Map<String, Double> parameterSetup() {
-        Map<String, Double> parameterMap = new HashMap<String, Double>();
+    private Map<String, Double> createMapForCells(String s) {
+        /*map to return */
+        Map<String, Double> map = new HashMap<String, Double>();
 
-        /*Get the list of <paramter> tags */
-        NodeList parameterList = doc.getElementsByTagName("parameter");
+        /*Get the list of <color> tags */
+        NodeList listOfNodes = doc.getElementsByTagName(s);
 
-        /*Loop through the <paramater> tags and populate paramMap */
-        for (int i = 0; i < parameterList.getLength(); i++) {
-            Node nNode = parameterList.item(i);
+        /*Loop through the <color> tags and populate colorMap */
+        for (int i = 0; i < listOfNodes.getLength(); i++) {
+            Node nNode = listOfNodes.item(i);
             Element eElement = (Element) nNode;
 
-            parameterMap.put(eElement.getAttribute("name"),
-                    Double.parseDouble(eElement.getAttribute("value")));
+            /* get the state value and corresponding Color --> populate map */
+            map.put(eElement.getAttribute("state").toString(), Double.valueOf(eElement.getAttribute(s)));
         }
-        return parameterMap;
+        return map;
     }
 
     /***
      * 
      * @return the grid of Cell objects (used in simulationLoop for back-end tracking).
      */
-    public Cell[][] parseFile() { //changeName to setupGridArrayOfCellTypes
+    public Cell[][] setupGridArrayOfCellTypes() {
 
-        /* get the simulation type --> Loop through <simulation>tags and get the attribute 'gameType' */
-        NodeList gameTypeList = doc.getElementsByTagName("simulation");
-
-        for (int i = 0; i < gameTypeList.getLength(); i++) {
-            Node nNode = gameTypeList.item(i);
-            Element eElement = (Element) nNode;
-            /* set CellType from gametype */
-            gameType = eElement.getAttribute("gameType");
-        }
-
-        NodeList edgeTypeList = doc.getElementsByTagName("edge");
-
-        for (int i = 0; i < edgeTypeList.getLength(); i++) {
-            Node nNode = edgeTypeList.item(i);
-            Element eElement = (Element) nNode;
-            /* set edgeType from edgetype */
-            edgeType = eElement.getAttribute("edgeType");
-        }
+        extractSimulationInfoFromXMLFile("game");
+        extractSimulationInfoFromXMLFile("edge");
 
         /* get list of <row> tags and set numRows & numCols */
         NodeList rowList = doc.getElementsByTagName("row");
@@ -159,11 +130,20 @@ public class XMLReader {
 
             /* Make 2d grid array that tracks the cells in the grid */
             for (int j = 0; j < colStates.length; j++) {
-                gridArrayOfCells[i][j] = myFactory.createCell(i, j,
-                        Integer.parseInt(colStates[j]), gameType, edgeType,
-                        parameterMapForCells, colorMapForCells);
+                gridArrayOfCells[i][j] = myFactory.createCell(i, j, Integer.parseInt(colStates[j]),
+                        gameType, edgeType, parameterMapForCells, colorMapForCells);
             }
         }
         return gridArrayOfCells;
+    }
+
+    private void extractSimulationInfoFromXMLFile(String s) {
+        NodeList typeList = doc.getElementsByTagName(s);
+
+        for (int i = 0; i < typeList.getLength(); i++) {
+            Node nNode = typeList.item(i);
+            Element eElement = (Element) nNode;
+            gameType = eElement.getAttribute(s + "Type");
+        }
     }
 }

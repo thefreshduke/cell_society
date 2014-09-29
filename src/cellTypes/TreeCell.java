@@ -39,15 +39,14 @@ public class TreeCell extends Cell {
      * @param xdel - xLocation deltas to define the neighbors of this cell
      * @param ydel - yLocation deltas to define the neighbors of this cell
      */
-    public TreeCell(int x, int y, int state, IEdgeStrategy edgeStrategy,
+    protected TreeCell(int x, int y, int state, IEdgeStrategy edgeStrategy,
             Map<String, Double> parameterMap, Map<Integer, Color> colorMap,
             int[] xDelta, int[] yDelta) {
         super(x, y, state, edgeStrategy, parameterMap, colorMap, xDelta, yDelta);
-        setMyNumberOfPatchTypes(3);
         PROBABILITY_OF_CATCHING_FIRE = super.myParameterMap.get("PROBABILITY_OF_CATCHING_FIRE");
     }
 
-    public TreeCell() {
+    protected TreeCell() {
         super();
     }
 

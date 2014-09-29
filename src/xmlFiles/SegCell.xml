@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<simulation gameType = "Seg">
+<game gameType = "Seg">
 <edge edgeType = "Finite"></edge>
 
 	<parameters>
@@ -24,4 +24,4 @@
 		<row states = "1,1,3,0,4,2,1,0"></row>
 		<row states = "2,1,3,0,4,2,1,0"></row>
 	</grid>
-</simulation>
+</game>

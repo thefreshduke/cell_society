@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<simulation gameType = "Life">
+<game gameType = "Life">
 <edge edgeType = "Toroidal"></edge>
 
 	<parameters>
@@ -21,4 +21,4 @@
 		<row states = "0,0,0,0,0,0,0,0,0"></row>
 		<row states = "1,0,0,0,0,0,0,0,1"></row>		
 	</grid>
-</simulation>
+</game>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<simulation gameType = "Fish">
+<game gameType = "Fish">
 <edge edgeType = "Finite"></edge>
 
 	<parameters>
@@ -10,9 +10,9 @@
 	</parameters>
 	
 	<colormap>
-		<color state = "0" color = "Blue"></color>
-		<color state = "1" color = "Salmon"></color>
-		<color state = "2" color = "Gray"></color>
+		<color name = "Blue" color = "0000ff"></color>
+		<color name = "Salmon" color = "ff9999"></color>
+		<color name = "Gray" color = "d3d3d3"></color>
 	</colormap>
   
   	<grid>
@@ -29,4 +29,4 @@
 		<row states = "1,1,1,1,1,1,1,1,1,1,1,1"></row>
 		<row states = "1,1,1,1,1,1,1,1,1,1,1,1"></row>
 	</grid>
-</simulation>
+</game>

@@ -40,12 +40,10 @@ public abstract class Cell implements Rules {
 
     protected Random r;
 
-    //protected int myPatch; ?
-
     protected Cell[][] listOfCellsInGrid;
 
     //superclass constructor
-    public Cell(int x, int y, int state, IEdgeStrategy edgeStrategy, Map<String, Double> parameterMap, Map<Integer, Color> colorMap, int[] xDelta, int[] yDelta) {
+    protected Cell(int x, int y, int state, IEdgeStrategy edgeStrategy, Map<String, Double> parameterMap, Map<Integer, Color> colorMap, int[] xDelta, int[] yDelta) {
         myX = x;
         myY = y;
         myNumberOfPatchTypes = colorMap.size();
@@ -66,7 +64,7 @@ public abstract class Cell implements Rules {
      * create objects of the same type with specified parameters.
      * 
      */
-    public Cell() {
+    protected Cell() {
 
     }
 
@@ -111,41 +109,7 @@ public abstract class Cell implements Rules {
      * to be what its next state used to be.
      * Same for all subclasses.
      */
-    public void updateCell() {
+    protected void updateCell() {
         myState = myNextState;
-    }
-
-    /*
-     * Getters and setters 
-     */
-
-    // Gets the cell's color
-    public Color getCorrespondingColor() {
-        return myColorMap.get(myState);
-    }
-
-    // Sets the grid
-    public void setGrid(Cell[][] listOfCells) {
-        listOfCellsInGrid = listOfCells;
-    }
-
-    // Sets the state
-    public void setState(int s) {
-        myState = s;
-    }
-
-    // Gets the state
-    public int getState() {
-        return myState;
-    }
-
-    // Gets the number of patch types
-    public int getMyNumPatchTypes() {
-        return myNumberOfPatchTypes;
-    }
-
-    // Sets the number of patch types
-    protected void setMyNumberOfPatchTypes(int numberOfPatchTypes) {
-        myNumberOfPatchTypes = numberOfPatchTypes;
     }
 }
